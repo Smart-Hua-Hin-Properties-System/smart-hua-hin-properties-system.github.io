@@ -11,11 +11,10 @@
         body { font-family: 'Kanit', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); line-height: 1.6; }
         .container { max-width: 600px; margin: 0 auto; background: var(--white); min-height: 100vh; padding-bottom: 120px; box-shadow: 0 0 30px rgba(0,0,0,0.1); }
         
-        /* 📱 Header & Navigation */
-        .back-nav { padding: 15px; background: #fff; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #eee; display: flex; align-items: center; }
+        .back-nav { padding: 15px; background: #fff; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #eee; }
         .back-btn { text-decoration: none; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
         
-        /* 🖼️ Hero Media & Badge Identity */
+        /* Badge Identity On Hero Image */
         .hero-box { position: relative; width: 100%; height: 380px; overflow: hidden; }
         .main-img { width: 100%; height: 100%; object-fit: cover; background: #ececec; }
         .hero-badge { 
@@ -24,28 +23,25 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.25); z-index: 10;
         }
 
-        /* 📄 Content Area */
         .content { padding: 25px; }
         .price-box { font-size: 2.6rem; color: var(--primary); font-weight: 600; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; }
         
-        /* 📐 Property Grid */
+        /* 19+ Information Mapping Grid */
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
         .info-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid var(--primary); }
         .info-item i { font-size: 1.1rem; color: var(--primary); width: 22px; text-align: center; }
         .info-label { color: #7f8c8d; font-size: 0.8rem; display: block; }
         .info-value { font-weight: 600; font-size: 1rem; }
 
-        /* 📥 Master Plan Downloader */
         .download-section { padding: 20px; text-align: center; }
         .btn-download { 
             display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: white;
             padding: 12px 25px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: 0.3s;
         }
-        .btn-download:active { transform: scale(0.95); }
 
-        /* 🚀 8 Icons Share Bar (Centered & Scrollable) */
-        .share-section { padding: 30px 0; border-top: 1px dashed #ddd; }
-        .share-label { text-align: center; color: #7f8c8d; font-weight: 600; margin-bottom: 15px; font-size: 0.9rem; }
+        /* Centered Scrollable Share Icons */
+        .share-section { padding: 30px 0; border-top: 1px dashed #ddd; text-align: center; }
+        .share-icon-main { font-size: 1.5rem; color: #7f8c8d; margin-bottom: 15px; }
         .share-bar { 
             display: flex; gap: 15px; overflow-x: auto; padding: 10px 20px 30px; 
             justify-content: flex-start; scrollbar-width: none; -webkit-overflow-scrolling: touch;
@@ -53,11 +49,11 @@
         .share-bar::-webkit-scrollbar { display: none; }
         .share-btn { 
             width: 52px; height: 52px; border-radius: 50%; border: none; background: #fff; 
-            flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer;
+            flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center;
         }
         .share-btn img { width: 28px; height: 28px; }
 
-        /* 🏡 Related Properties Grid (2 Columns) */
+        /* Full Portfolio Grid (2 Columns) */
         .related-section { padding: 25px 20px; background: #f0f2f5; }
         .related-title { font-weight: 600; margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
         .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -67,7 +63,6 @@
         .mini-id { position: absolute; top: 8px; left: 8px; background: var(--green); color: white; padding: 2px 8px; border-radius: 50px; font-size: 0.65rem; font-weight: 600; }
         .mini-price { color: var(--primary); font-weight: 600; font-size: 0.95rem; }
 
-        /* 🟢 Sticky LINE Action */
         .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #fff; padding: 18px; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 1000; }
         .btn-line { display: flex; align-items: center; justify-content: center; gap: 10px; background: #00b900; color: #fff; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: 600; font-size: 1.2rem; }
         
@@ -77,7 +72,7 @@
 <body>
 
 <div class="container" id="mainWrapper">
-    <div id="loader"><i class="fas fa-spinner fa-spin fa-2x"></i><br><br>กำลังเชื่อมต่อระบบ Smart Property...</div>
+    <div id="loader"><i class="fas fa-spinner fa-spin fa-2x"></i><br><br>กำลังเตรียมข้อมูล Smart System...</div>
 </div>
 
 <script>
@@ -90,7 +85,7 @@
             const d = await r.json();
             const it = d.find(x => x.HP_ID === pId);
             if(it) render(it, d);
-        } catch(e) { document.getElementById('loader').innerHTML = "❌ การเชื่อมต่อล้มเหลว"; }
+        } catch(e) { document.getElementById('loader').innerHTML = "❌ ขัดข้อง โปรดติดต่อ Admin"; }
     }
 
     function share(platform, name, price) {
@@ -112,8 +107,8 @@
     function render(it, all) {
         const wrap = document.getElementById('mainWrapper');
         const fP = Number(it.Price).toLocaleString();
-        // กรองโครงการเดียวกันเพื่อทำ Related Grid
-        const related = all.filter(x => x.Project_Name === it.Project_Name && x.HP_ID !== it.HP_ID).slice(0, 12);
+        // ปลดล็อคจำนวนรายการทรัพย์อื่นให้แสดงทั้งหมดที่มีในโครงการ
+        const related = all.filter(x => x.Project_Name === it.Project_Name && x.HP_ID !== it.HP_ID);
 
         wrap.innerHTML = `
             <div class="back-nav"><a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i> กลับไปหน้าแคตตาล็อก</a></div>
@@ -139,7 +134,7 @@
 
                 <div style="margin-top:30px; background:#fff9f0; padding:20px; border-radius:15px; border:1px solid #ffeeba;">
                     <b style="color:var(--primary);"><i class="fas fa-file-alt"></i> รายละเอียดเพิ่มเติม:</b>
-                    <p style="margin:10px 0 0 0; font-size:0.95rem;">${it.Description || 'ติดต่อเจ้าหน้าที่เพื่อรับข้อมูลเชิงลึก'}</p>
+                    <p style="margin:10px 0 0 0; font-size:0.95rem;">${it.Description || 'โปรดติดต่อเจ้าหน้าที่'}</p>
                 </div>
             </div>
 
@@ -150,7 +145,7 @@
             </div>
 
             <div class="share-section">
-                <div class="share-label">ส่งต่อข้อมูลโครงการพรีเมียม</div>
+                <div class="share-icon-main"><i class="fas fa-share-alt"></i></div>
                 <div class="share-bar">
                     <button class="share-btn" onclick="share('line','${it.Project_Name}','${fP}')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"></button>
                     <button class="share-btn" onclick="share('fb','${it.Project_Name}','${fP}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></button>
@@ -164,10 +159,10 @@
             </div>
 
             <div class="related-section">
-                <div class="related-title"><i class="fas fa-layer-group"></i> ทรัพย์อื่นๆ ในโครงการเดียวกัน</div>
+                <div class="related-title"><i class="fas fa-home"></i> ทรัพย์อื่นๆ ในโครงการเดียวกัน</div>
                 <div class="related-grid">
                     ${related.map(r => `
-                        <div class="mini-card" onclick="window.location.href='details.html?id=${r.HP_ID}'">
+                        <div class="mini-card" onclick="window.location.href='details.html?id=${r.HP_ID}'; window.scrollTo(0,0);">
                             <div class="mini-id">${r.ID}</div>
                             <img src="${r.Thumbnail}" class="mini-img" onerror="this.src='https://placehold.co/200x150?text=No+Photo'">
                             <div class="mini-info">
@@ -180,7 +175,7 @@
             </div>
 
             <div class="footer-action">
-                <a href="https://line.me/R/msg/text/?สนใจข้อมูลเพิ่มเติมรหัส: ${it.HP_ID} โครงการ: ${it.Project_Name}" class="btn-line">
+                <a href="https://line.me/R/msg/text/?สนใจรหัส: ${it.HP_ID} โครงการ: ${it.Project_Name}" class="btn-line">
                     <i class="fab fa-line"></i> สอบถามข้อมูลผ่าน LINE
                 </a>
             </div>
