@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Catalog - Global Version</title>
+    <title>Smart-Hua Hin-Properties-System</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --gold: #f1c40f; --red: #e74c3c; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); }
+        
+        /* Header */
         header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .menu-text { font-size: 0.85rem; font-weight: 600; color: var(--primary); }
@@ -17,22 +19,51 @@
         .flag-btn { border: none; background: none; padding: 0; cursor: pointer; transition: 0.2s; }
         .flag-btn:hover { transform: scale(1.1); }
         .flag-btn img { width: 22px; height: 14px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+
+        /* Sidebar */
         .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #fff; z-index: 2500; transition: 0.4s; padding-top: 60px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); }
         .sidebar.active { left: 0; }
         .sidebar-item { padding: 18px 25px; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text); }
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; }
         .sidebar-overlay.active { display: block; }
+
+        /* Filter */
         .filter-area { padding: 15px; }
         .id-selector-trigger { width: 100%; padding: 14px 15px; background: #fff; border: 1.5px solid #ddd; border-radius: 15px; color: var(--primary); display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 10px; box-sizing: border-box; }
         .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .select-box { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid #ddd; background: #fff; font-family: 'Kanit'; color: var(--primary); outline: none; font-size: 0.85rem; }
-        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; padding: 0 15px 30px; }
-        .card { background: var(--white); border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        /* Property Cards */
+        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 15px 30px; }
+        .card { background: var(--white); border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; padding: 5px 12px; border-radius: 50px; font-weight: 600; font-size: 0.7rem; z-index: 10; }
-        .card-img { width: 100%; height: 210px; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .price-text { font-size: 1.7rem; color: var(--primary); font-weight: 600; margin: 8px 0; }
-        .btn-detail { display: block; width: 100%; padding: 12px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 600; }
+        .card-img { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 20px 15px; text-align: center; }
+        .price-text { font-size: 1.8rem; color: var(--primary); font-weight: 600; margin: 10px 0; }
+        
+        /* 🎯 ปุ่มดูรายละเอียด (แก้ไขใหม่) */
+        .btn-detail { 
+            display: block; 
+            width: 70%; /* ลดความกว้างลงเหลือ 70% */
+            margin: 15px auto 0; /* จัดให้อยู่กึ่งกลาง */
+            padding: 10px 15px; 
+            background: var(--primary); 
+            color: white; 
+            text-align: center; 
+            text-decoration: none; 
+            border-radius: 30px; /* ทำเป็นทรงแคปซูลให้ดูทันสมัย */
+            font-weight: 600; 
+            font-size: 0.95rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(26,82,118,0.2);
+        }
+        .btn-detail:hover {
+            background: #154360;
+            box-shadow: 0 6px 15px rgba(26,82,118,0.3);
+        }
+
+        /* Modal */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: flex-end; }
         .modal-content { background: #fff; border-radius: 25px 25px 0 0; width: 100%; max-height: 80vh; padding: 20px 15px; overflow-y: auto; box-sizing: border-box; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
@@ -102,12 +133,12 @@
     let allData = [], projectData = [], currentLang = localStorage.getItem('smartLang') || 'th';
 
     const i18n = {
-        th: { menu: "เมนู", home: "หน้าหลัก", adminAccess: "ระบบแอดมิน", selector: "เลือกแปลง / รหัสที่ต้องการ...", bedAll: "🛌 ห้องนอนทั้งหมด", priceSort: "💰 เรียงตามราคา", priceLow: "น้อยไปมาก", priceHigh: "มากไปน้อย", modalTitle: "เลือกแปลงโครงการ", clear: "ล้างค่า", view: "ดูรายละเอียด", bed: "นอน", area: "พื้นที่ดิน", living: "ใช้สอย", Available: "ว่าง", Pending: "จองแล้ว", Sold: "ขายแล้ว" },
-        en: { menu: "MENU", home: "Home", adminAccess: "Admin Access", selector: "Select Plot / ID...", bedAll: "🛌 All Bedrooms", priceSort: "💰 Sort Price", priceLow: "Low to High", priceHigh: "High to Low", modalTitle: "Project Plots", clear: "Clear", view: "View Details", bed: "Bed", area: "Land", living: "Living", Available: "Available", Pending: "Pending", Sold: "Sold" },
-        cn: { menu: "菜单", home: "首页", adminAccess: "管理员登录", selector: "选择地块 / ID...", bedAll: "🛌 所有卧室", priceSort: "💰 按价格排序", priceLow: "从低到高", priceHigh: "从高到低", modalTitle: "项目地块", clear: "清除", view: "查看详情", bed: "卧", area: "土地", living: "居住", Available: "空置", Pending: "已预订", Sold: "已售" },
-        ru: { menu: "МЕНЮ", home: "Главная", adminAccess: "Вход для админа", selector: "Выбрать участок / ID...", bedAll: "🛌 Все спальни", priceSort: "💰 Сортировать по цене", priceLow: "От дешевых", priceHigh: "От дорогих", modalTitle: "Участки проекта", clear: "Очистить", view: "Подробнее", bed: "Спальни", area: "Земля", living: "Пл.", Available: "Доступно", Pending: "Забронировано", Sold: "Продано" },
-        de: { menu: "MENÜ", home: "Startseite", adminAccess: "Admin-Zugang", selector: "Grundstück / ID wählen...", bedAll: "🛌 Alle Schlafzimmer", priceSort: "💰 Nach Preis sortieren", priceLow: "Günstigste", priceHigh: "Teuerste", modalTitle: "Projektgrundstücke", clear: "Löschen", view: "Details", bed: "Bett", area: "Land", living: "Wohn.", Available: "Verfügbar", Pending: "Reserviert", Sold: "Verkauft" },
-        fr: { menu: "MENU", home: "Accueil", adminAccess: "Accès Admin", selector: "Choisir Terrain / ID...", bedAll: "🛌 Toutes chambres", priceSort: "💰 Trier par prix", priceLow: "Prix croissant", priceHigh: "Prix décroissant", modalTitle: "Terrains du projet", clear: "Effacer", view: "Détails", bed: "Ch.", area: "Terrain", living: "Hab.", Available: "Disponible", Pending: "Réservé", Sold: "Vendu" }
+        th: { menu: "เมนู", home: "หน้าหลัก", adminAccess: "ระบบแอดมิน", selector: "เลือกแปลง / รหัสที่ต้องการ...", bedAll: "🛌 ห้องนอนทั้งหมด", priceSort: "💰 เรียงตามราคา", priceLow: "น้อยไปมาก", priceHigh: "มากไปน้อย", modalTitle: "เลือกแปลงโครงการ", clear: "ล้างค่า", view: "ดูรายละเอียด", bed: "นอน", area: "พื้นที่ใช้สอย", Available: "ว่าง", Pending: "จองแล้ว", Sold: "ขายแล้ว" },
+        en: { menu: "MENU", home: "Home", adminAccess: "Admin Access", selector: "Select Plot / ID...", bedAll: "🛌 All Bedrooms", priceSort: "💰 Sort Price", priceLow: "Low to High", priceHigh: "High to Low", modalTitle: "Project Plots", clear: "Clear", view: "View Details", bed: "Bed", area: "Living Area", Available: "Available", Pending: "Pending", Sold: "Sold" },
+        cn: { menu: "菜单", home: "首页", adminAccess: "管理员登录", selector: "选择地块 / ID...", bedAll: "🛌 所有卧室", priceSort: "💰 按价格排序", priceLow: "从低到高", priceHigh: "从高到低", modalTitle: "选择地块", clear: "清除", view: "查看详情", bed: "卧", area: "居住面积", Available: "空置", Pending: "已预订", Sold: "已售" },
+        ru: { menu: "МЕНЮ", home: "Главная", adminAccess: "Админ", selector: "Выбрать участок / ID...", bedAll: "🛌 Все спальни", priceSort: "💰 Сортировать по цене", priceLow: "От дешевых", priceHigh: "От дорогих", modalTitle: "Участки проекта", clear: "Очистить", view: "Подробнее", bed: "Сп.", area: "Пл.", Available: "Доступно", Pending: "Бронь", Sold: "Продано" },
+        de: { menu: "MENÜ", home: "Startseite", adminAccess: "Admin", selector: "Grundstück wählen...", bedAll: "🛌 Alle Schlafzimmer", priceSort: "💰 Nach Preis sortieren", priceLow: "Günstigste", priceHigh: "Teuerste", modalTitle: "Projektgrundstücke", clear: "Löschen", view: "Details", bed: "Bett", area: "Wohn.", Available: "Verfügbar", Pending: "Reserviert", Sold: "Verkauft" },
+        fr: { menu: "MENU", home: "Accueil", adminAccess: "Admin", selector: "Choisir Terrain...", bedAll: "🛌 Toutes chambres", priceSort: "💰 Trier par prix", priceLow: "Prix croissant", priceHigh: "Prix décroissant", modalTitle: "Terrains du projet", clear: "Effacer", view: "Détails", bed: "Ch.", area: "Hab.", Available: "Disponible", Pending: "Réservé", Sold: "Vendu" }
     };
 
     function setLanguage(lang) {
@@ -133,7 +164,7 @@
         list.innerHTML = "";
         projectData.forEach(it => {
             const item = document.createElement('a'); item.href = `details.html?id=${it.HP_ID}`; item.className = "id-item";
-            item.innerHTML = `<div class="id-row-1"><div class="id-name">${it.ID}</div><div class="id-specs"><span>🛌 ${it.Bedrooms} ${t.bed}</span><span>📐 ${it['Land Area (sq.w)'] || 0} ${t.area}</span><span>🏠 ${it['Living Area (sq.m)']}m² ${t.living}</span></div><div class="id-price">฿${(Number(it.Price)/1000000).toFixed(1)}M</div></div><div class="id-row-2"><span class="status-tag ${it.Status.toLowerCase()}">${t[it.Status] || it.Status}</span></div>`;
+            item.innerHTML = `<div class="id-row-1"><div class="id-name">${it.ID}</div><div class="id-specs"><span>🛌 ${it.Bedrooms} ${t.bed}</span><span>🏠 ${it['Living Area (sq.m)']}m² ${t.area}</span></div><div class="id-price">฿${(Number(it.Price)/1000000).toFixed(1)}M</div></div><div class="id-row-2"><span class="status-tag ${it.Status.toLowerCase()}">${t[it.Status] || it.Status}</span></div>`;
             list.appendChild(item);
         });
     }
@@ -152,7 +183,8 @@
         grid.innerHTML = items.length ? "" : `<div style="grid-column:1/-1; text-align:center; padding:50px;">No Data</div>`;
         items.forEach(it => {
             const card = document.createElement('div'); card.className = 'card';
-            card.innerHTML = `<div class="badge">${it.HP_ID} - ${it.ID}</div><img src="${it.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Smart+System'"><div class="card-body"><div style="font-size:0.8rem; color:#7f8c8d;">🛌 ${it.Bedrooms} ${t.bed} | 📐 ${it['Living Area (sq.m)']} m²</div><div class="price-text">฿${Number(it.Price).toLocaleString()}</div><a href="details.html?id=${it.HP_ID}" class="btn-detail">${t.view}</a></div>`;
+            // 🎯 ปุ่มกดที่แก้ไขแล้ว
+            card.innerHTML = `<div class="badge">${it.HP_ID} - ${it.ID}</div><img src="${it.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Smart+System'"><div class="card-body"><div style="font-size:0.85rem; color:#7f8c8d;">🛌 ${it.Bedrooms} ${t.bed} | 🏠 ${it['Living Area (sq.m)']} m²</div><div class="price-text">฿${Number(it.Price).toLocaleString()}</div><a href="details.html?id=${it.HP_ID}" class="btn-detail">${t.view}</a></div>`;
             grid.appendChild(card);
         });
     }
