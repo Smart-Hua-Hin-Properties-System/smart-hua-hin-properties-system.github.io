@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Smart System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #1a5276; --bg: #f8f9fa; --white: #ffffff; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; }
+        .admin-header { background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .user-info { font-size: 0.9rem; }
+        .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .property-list { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .list-header { background: #f1f4f6; padding: 15px; font-weight: 600; display: flex; justify-content: space-between; }
+        .property-item { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .item-id { font-weight: 600; color: var(--primary); }
+        .item-meta { font-size: 0.8rem; color: #7f8c8d; }
+        .btn-logout { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        .btn-add { background: var(--primary); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: 600; margin-bottom: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="admin-header">
+    <div><b>Smart Control</b></div>
+    <div class="user-info" id="adminName">Loading...</div>
+    <button class="btn-logout" onclick="logout()">ออกระบบ</button>
+</div>
+<div class="container">
+    <h2 id="projectTitle">แผงควบคุมโครงการ</h2>
+    <button class="btn-add"><i class="fas fa-plus"></i> เพิ่มรายการบ้านใหม่</button>
+    <div class="stat-grid">
+        <div class="stat-card"><b>จำนวนบ้าน</b><div id="count" style="font-size:1.5rem;">0</div></div>
+        <div class="stat-card"><b>สถานะสิทธิ์</b><div id="roleDisplay" style="font-size:0.9rem; color:var(--primary);">Admin</div></div>
+    </div>
+    <div class="property-list">
+        <div class="list-header">รายการทรัพย์ทั้งหมด</div>
+        <div id="listBody">
+            <div style="padding:40px; text-align:center;">กำลังดึงข้อมูลโครงการ...</div>
+        </div>
+    </div>
+</div>
+<script>
+    const api = "https://script.google.com/macros/s/AKfycbytY48pBly91AAPJ4I6oy7QtuS451d-U5EKBvIwtobMQrty2Q3zsUw6P9LI3zm7Z4E7/exec";
+    const user = JSON.parse(localStorage.getItem('smartAdmin'));
+    if(!user) window.location.href = 'login.html';
+    document.getElementById('adminName').innerText = user.projectName;
+    document.getElementById('projectTitle').innerText = "จัดการโครงการ " + (user.role === 'Master' ? "ทั้งหมด" : user.projectName);
+    document.getElementById('roleDisplay').innerText = user.role;
+    async function loadData() {
+        try {
+            const res = await fetch(`${api}?projectName=${user.projectName}&role=${user.role}&action=adminData`);
+            const items = await res.json();
+            document.getElementById('count').innerText = items.length;
+            const body = document.getElementById('listBody');
+            body.innerHTML = "";
+            items.forEach(it => {
+                const row = document.createElement('div');
+                row.className = 'property-item';
+                row.innerHTML = `<div><div class="item-id">${it.HP_ID} - ${it.ID}</div><div class="item-meta">ราคา: ฿${Number(it.Price).toLocaleString()} | ห้อง: ${it.Bedrooms}</div></div><i class="fas fa-edit" style="color:var(--primary)"></i>`;
+                body.appendChild(row);
+            });
+        } catch(e) { document.getElementById('listBody').innerText = "ขัดข้องในการโหลดข้อมูล"; }
+    }
+    function logout() { localStorage.removeItem('smartAdmin'); window.location.href = 'login.html'; }
+    loadData();
+</script>
+</body>
+</html>
