@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details - Smart System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1a5276; --bg: #f4f7f6; --text: #2c3e50; --white: #ffffff; }
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); }
+        .container { max-width: 600px; margin: 0 auto; background: var(--white); min-height: 100vh; padding-bottom: 120px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .back-nav { padding: 15px; background: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #eee; }
+        .back-btn { text-decoration: none; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        .main-img { width: 100%; height: 350px; object-fit: cover; background: #eee; }
+        .content { padding: 20px; }
+        .price-box { font-size: 2.2rem; color: var(--primary); font-weight: 600; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; }
+        .detail-grid { display: flex; flex-direction: column; gap: 12px; }
+        .detail-item { display: flex; align-items: center; gap: 15px; padding: 14px; background: #f8f9fa; border-radius: 12px; transition: 0.2s; }
+        .detail-item:hover { background: #f0f4f8; }
+        .icon { font-size: 1.3rem; width: 30px; text-align: center; }
+
+        /* 🚀 Smart Share Bar 8 Tools */
+        .share-section { padding: 25px 0; border-top: 1px dashed #ddd; text-align: center; background: #fff; }
+        .share-bar { display: flex; gap: 12px; overflow-x: auto; padding: 5px 25px 20px 25px; justify-content: flex-start; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .share-bar::-webkit-scrollbar { display: none; }
+        .share-btn { width: 48px; height: 48px; border-radius: 50%; border: none; background: #fff; flex-shrink: 0; box-shadow: 0 3px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .share-btn img { width: 26px; height: 26px; }
+
+        /* 🏠 Related Properties */
+        .related-section { padding: 25px 20px; background: #f0f2f5; }
+        .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .mini-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
+        .mini-img { width: 100%; height: 120px; object-fit: cover; }
+        .mini-info { padding: 10px; font-size: 0.9rem; }
+        
+        .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #fff; padding: 15px; box-sizing: border-box; box-shadow: 0 -5px 15px rgba(0,0,0,0.08); z-index: 1000; }
+        .btn-line { display: block; background: #00b900; color: #fff; text-align: center; padding: 16px; border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+<div class="container" id="mainWrapper">
+    <div class="back-nav"><a href="javascript:history.back()" class="back-btn">🏠 กลับไปหน้าแคตตาล็อก</a></div>
+    <div id="loader" style="text-align:center; padding:100px;">📡 กำลังเตรียมข้อมูลพรีเมียม...</div>
+</div>
+
+<script>
+    const api = "https://script.google.com/macros/s/AKfycbyUMPlMZfqtoWVikxCV_XECQHmimWg4hXo1PRFb2SfMEINvwOOADJZHeQ-MDNCBBbBV/exec";
+    const pId = new URLSearchParams(window.location.search).get('id');
+
+    async function load() {
+        try {
+            const r = await fetch(api);
+            const d = await r.json();
+            const it = d.find(x => x.HP_ID === pId);
+            if(it) render(it, d);
+        } catch(e) { document.getElementById('loader').innerText = "❌ เกิดข้อผิดพลาดในการโหลดข้อมูล"; }
+    }
+
+    function share(platform, name, price) {
+        const url = window.location.href;
+        const msg = `🏡 ${name}\n💰 ราคา: ฿${price}\nชมรายละเอียด: ${url}`;
+        if(platform === 'copy') { navigator.clipboard.writeText(msg); alert('คัดลอกลิงก์เรียบร้อย!'); return; }
+        const links = {
+            line: `https://line.me/R/msg/text/?${encodeURIComponent(msg)}`,
+            fb: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+            msg: `fb-messenger://share/?link=${encodeURIComponent(url)}`,
+            wa: `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`,
+            tg: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(name)}`,
+            sms: `sms:?body=${encodeURIComponent(msg)}`,
+            mail: `mailto:?subject=${encodeURIComponent(name)}&body=${encodeURIComponent(msg)}`
+        };
+        window.open(links[platform]);
+    }
+
+    function render(item, all) {
+        const wrap = document.getElementById('mainWrapper');
+        const fP = Number(item.Price).toLocaleString();
+        const others = all.filter(x => x.HP_ID !== pId && x.Project_Name === item.Project_Name && x.HP_ID).slice(0, 10);
+
+        wrap.innerHTML = `
+            <div class="back-nav"><a href="javascript:history.back()" class="back-btn">🏠 กลับไปหน้าแคตตาล็อก</a></div>
+            <img src="${item.Thumbnail}" class="main-img" onerror="this.src='https://placehold.co/600x400?text=Smart+Hua+Hin+Properties'">
+            <div class="content">
+                <h1 style="margin:0 0 5px 0; font-size:1.8rem;">${item.Project_Name}</h1>
+                <p style="color:#7f8c8d; margin:0 0 15px 0;">รหัสทรัพย์: ${item.HP_ID} | ยูนิต: ${item.ID}</p>
+                <div class="price-box">฿${fP}</div>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="icon">🔖</span><span>แปลง: <b>${item.Plot || '-'}</b></span></div>
+                    <div class="detail-item"><span class="icon">🛌</span><span><b>${item.Bedrooms || '0'}</b> ห้องนอน</span></div>
+                    <div class="detail-item"><span class="icon">🚿</span><span><b>${item.Bathrooms || '0'}</b> ห้องน้ำ</span></div>
+                    <div class="detail-item"><span class="icon">📐</span><span>พื้นที่ใช้สอย: <b>${item['Living Area (sq.m)'] || '0'}</b> ตร.ม.</span></div>
+                    <div class="detail-item"><span class="icon">🌳</span><span>ที่ดิน: <b>${item['Land Area (sq.w)'] || '0'}</b> ตร.ว.</span></div>
+                    <div class="detail-item"><span class="icon">📍</span><span>ทำเล: ${item.SubDistrict}, ${item.District}</span></div>
+                    <div class="detail-item" style="flex-direction:column; align-items:flex-start;">
+                        <b>รายละเอียดเพิ่มเติม:</b>
+                        <p style="margin:8px 0 0 0; line-height:1.6; color:#555;">${item.Description || 'ติดต่อสอบถามเจ้าหน้าที่สำหรับข้อมูลเพิ่มเติม'}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="share-section">
+                <p style="font-weight:600; color:#7f8c8d; margin-bottom:15px;">แชร์ข้อมูลโครงการนี้</p>
+                <div class="share-bar">
+                    <button class="share-btn" onclick="share('line','${item.Project_Name}','${fP}')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"></button>
+                    <button class="share-btn" onclick="share('fb','${item.Project_Name}','${fP}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></button>
+                    <button class="share-btn" onclick="share('msg','${item.Project_Name}','${fP}')"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968771.png"></button>
+                    <button class="share-btn" onclick="share('wa','${item.Project_Name}','${fP}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></button>
+                    <button class="share-btn" onclick="share('tg','${item.Project_Name}','${fP}')"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></button>
+                    <button class="share-btn" onclick="share('sms','${item.Project_Name}','${fP}')"><img src="https://cdn-icons-png.flaticon.com/512/813/813636.png"></button>
+                    <button class="share-btn" onclick="share('mail','${item.Project_Name}','${fP}')"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png"></button>
+                    <button class="share-btn" onclick="share('copy','${item.Project_Name}','${fP}')"><img src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png"></button>
+                </div>
+            </div>
+            
+            <div class="related-section">
+                <div style="font-weight:600; margin-bottom:15px;">🏡 ทรัพย์อื่นๆ ในโครงการเดียวกัน</div>
+                <div class="related-grid" id="relGrid"></div>
+            </div>
+            
+            <div class="footer-action">
+                <a href="https://line.me/R/msg/text/?สนใจข้อมูลเพิ่มเติมรหัส: ${item.HP_ID}" class="btn-line">🟢 สอบถามข้อมูลผ่าน LINE</a>
+            </div>
+        `;
+
+        const rG = document.getElementById('relGrid');
+        if(others.length === 0) {
+            rG.innerHTML = `<div style="grid-column:1/-1; color:#999; text-align:center;">ไม่พบทรัพย์อื่นในโครงการนี้</div>`;
+        } else {
+            others.forEach(o => {
+                const div = document.createElement('div');
+                div.className = 'mini-card';
+                div.onclick = () => { window.location.href = `details.html?id=${o.HP_ID}`; window.scrollTo(0,0); };
+                div.innerHTML = `
+                    <img src="${o.Thumbnail}" class="mini-img" onerror="this.src='https://placehold.co/200x150?text=No+Photo'">
+                    <div class="mini-info"><b>${o.ID}</b><br><span style="color:var(--primary)">฿${Number(o.Price).toLocaleString()}</span></div>
+                `;
+                rG.appendChild(div);
+            });
+        }
+    }
+    load();
+</script>
+</body>
+</html>
