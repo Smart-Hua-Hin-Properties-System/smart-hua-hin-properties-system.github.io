@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart-Hua Hin-Properties-System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #2c3e50; }
+        header { text-align: center; margin-bottom: 40px; padding: 30px 10px; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 5px solid var(--primary); }
+        header h1 { color: var(--primary); margin: 0; font-size: 2.2rem; font-weight: 600; text-transform: uppercase; }
+        header p { color: white; background: var(--primary); display: inline-block; padding: 6px 25px; margin-top: 15px; font-size: 1rem; font-weight: 400; border-radius: 20px; }
+        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; }
+        .card:hover { transform: translateY(-8px); }
+        .card-img { width: 100%; height: 220px; object-fit: cover; background: #eee; cursor: pointer; }
+        .card-body { padding: 20px; }
+        .price { color: var(--primary); font-size: 1.6rem; font-weight: 600; margin: 10px 0; }
+        .btn-detail { display: block; width: 100%; padding: 12px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 8px; font-weight: 600; }
+        #loading { text-align: center; padding: 100px; font-size: 1.2rem; color: var(--primary); }
+        .no-photo-box { height: 220px; background: #ececec; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 1rem; font-weight: 600; text-align: center; padding: 10px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1 id="mainTitle">Smart-Hua Hin-Properties-System</h1>
+    <p id="subTitle">Master Command Center</p>
+</header>
+<div id="loading">📡 กำลังเชื่อมต่อฐานข้อมูล Smart System...</div>
+<div class="property-grid" id="grid"></div>
+<script>
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyUMPlMZfqtoWVikxCV_XECQHmimWg4hXo1PRFb2SfMEINvwOOADJZHeQ-MDNCBBbBV/exec";
+    const urlParams = new URLSearchParams(window.location.search);
+    const filter = urlParams.get('project');
+    async function loadData() {
+        try {
+            const res = await fetch(webAppUrl);
+            const data = await res.json();
+            let items = data;
+            if (filter) {
+                items = data.filter(item => item.Project_Name && item.Project_Name.trim().toLowerCase() === filter.trim().toLowerCase());
+                const projectName = filter.trim();
+                document.getElementById('mainTitle').innerText = projectName;
+                document.getElementById('subTitle').innerText = projectName;
+                document.title = projectName + " - Smart System";
+            }
+            render(items);
+        } catch (e) { document.getElementById('loading').innerText = "❌ ระบบขัดข้อง โปรดติดต่อ Admin"; }
+    }
+    function render(items) {
+        const grid = document.getElementById('grid');
+        document.getElementById('loading').style.display = 'none';
+        if (items.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; color:#999;">ไม่พบข้อมูลในโครงการ "${filter || ''}"</div>`;
+            return;
+        }
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const fPrice = Number(item.Price).toLocaleString();
+            const detailUrl = 'details.html?id=' + item.HP_ID;
+            card.innerHTML = `
+                <div onclick="window.location.href='${detailUrl}'">
+                    ${item.Thumbnail ? `<img src="${item.Thumbnail}" class="card-img" onerror="this.outerHTML='<div class=\'no-photo-box\'>Smart Hua Hin Properties System</div>'">` : `<div class="no-photo-box">Smart-Hua Hin<br>Properties-System</div>`}
+                </div>
+                <div class="card-body">
+                    <div style="font-weight:600; font-size:1.1rem; margin-bottom:5px;">${item.Project_Name} (${item.ID})</div>
+                    <div class="price">฿${fPrice}</div>
+                    <a href="${detailUrl}" class="btn-detail">ดูรายละเอียด</a>
+                </div>`;
+            grid.appendChild(card);
+        });
+    }
+    loadData();
+</script>
+</body>
+</html>
