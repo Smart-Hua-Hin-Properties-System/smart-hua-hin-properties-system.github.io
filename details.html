@@ -10,7 +10,7 @@
         :root { --primary: #1a5276; --bg: #f4f7f6; --text: #2c3e50; --white: #ffffff; --green: #27ae60; --gold: #f1c40f; --red: #e74c3c; }
         body { font-family: 'Kanit', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); line-height: 1.6; }
         
-        /* 📱 Unified Header */
+        /* Header & Sidebar (คงเดิม) */
         header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .menu-text { font-size: 0.85rem; font-weight: 600; color: var(--primary); text-transform: uppercase; }
@@ -18,54 +18,58 @@
         .flag-list { display: flex; gap: 4px; }
         .flag-btn { border: none; background: none; padding: 0; cursor: pointer; transition: 0.2s; }
         .flag-btn img { width: 22px; height: 14px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-
-        /* 🍔 Sidebar */
         .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #fff; z-index: 2500; transition: 0.4s; padding-top: 60px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); }
         .sidebar.active { left: 0; }
         .sidebar-item { padding: 18px 25px; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text); }
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; }
         .sidebar-overlay.active { display: block; }
 
-        /* 🏠 Hero & Badge */
-        .back-nav { padding: 15px; background: #fff; border-bottom: 1px solid #eee; }
+        /* 🎯 Hero Section (ปรับปรุงใหม่) */
+        .back-nav { padding: 15px; background: #fff; }
         .back-btn { text-decoration: none; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .hero-box { position: relative; width: 100%; height: 380px; background: #ddd; }
+        .hero-box { position: relative; width: 100%; height: 400px; background: #ddd; } /* เพิ่มความสูงรูป */
         .main-img { width: 100%; height: 100%; object-fit: cover; }
         .hero-badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: white; padding: 6px 15px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-        /* 📊 Info Grid (Full 19+ Fields) */
-        .content { padding: 25px; background: #fff; max-width: 600px; margin: 0 auto; }
-        .price-box { font-size: 2.4rem; color: var(--primary); font-weight: 600; margin: 10px 0 20px 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; }
+        /* 🎯 Layered Content Card (หัวใจสำคัญของการปรับดีไซน์) */
+        .main-container { max-width: 600px; margin: 0 auto; position: relative; z-index: 20; } /* Container กลาง */
+        
+        .content-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 30px 30px 0 0; /* ความโค้งมนด้านบน */
+            margin: -50px 15px 0 15px; /* -50px ดึงขึ้นไปทับรูป, 15px เว้นระยะขอบซ้ายขวา */
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.08); /* เงาให้ดูลอยมีมิติ */
+            position: relative;
+        }
+
+        /* Info Grid (คงเดิมตามที่มาสเตอร์ชอบ) */
+        .price-box { font-size: 2.4rem; color: var(--primary); font-weight: 600; margin: 10px 0 25px 0; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .info-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid var(--primary); }
-        .info-item i { font-size: 1.1rem; color: var(--primary); width: 22px; text-align: center; }
+        .info-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 15px; /* ปรับให้โค้งมนขึ้น */ }
+        .info-item i { font-size: 1.2rem; color: var(--primary); width: 24px; text-align: center; }
         .info-label { color: #7f8c8d; font-size: 0.75rem; display: block; }
-        .info-value { font-weight: 600; font-size: 0.9rem; }
+        .info-value { font-weight: 600; font-size: 0.9rem; color: var(--text); }
         .full-width { grid-column: 1 / -1; }
 
-        /* 📥 Master Plan Button */
-        .download-section { padding: 30px 20px; text-align: center; background: #fff; }
-        .btn-download { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: white; padding: 15px 30px; border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(26,82,118,0.2); }
-
-        /* 🔗 8 Icons Share Bar */
-        .share-section { padding: 30px 0; border-top: 1px dashed #ddd; text-align: center; background: #fff; }
-        .share-symbol { font-size: 1.5rem; color: #7f8c8d; margin-bottom: 15px; display: block; }
-        .share-bar { display: flex; gap: 15px; overflow-x: auto; padding: 10px 20px 30px; justify-content: flex-start; scrollbar-width: none; }
-        .share-bar::-webkit-scrollbar { display: none; }
-        .share-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: #fff; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .share-btn img { width: 26px; height: 26px; }
-
-        /* 🖼️ Portfolio Grid (2 Columns) */
-        .related-section { padding: 25px 15px 120px; background: #f0f2f5; }
-        .related-title { font-weight: 600; margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        /* Sections อื่นๆ (ปรับให้เข้ากับดีไซน์ใหม่) */
+        .section-container { background: #fff; margin: 15px; padding: 25px; border-radius: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
+        .download-section { text-align: center; }
+        .btn-download { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: white; padding: 15px 30px; border-radius: 15px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(26,82,118,0.2); }
+        .share-section { text-align: center; }
+        .share-bar { display: flex; gap: 15px; overflow-x: auto; padding: 10px 10px 20px; justify-content: flex-start; scrollbar-width: none; }
+        .share-btn { width: 52px; height: 52px; border-radius: 50%; border: none; background: #f8f9fa; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .share-btn:hover { transform: scale(1.1); background: #eee; }
+        
+        .related-section { padding: 25px 15px 120px; background: transparent; }
+        .related-title { font-weight: 600; margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; font-size: 1.1rem; padding-left: 10px; }
         .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .mini-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; position: relative; }
-        .mini-img { width: 100%; height: 130px; object-fit: cover; }
-        .mini-info { padding: 10px; }
-        .mini-id { position: absolute; top: 8px; left: 8px; background: var(--green); color: white; padding: 2px 8px; border-radius: 50px; font-size: 0.65rem; font-weight: 600; }
+        .mini-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); cursor: pointer; position: relative; }
+        .mini-img { width: 100%; height: 140px; object-fit: cover; }
+        .mini-info { padding: 12px; }
 
-        .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #fff; padding: 15px; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 1000; left: 50%; transform: translateX(-50%); }
-        .btn-line { display: flex; align-items: center; justify-content: center; gap: 10px; background: #00b900; color: #fff; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+        .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #fff; padding: 15px; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 1000; left: 50%; transform: translateX(-50%); border-radius: 25px 25px 0 0; }
+        .btn-line { display: flex; align-items: center; justify-content: center; gap: 10px; background: #00b900; color: #fff; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
     </style>
 </head>
 <body>
@@ -103,12 +107,12 @@
     let currentLang = localStorage.getItem('smartLang') || 'th', prop = null, all = [];
 
     const i18n = {
-        th: { menu: "เมนู", home: "หน้าหลัก", adminAccess: "ระบบแอดมิน", back: "กลับหน้าหลัก", type: "ประเภท", plot: "เลขแปลง", bed: "ห้องนอน", bath: "ห้องน้ำ", living: "ใช้สอย", landW: "ที่ดิน (ตร.ว.)", landM: "ที่ดิน (ตร.ม.)", pool: "ขนาดสระ", depth: "ความลึกสระ", furniture: "เฟอร์นิเจอร์", parking: "ที่จอดรถ", electric: "ไฟฟ้า", location: "ทำเล", Available: "ว่าง", Pending: "จองแล้ว", Sold: "ขายแล้ว", download: "ดาวน์โหลดมาสเตอร์แพลน", portfolio: "ทรัพย์อื่นๆ ในโครงการนี้", inquiry: "สอบถามผ่าน LINE" },
-        en: { menu: "MENU", home: "Home", adminAccess: "Admin Access", back: "Back to Catalog", type: "Type", plot: "Plot No.", bed: "Bedrooms", bath: "Bathrooms", living: "Living Area", landW: "Land (sq.w)", landM: "Land (sq.m)", pool: "Pool Size", depth: "Pool Depth", furniture: "Furnishing", parking: "Parking", electric: "Electricity", location: "Location", Available: "Available", Pending: "Pending", Sold: "Sold", download: "Download Master Plan", portfolio: "Other Units in Project", inquiry: "Inquire via LINE" },
-        cn: { menu: "菜单", home: "首页", adminAccess: "管理员", back: "返回目录", type: "类型", plot: "地块编号", bed: "卧室", bath: "浴室", living: "居住面积", landW: "土地 (平方วา)", landM: "土地 (平方米)", pool: "泳池大小", depth: "泳池深度", furniture: "家具", parking: "停车位", electric: "电力系统", location: "位置", Available: "空置", Pending: "已预订", Sold: "已售", download: "下载主平面图", portfolio: "该项目的其他单元", inquiry: "通过 LINE 咨询" },
-        ru: { menu: "МЕНЮ", home: "Главная", adminAccess: "Админ", back: "Назад", type: "Тип", plot: "Участок", bed: "Спальни", bath: "Ванные", living: "Пл. дома", landW: "Земля (кв.в)", landM: "Земля (кв.м)", pool: "Бассейн", depth: "Глубина", furniture: "Мебель", parking: "Парковка", electric: "Электричество", location: "Район", Available: "Доступно", Pending: "Забронировано", Sold: "Продано", download: "Скачать мастер-план", portfolio: "Другие объекты в проекте", inquiry: "Узнать в LINE" },
-        de: { menu: "MENÜ", home: "Startseite", adminAccess: "Admin", back: "Zurück", type: "Typ", plot: "Grundstück", bed: "Schlafzimmer", bath: "Badezimmer", living: "Wohnfläche", landW: "Land (sq.w)", landM: "Land (sq.m)", pool: "Poolgröße", depth: "Pooltiefe", furniture: "Möbel", parking: "Parken", electric: "Strom", location: "Lage", Available: "Verfügbar", Pending: "Reserviert", Sold: "Verkauft", download: "Masterplan herunterladen", portfolio: "Weitere Einheiten im Projekt", inquiry: "Per LINE anfragen" },
-        fr: { menu: "MENU", home: "Accueil", adminAccess: "Admin", back: "Retour", type: "Type", plot: "Terrain No.", bed: "Chambres", bath: "Bains", living: "Habitable", landW: "Terrain (sq.w)", landM: "Terrain (sq.m)", pool: "Piscine", depth: "Profondeur", furniture: "Meubles", parking: "Parking", electric: "Électricité", location: "Emplacement", Available: "Disponible", Pending: "Réservé", Sold: "Vendu", download: "Télécharger le plan", portfolio: "Autres unités du projet", inquiry: "Demander via LINE" }
+        th: { menu: "เมนู", home: "หน้าหลัก", adminAccess: "ระบบแอดมิน", back: "กลับหน้าหลัก", type: "ประเภท", plot: "เลขแปลง", bed: "ห้องนอน", bath: "ห้องน้ำ", living: "ใช้สอย", landW: "ที่ดิน (ตร.ว.)", landM: "ที่ดิน (ตร.ม.)", pool: "ขนาดสระ", depth: "ความลึกสระ", furniture: "เฟอร์นิเจอร์", parking: "ที่จอดรถ", electric: "ไฟฟ้า", location: "ทำเล", Available: "ว่าง", Pending: "จองแล้ว", Sold: "ขายแล้ว", download: "ดาวน์โหลดมาสเตอร์แพลน", portfolio: "ทรัพย์อื่นๆ ในโครงการนี้", inquiry: "สอบถามผ่าน LINE", shareTr: "แชร์ทรัพย์นี้" },
+        en: { menu: "MENU", home: "Home", adminAccess: "Admin Access", back: "Back to Catalog", type: "Type", plot: "Plot No.", bed: "Bedrooms", bath: "Bathrooms", living: "Living Area", landW: "Land (sq.w)", landM: "Land (sq.m)", pool: "Pool Size", depth: "Pool Depth", furniture: "Furnishing", parking: "Parking", electric: "Electricity", location: "Location", Available: "Available", Pending: "Pending", Sold: "Sold", download: "Download Master Plan", portfolio: "Other Units in Project", inquiry: "Inquire via LINE", shareTr: "Share this Property" },
+        cn: { menu: "菜单", home: "首页", adminAccess: "管理员", back: "返回目录", type: "类型", plot: "地块编号", bed: "卧室", bath: "浴室", living: "居住面积", landW: "土地 (平方วา)", landM: "土地 (平方米)", pool: "泳池大小", depth: "泳池深度", furniture: "家具", parking: "停车位", electric: "电力系统", location: "位置", Available: "空置", Pending: "已预订", Sold: "已售", download: "下载主平面图", portfolio: "该项目的其他单元", inquiry: "通过 LINE 咨询", shareTr: "分享此房产" },
+        ru: { menu: "МЕНЮ", home: "Главная", adminAccess: "Админ", back: "Назад", type: "Тип", plot: "Участок", bed: "Спальни", bath: "Ванные", living: "Пл. дома", landW: "Земля (кв.в)", landM: "Земля (кв.м)", pool: "Бассейн", depth: "Глубина", furniture: "Мебель", parking: "Парковка", electric: "Электричество", location: "Район", Available: "Доступно", Pending: "Бронь", Sold: "Продано", download: "Скачать мастер-план", portfolio: "Другие объекты", inquiry: "Узнать в LINE", shareTr: "Поделиться" },
+        de: { menu: "MENÜ", home: "Startseite", adminAccess: "Admin", back: "Zurück", type: "Typ", plot: "Grundstück", bed: "Schlafzimmer", bath: "Badezimmer", living: "Wohnfläche", landW: "Land (sq.w)", landM: "Land (sq.m)", pool: "Poolgröße", depth: "Pooltiefe", furniture: "Möbel", parking: "Parken", electric: "Strom", location: "Lage", Available: "Verfügbar", Pending: "Reserviert", Sold: "Verkauft", download: "Masterplan herunterladen", portfolio: "Weitere Einheiten", inquiry: "Per LINE anfragen", shareTr: "Teilen" },
+        fr: { menu: "MENU", home: "Accueil", adminAccess: "Admin", back: "Retour", type: "Type", plot: "Terrain", bed: "Chambres", bath: "Bains", living: "Habitable", landW: "Terrain (sq.w)", landM: "Terrain (sq.m)", pool: "Piscine", depth: "Profondeur", furniture: "Meubles", parking: "Parking", electric: "Électricité", location: "Emplacement", Available: "Disponible", Pending: "Réservé", Sold: "Vendu", download: "Télécharger le plan", portfolio: "Autres unités", inquiry: "Demander via LINE", shareTr: "Partager" }
     };
 
     function setLanguage(lang) {
@@ -151,52 +155,67 @@
                 <div class="hero-badge">${it.HP_ID} - ${it.ID}</div>
                 <img src="${it.Thumbnail}" class="main-img" onerror="this.src='https://placehold.co/600x400?text=Smart+System'">
             </div>
-            <div class="content">
-                <div style="display:flex; gap:8px; margin-bottom:10px;">${it.Status ? `<span style="background:var(--green); color:#fff; padding:2px 10px; border-radius:5px; font-size:0.75rem; font-weight:600;">${t[it.Status] || it.Status}</span>` : ''}</div>
-                <h1 style="margin:0; font-size:1.8rem; color:var(--primary);">${it.Project_Name}</h1>
-                <div class="price-box">฿${Number(it.Price).toLocaleString()}</div>
-                <div class="info-grid">
-                    <div class="info-item"><i class="fas fa-house"></i><div><span class="info-label">${t.type}</span><span class="info-value">${it.Type || '-'}</span></div></div>
-                    <div class="info-item"><i class="fas fa-map-location-dot"></i><div><span class="info-label">${t.plot}</span><span class="info-value">${it.Plot || '-'}</span></div></div>
-                    <div class="info-item"><i class="fas fa-bed"></i><div><span class="info-label">${t.bed}</span><span class="info-value">${it.Bedrooms || 0}</span></div></div>
-                    <div class="info-item"><i class="fas fa-bath"></i><div><span class="info-label">${t.bath}</span><span class="info-value">${it.Bathrooms || 0}</span></div></div>
-                    <div class="info-item"><i class="fas fa-vector-square"></i><div><span class="info-label">${t.living}</span><span class="info-value">${it['Living Area (sq.m)'] || 0} m²</span></div></div>
-                    <div class="info-item"><i class="fas fa-maximize"></i><div><span class="info-label">${t.landW}</span><span class="info-value">${it['Land Area (sq.w)'] || 0}</span></div></div>
-                    <div class="info-item"><i class="fas fa-ruler-combined"></i><div><span class="info-label">${t.landM}</span><span class="info-value">${it['Land Area (sq.m)'] || 0}</span></div></div>
-                    <div class="info-item"><i class="fas fa-swimming-pool"></i><div><span class="info-label">${t.pool}</span><span class="info-value">${it['Pool Size'] || '-'}</span></div></div>
-                    <div class="info-item"><i class="fas fa-water"></i><div><span class="info-label">${t.depth}</span><span class="info-value">${it['Pool Depth'] || '-'}</span></div></div>
-                    <div class="info-item"><i class="fas fa-couch"></i><div><span class="info-label">${t.furniture}</span><span class="info-value">${it.Furnishing || '-'}</span></div></div>
-                    <div class="info-item"><i class="fas fa-car"></i><div><span class="info-label">${t.parking}</span><span class="info-value">${it.Parking || '-'}</span></div></div>
-                    <div class="info-item"><i class="fas fa-bolt"></i><div><span class="info-label">${t.electric}</span><span class="info-value">${it.Electricity || '-'}</span></div></div>
-                    <div class="info-item full-width"><i class="fas fa-location-dot"></i><div><span class="info-label">${t.location}</span><span class="info-value">${it.SubDistrict}, ${it.District}</span></div></div>
-                    <div class="info-item full-width"><i class="fas fa-star"></i><div><span class="info-label">Extras</span><span class="info-value">${it.Extras || '-'}</span></div></div>
+            
+            <div class="main-container">
+                <div class="content-card">
+                    <div style="display:flex; gap:8px; margin-bottom:15px;">${it.Status ? `<span style="background:var(--green); color:#fff; padding:4px 12px; border-radius:8px; font-size:0.8rem; font-weight:600;">${t[it.Status] || it.Status}</span>` : ''}${it.Badge ? `<span style="background:var(--gold); color:#000; padding:4px 12px; border-radius:8px; font-size:0.8rem; font-weight:600;">${it.Badge}</span>` : ''}</div>
+                    <h1 style="margin:0; font-size:1.6rem; color:var(--text); line-height:1.3;">${it.Project_Name}</h1>
+                    <div class="price-box">฿${Number(it.Price).toLocaleString()}</div>
+                    
+                    <div class="info-grid">
+                        <div class="info-item"><i class="fas fa-house"></i><div><span class="info-label">${t.type}</span><span class="info-value">${it.Type || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-map-location-dot"></i><div><span class="info-label">${t.plot}</span><span class="info-value">${it.Plot || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-bed"></i><div><span class="info-label">${t.bed}</span><span class="info-value">${it.Bedrooms || 0}</span></div></div>
+                        <div class="info-item"><i class="fas fa-bath"></i><div><span class="info-label">${t.bath}</span><span class="info-value">${it.Bathrooms || 0}</span></div></div>
+                        <div class="info-item"><i class="fas fa-vector-square"></i><div><span class="info-label">${t.living}</span><span class="info-value">${it['Living Area (sq.m)'] || 0} m²</span></div></div>
+                        <div class="info-item"><i class="fas fa-maximize"></i><div><span class="info-label">${t.landW}</span><span class="info-value">${it['Land Area (sq.w)'] || 0}</span></div></div>
+                        <div class="info-item"><i class="fas fa-ruler-combined"></i><div><span class="info-label">${t.landM}</span><span class="info-value">${it['Land Area (sq.m)'] || 0}</span></div></div>
+                        <div class="info-item"><i class="fas fa-swimming-pool"></i><div><span class="info-label">${t.pool}</span><span class="info-value">${it['Pool Size'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-water"></i><div><span class="info-label">${t.depth}</span><span class="info-value">${it['Pool Depth'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-couch"></i><div><span class="info-label">${t.furniture}</span><span class="info-value">${it.Furnishing || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-car"></i><div><span class="info-label">${t.parking}</span><span class="info-value">${it.Parking || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-bolt"></i><div><span class="info-label">${t.electric}</span><span class="info-value">${it.Electricity || '-'}</span></div></div>
+                        <div class="info-item full-width"><i class="fas fa-location-dot"></i><div><span class="info-label">${t.location}</span><span class="info-value">${it.SubDistrict}, ${it.District}</span></div></div>
+                        <div class="info-item full-width"><i class="fas fa-star"></i><div><span class="info-label">Extras</span><span class="info-value">${it.Extras || '-'}</span></div></div>
+                    </div>
+                    
+                    <div style="margin-top:30px;">
+                        <h3 style="color:var(--primary); margin-bottom:10px;">รายละเอียดเพิ่มเติม</h3>
+                        <p style="color:#555; font-size:0.95rem; line-height:1.8;">${it.Description || '-'}</p>
+                    </div>
                 </div>
-                <div style="margin-top:30px; background:#fff9f0; padding:20px; border-radius:15px; border:1px solid #ffeeba;"><b>Description:</b><p style="margin:10px 0 0 0; font-size:0.95rem;">${it.Description || '-'}</p></div>
-            </div>
-            <div class="download-section"><a href="${it.FloorPlan || '#'}" class="btn-download" target="_blank"><i class="fas fa-download"></i> ${t.download}</a></div>
-            <div class="share-section">
-                <i class="fas fa-share-alt share-symbol"></i>
-                <div class="share-bar">
-                    <button class="share-btn" onclick="share('line','${it.Project_Name}','${it.Price}')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"></button>
-                    <button class="share-btn" onclick="share('fb','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></button>
-                    <button class="share-btn" onclick="share('msg','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968771.png"></button>
-                    <button class="share-btn" onclick="share('wa','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></button>
-                    <button class="share-btn" onclick="share('tg','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></button>
-                    <button class="share-btn" onclick="share('sms','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/813/813636.png"></button>
-                    <button class="share-btn" onclick="share('mail','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png"></button>
-                    <button class="share-btn" onclick="share('copy','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png"></button>
+
+                <div class="section-container download-section">
+                    <a href="${it.FloorPlan || '#'}" class="btn-download" target="_blank"><i class="fas fa-download"></i> ${t.download}</a>
+                </div>
+
+                <div class="section-container share-section">
+                    <div style="font-weight:600; color:var(--primary); margin-bottom:15px;"><i class="fas fa-share-nodes"></i> ${t.shareTr}</div>
+                    <div class="share-bar">
+                        <button class="share-btn" onclick="share('line','${it.Project_Name}','${it.Price}')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"></button>
+                        <button class="share-btn" onclick="share('fb','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></button>
+                        <button class="share-btn" onclick="share('msg','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968771.png"></button>
+                        <button class="share-btn" onclick="share('wa','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></button>
+                        <button class="share-btn" onclick="share('tg','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></button>
+                        <button class="share-btn" onclick="share('sms','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/813/813636.png"></button>
+                        <button class="share-btn" onclick="share('mail','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png"></button>
+                        <button class="share-btn" onclick="share('copy','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png"></button>
+                    </div>
                 </div>
             </div>
+
             <div class="related-section">
-                <div class="related-title"><i class="fas fa-layer-group"></i> ${t.portfolio}</div>
-                <div class="related-grid">
-                    ${related.map(r => `
-                        <div class="mini-card" onclick="window.location.href='details.html?id=${r.HP_ID}'; window.scrollTo(0,0);">
-                            <div class="mini-id">${r.ID}</div>
-                            <img src="${r.Thumbnail}" class="mini-img" onerror="this.src='https://placehold.co/200x150?text=Smart+System'">
-                            <div class="mini-info"><div style="font-weight:600; color:var(--primary);">฿${Number(r.Price).toLocaleString()}</div><div style="font-size:0.75rem; color:#7f8c8d;">🛌 ${r.Bedrooms} | 📐 ${r['Living Area (sq.m)']}m²</div></div>
-                        </div>
-                    `).join('')}
+                <div class="main-container">
+                    <div class="related-title"><i class="fas fa-layer-group"></i> ${t.portfolio}</div>
+                    <div class="related-grid">
+                        ${related.map(r => `
+                            <div class="mini-card" onclick="window.location.href='details.html?id=${r.HP_ID}'; window.scrollTo(0,0);">
+                                <div class="mini-id">${r.ID}</div>
+                                <img src="${r.Thumbnail}" class="mini-img" onerror="this.src='https://placehold.co/200x150?text=Smart+System'">
+                                <div class="mini-info"><div style="font-weight:600; color:var(--primary);">฿${Number(r.Price).toLocaleString()}</div><div style="font-size:0.75rem; color:#7f8c8d;">🛌 ${r.Bedrooms} | 📐 ${r['Living Area (sq.m)']}m²</div></div>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             </div>
             <div class="footer-action"><a href="https://line.me/R/msg/text/?ID: ${it.HP_ID}" class="btn-line"><i class="fab fa-line"></i> ${t.inquiry}</a></div>
