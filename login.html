@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Smart System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #1a5276; --bg: #f0f2f5; --white: #ffffff; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .login-card { background: var(--white); padding: 40px 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        .logo-icon { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
+        h2 { color: var(--primary); margin-bottom: 10px; }
+        p { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 30px; }
+        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 20px; box-sizing: border-box; text-align: center; font-size: 1.1rem; letter-spacing: 2px; }
+        button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+        button:active { transform: scale(0.98); }
+        #error { color: #e74c3c; font-size: 0.85rem; margin-top: 15px; display: none; }
+    </style>
+</head>
+<body>
+<div class="login-card">
+    <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
+    <h2>Smart Admin Access</h2>
+    <p>ระบุรหัสกุญแจลับโครงการเพื่อเข้าสู่ระบบ</p>
+    <input type="password" id="secretKey" placeholder="••••••••">
+    <button onclick="handleLogin()">ยืนยันตัวตน</button>
+    <div id="error">❌ รหัสไม่ถูกต้อง โปรดลองอีกครั้ง</div>
+</div>
+<script>
+    const api = "https://script.google.com/macros/s/AKfycbytY48pBly91AAPJ4I6oy7QtuS451d-U5EKBvIwtobMQrty2Q3zsUw6P9LI3zm7Z4E7/exec";
+    async function handleLogin() {
+        const key = document.getElementById('secretKey').value;
+        const btn = document.querySelector('button');
+        const err = document.getElementById('error');
+        if(!key) return;
+        btn.innerText = "กำลังตรวจสอบ..."; btn.disabled = true; err.style.display = 'none';
+        try {
+            // เรียกฟังก์ชันตรวจสอบสิทธิ์เบื้องหลัง
+            const res = await fetch(`${api}?key=${key}&action=login`);
+            const data = await res.json();
+            if(data.success) {
+                localStorage.setItem('smartAdmin', JSON.stringify(data));
+                window.location.href = 'admin.html';
+            } else {
+                err.style.display = 'block'; btn.innerText = "ยืนยันตัวตน"; btn.disabled = false;
+            }
+        } catch(e) { alert("ระบบเชื่อมต่อขัดข้อง"); btn.innerText = "ยืนยันตัวตน"; btn.disabled = false; }
+    }
+</script>
+</body>
+</html>
