@@ -11,43 +11,90 @@
         body { font-family: 'Kanit', sans-serif; background: var(--bg); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
         .login-card { background: var(--white); padding: 40px 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
         .logo-icon { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
-        h2 { color: var(--primary); margin-bottom: 10px; }
+        h2 { color: var(--primary); margin-bottom: 10px; font-weight: 600; }
         p { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 30px; }
-        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 20px; box-sizing: border-box; text-align: center; font-size: 1.1rem; letter-spacing: 2px; }
-        button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.3s; }
-        button:active { transform: scale(0.98); }
-        #error { color: #e74c3c; font-size: 0.85rem; margin-top: 15px; display: none; }
+        
+        /* 👁️ Input Box with Eye Icon */
+        .password-container { position: relative; margin-bottom: 25px; }
+        input { 
+            width: 100%; padding: 15px 45px 15px 15px; border-radius: 12px; border: 1.5px solid #ddd; 
+            box-sizing: border-box; font-size: 1.1rem; letter-spacing: 2px; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(26,82,118,0.1); }
+        .toggle-eye { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #7f8c8d; cursor: pointer; font-size: 1.2rem; }
+
+        button { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #154360; }
+        button:disabled { background: #bdc3c7; cursor: not-allowed; }
+        #error { color: #e74c3c; font-size: 0.85rem; margin-top: 15px; display: none; background: #fdf2f2; padding: 10px; border-radius: 8px; }
     </style>
 </head>
 <body>
 <div class="login-card">
     <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
-    <h2>Smart Admin Access</h2>
+    <h2>Admin Access</h2>
     <p>ระบุรหัสกุญแจลับโครงการเพื่อเข้าสู่ระบบ</p>
-    <input type="password" id="secretKey" placeholder="••••••••">
-    <button onclick="handleLogin()">ยืนยันตัวตน</button>
-    <div id="error">❌ รหัสไม่ถูกต้อง โปรดลองอีกครั้ง</div>
+    
+    <div class="password-container">
+        <input type="password" id="secretKey" placeholder="รหัสกุญแจลับ">
+        <i class="fas fa-eye toggle-eye" id="togglePassword"></i>
+    </div>
+    
+    <button id="loginBtn" onclick="handleLogin()">ยืนยันตัวตน</button>
+    <div id="error">❌ รหัสไม่ถูกต้อง หรือระบบยังไม่ได้อัปเดต URL</div>
 </div>
+
 <script>
-    const api = "https://script.google.com/macros/s/AKfycbytY48pBly91AAPJ4I6oy7QtuS451d-U5EKBvIwtobMQrty2Q3zsUw6P9LI3zm7Z4E7/exec";
+    // ⚠️ มาสเตอร์ต้องเอา URL จากการ Deploy มาวางตรงนี้ครับ
+    const api = "https://script.google.com/macros/s/AKfycbyuhIn_OOLg-XcBg0qJYpjc36ML9BiF57F2jCuGUcI_6bwzQf3AMeb2-ObeR7JqjCDZ/exec";
+
+    // 👁️ ระบบสลับดูรหัสผ่าน
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#secretKey');
+
+    togglePassword.addEventListener('click', function (e) {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+
     async function handleLogin() {
         const key = document.getElementById('secretKey').value;
-        const btn = document.querySelector('button');
+        const btn = document.getElementById('loginBtn');
         const err = document.getElementById('error');
+        
         if(!key) return;
-        btn.innerText = "กำลังตรวจสอบ..."; btn.disabled = true; err.style.display = 'none';
+        
+        btn.innerText = "กำลังเข้าสู่ระบบ..."; btn.disabled = true; err.style.display = 'none';
+        
         try {
-            // เรียกฟังก์ชันตรวจสอบสิทธิ์เบื้องหลัง
-            const res = await fetch(`${api}?key=${key}&action=login`);
+            // ส่งข้อมูลไปตรวจที่หลังบ้าน (จะตัดช่องว่างออกให้อัตโนมัติ)
+            const res = await fetch(`${api}?key=${encodeURIComponent(key)}&action=login`);
             const data = await res.json();
+            
             if(data.success) {
+                // บันทึกข้อมูล Session ไว้ในเครื่อง
                 localStorage.setItem('smartAdmin', JSON.stringify(data));
                 window.location.href = 'admin.html';
             } else {
-                err.style.display = 'block'; btn.innerText = "ยืนยันตัวตน"; btn.disabled = false;
+                err.style.display = 'block';
+                btn.innerText = "ยืนยันตัวตน"; btn.disabled = false;
             }
-        } catch(e) { alert("ระบบเชื่อมต่อขัดข้อง"); btn.innerText = "ยืนยันตัวตน"; btn.disabled = false; }
+        } catch(e) { 
+            console.error(e);
+            err.innerText = "❌ เชื่อมต่อล้มเหลว: โปรดเช็ค URL API";
+            err.style.display = 'block'; 
+            btn.innerText = "ยืนยันตัวตน"; btn.disabled = false; 
+        }
     }
+
+    // รองรับการกด Enter เพื่อ Login
+    password.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            handleLogin();
+        }
+    });
 </script>
 </body>
 </html>
