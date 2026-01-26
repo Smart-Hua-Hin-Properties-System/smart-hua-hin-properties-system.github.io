@@ -7,57 +7,74 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --gold: #f1c40f; --border: #eee; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); }
+        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --gold: #f1c40f; --border: #ddd; --red: #e74c3c; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); box-sizing: border-box; }
         
-        /* 📱 Header & Language Flags */
+        /* 📱 Header & Instant Language Flags */
         header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .header-left { display: flex; align-items: center; gap: 12px; }
-        .brand-name { font-weight: 600; font-size: 0.9rem; color: var(--primary); text-transform: uppercase; }
-        .flag-list { display: flex; gap: 5px; }
-        .flag-btn { border: none; background: none; padding: 0; cursor: pointer; transition: 0.2s; }
+        .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .menu-text { font-size: 0.85rem; font-weight: 600; color: var(--primary); text-transform: uppercase; }
+        .brand-name { font-weight: 600; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; margin-left: 5px; }
+        .flag-list { display: flex; gap: 4px; }
+        .flag-btn { border: none; background: none; padding: 0; cursor: pointer; }
         .flag-btn img { width: 22px; height: 14px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
 
-        /* 🔍 Advanced UI Filters */
-        .filter-area { padding: 15px; }
+        /* 🍔 Sidebar Slide-out */
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #fff; z-index: 2500; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 60px; box-shadow: 5px 0 25px rgba(0,0,0,0.15); }
+        .sidebar.active { left: 0; }
+        .sidebar-item { padding: 18px 25px; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text); font-weight: 400; }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; backdrop-filter: blur(2px); }
+        .sidebar-overlay.active { display: block; }
+
+        /* 🔍 Filter Area (Fixed Overflow) */
+        .filter-area { padding: 15px; max-width: 100%; box-sizing: border-box; }
         .id-selector-trigger { 
-            width: 100%; padding: 15px; background: #fff; border: 1.5px solid #ddd; border-radius: 15px;
-            color: var(--primary); display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 10px;
+            width: 100%; padding: 14px 15px; background: #fff; border: 1.5px solid var(--border); border-radius: 15px;
+            color: var(--primary); display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 10px; box-sizing: border-box;
         }
         .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .select-box { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid #ddd; background: #fff; font-family: 'Kanit'; color: var(--primary); outline: none; }
+        .select-box { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); background: #fff; font-family: 'Kanit'; color: var(--primary); outline: none; font-size: 0.85rem; }
 
         /* 🏠 Property Cards */
         .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; padding: 0 15px 30px; }
         .card { background: var(--white); border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; padding: 5px 12px; border-radius: 50px; font-weight: 600; font-size: 0.75rem; z-index: 10; }
-        .card-img { width: 100%; height: 220px; object-fit: cover; }
+        .badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; padding: 5px 12px; border-radius: 50px; font-weight: 600; font-size: 0.7rem; z-index: 10; }
+        .card-img { width: 100%; height: 210px; object-fit: cover; }
         .card-body { padding: 15px; }
-        .price-text { font-size: 1.8rem; color: var(--primary); font-weight: 600; margin: 10px 0; }
+        .price-text { font-size: 1.7rem; color: var(--primary); font-weight: 600; margin: 8px 0; }
         .btn-detail { display: block; width: 100%; padding: 12px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 600; }
 
-        /* 🛌 ID Selector Modal (The Master List) */
+        /* 🛌 ID Selector Modal (New 2-Row Precision Layout) */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: flex-end; }
         .modal-content { 
-            background: #fff; border-radius: 25px 25px 0 0; width: 100%; max-height: 85vh; 
-            padding: 20px; overflow-y: auto; position: relative;
+            background: #fff; border-radius: 25px 25px 0 0; width: 100%; max-height: 80vh; 
+            padding: 20px 15px; overflow-y: auto; box-sizing: border-box;
         }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+        
+        /* 🚀 2-Row Layout System [Requested] */
         .id-item { 
-            display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f9f9f9; 
+            display: block; padding: 12px 5px; border-bottom: 1px solid #f5f5f5; 
             text-decoration: none; color: inherit;
         }
-        .id-item-left { font-weight: 600; color: var(--primary); font-size: 1.1rem; }
-        .id-item-right { text-align: right; font-size: 0.85rem; }
-        .status-pill { padding: 2px 8px; border-radius: 5px; font-size: 0.7rem; font-weight: 600; }
-        .available { color: var(--green); } .pending { color: var(--gold); } .sold { color: #e74c3c; }
+        .id-row-1 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .id-name { font-weight: 600; color: var(--primary); font-size: 1.05rem; flex: 1; }
+        .id-specs { display: flex; gap: 8px; font-size: 0.75rem; color: #7f8c8d; flex: 2; justify-content: center; }
+        .id-price { font-weight: 600; color: var(--primary); font-size: 0.95rem; flex: 1.5; text-align: right; }
+        
+        .id-row-2 { display: flex; justify-content: flex-start; align-items: center; }
+        .status-tag { padding: 2px 10px; border-radius: 5px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+        .available { background: #e8f5e9; color: var(--green); } 
+        .pending { background: #fff9e6; color: var(--gold); } 
+        .sold { background: #fdeaea; color: var(--red); }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="header-left">
-        <div onclick="location.reload()" style="cursor:pointer;"><i class="fas fa-bars fa-lg" style="color:var(--primary); margin-right:10px;"></i></div>
+    <div class="header-left" onclick="toggleSidebar()">
+        <i class="fas fa-bars fa-lg" style="color:var(--primary);"></i>
+        <span class="menu-text">MENU</span>
         <div class="brand-name" id="ui-project-name">Smart System</div>
     </div>
     <div class="flag-list">
@@ -70,6 +87,12 @@
     </div>
 </header>
 
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+    <a href="#" class="sidebar-item" onclick="location.reload()"><i class="fas fa-home"></i> Home</a>
+    <a href="login.html" class="sidebar-item" style="margin-top: 30px; color: var(--primary); border-top: 2px solid #eee;"><i class="fas fa-user-shield"></i> Admin Access</a>
+</div>
+
 <div class="filter-area">
     <div class="id-selector-trigger" onclick="openIdModal()">
         <span id="ui-id-selector">เลือกแปลง / รหัสที่ต้องการ...</span>
@@ -79,36 +102,37 @@
     <div class="filter-row">
         <select class="select-box" id="bedFilter" onchange="applyFilters()">
             <option value="" id="ui-bed-all">🛌 จำนวนห้องนอนทั้งหมด</option>
-            <option value="1">1 ห้องนอน</option>
-            <option value="2">2 ห้องนอน</option>
-            <option value="3">3 ห้องนอน</option>
-            <option value="4">4 ห้องนอน</option>
-            <option value="5">5 ห้องนอน</option>
-            <option value="6">6 ห้องนอนขึ้นไป</option>
+            <option value="1">1 Bedroom</option>
+            <option value="2">2 Bedrooms</option>
+            <option value="3">3 Bedrooms</option>
+            <option value="4">4 Bedrooms</option>
+            <option value="5">5 Bedrooms</option>
+            <option value="6">6+ Bedrooms</option>
         </select>
 
         <select class="select-box" id="priceSort" onchange="applyFilters()">
             <option value="" id="ui-price-sort">💰 เรียงตามราคา</option>
-            <option value="low" id="ui-price-low">น้อยไปหามาก</option>
-            <option value="high" id="ui-price-high">มากไปหาน้อย</option>
+            <option value="low" id="ui-price-low">Low to High</option>
+            <option value="high" id="ui-price-high">High to Low</option>
         </select>
     </div>
 </div>
 
-<div id="loading" style="text-align:center; padding:100px; color:var(--primary);"><i class="fas fa-circle-notch fa-spin fa-2x"></i></div>
+<div id="loading" style="text-align:center; padding:100px; color:var(--primary);"><i class="fas fa-spinner fa-spin fa-2x"></i></div>
 <div class="property-grid" id="grid"></div>
 
 <div class="modal" id="idModal">
     <div class="modal-content">
         <div class="modal-header">
             <b id="ui-modal-title">เลือกแปลงโครงการ</b>
-            <span onclick="closeIdModal()" style="color:#e74c3c; cursor:pointer;" id="ui-modal-clear">ล้างค่า</span>
+            <span onclick="closeIdModal()" style="color:var(--red); cursor:pointer; font-weight:600;" id="ui-modal-clear">ล้างค่า</span>
         </div>
         <div id="idList"></div>
     </div>
 </div>
 
 <script>
+    // 🚀 URL มหาอำนาจล่าสุด
     const api = "https://script.google.com/macros/s/AKfycbx0ICTtHVgCCIU48VQFb-6tO9yvKgD6_oOBIN31tBYB3oHQ3h2JTS_ZIU0JyGG2O-jc/exec";
     const currentProject = new URLSearchParams(window.location.search).get('project') || "COCO HUA HIN 88 LUXURY HOME";
     
@@ -117,10 +141,9 @@
 
     // 🌐 1. ระบบแปลภาษาแบบไม่ต้องมีป๊อปอัพ
     const translations = {
-        th: { selector: "เลือกแปลง / รหัสที่ต้องการ...", bedAll: "🛌 จำนวนห้องนอนทั้งหมด", priceSort: "💰 เรียงตามราคา", priceLow: "น้อยไปหามาก", priceHigh: "มากไปหาน้อย", modalTitle: "เลือกแปลงโครงการ", modalClear: "ล้างค่า", viewDetail: "ดูรายละเอียด" },
-        en: { selector: "Select Plot / ID...", bedAll: "🛌 All Bedrooms", priceSort: "💰 Sort by Price", priceLow: "Low to High", priceHigh: "High to Low", modalTitle: "Select Project Plot", modalClear: "Clear", viewDetail: "View Details" },
-        cn: { selector: "选择地块 / ID...", bedAll: "🛌 所有卧室", priceSort: "💰 按价格排序", priceLow: "从低到高", priceHigh: "从高到低", modalTitle: "选择地块", modalClear: "清除", viewDetail: "查看详情" }
-        // ... มาสเตอร์สามารถเพิ่มรัสเซีย เยอรมัน ฝรั่งเศส ต่อได้ที่นี่ครับ
+        th: { selector: "เลือกแปลง / รหัสที่ต้องการ...", bedAll: "🛌 จำนวนห้องนอนทั้งหมด", priceSort: "💰 เรียงตามราคา", priceLow: "น้อยไปหามาก", priceHigh: "มากไปหาน้อย", modalTitle: "เลือกแปลงโครงการ", modalClear: "ล้างค่า" },
+        en: { selector: "Select Plot / ID...", bedAll: "🛌 All Bedrooms", priceSort: "💰 Sort Price", priceLow: "Low to High", priceHigh: "High to Low", modalTitle: "Project Plots", modalClear: "Clear" },
+        cn: { selector: "选择地块 / ID...", bedAll: "🛌 所有卧室", priceSort: "💰 按价格排序", priceLow: "从低到高", priceHigh: "从高到低", modalTitle: "选择地块", modalClear: "清除" }
     };
 
     function translatePage(lang) {
@@ -132,7 +155,11 @@
         document.getElementById('ui-price-high').innerText = t.priceHigh;
         document.getElementById('ui-modal-title').innerText = t.modalTitle;
         document.getElementById('ui-modal-clear').innerText = t.modalClear;
-        applyFilters(); // รีเฟรชหน้าเพื่อเปลี่ยนตัวหนังสือในปุ่ม
+    }
+
+    function toggleSidebar() { 
+        document.getElementById('sidebar').classList.toggle('active'); 
+        document.getElementById('overlay').classList.toggle('active'); 
     }
 
     async function init() {
@@ -144,10 +171,10 @@
             
             renderIdList();
             applyFilters();
-        } catch (e) { document.getElementById('loading').innerHTML = "❌ ระบบขัดข้อง"; }
+        } catch (e) { document.getElementById('loading').innerHTML = "❌ Error Loading Data"; }
     }
 
-    // 🛌 2. ระบบ ID Selector แบบโชว์ครบ 5 รายการ (ID, Bed, Price, Area, Status)
+    // 🛌 2. ระบบ ID Selector Modal: 2 แถวตามสั่ง [Requested]
     function renderIdList() {
         const list = document.getElementById('idList');
         list.innerHTML = "";
@@ -156,11 +183,17 @@
             item.href = `details.html?id=${it.HP_ID}`;
             item.className = "id-item";
             item.innerHTML = `
-                <div class="id-item-left">${it.ID}</div>
-                <div class="id-item-right">
-                    <div>🛌 ${it.Bedrooms} Bed | 📐 ${it['Living Area (sq.m)']} m²</div>
-                    <div style="font-weight:600; color:var(--primary);">฿${Number(it.Price).toLocaleString()}</div>
-                    <div class="status-pill ${it.Status.toLowerCase()}">${it.Status}</div>
+                <div class="id-row-1">
+                    <div class="id-name">${it.ID}</div>
+                    <div class="id-specs">
+                        <span>🛌 ${it.Bedrooms}</span>
+                        <span>📐 ${it['Land Area (sq.w)'] || 0}</span>
+                        <span>🏠 ${it['Living Area (sq.m)']}m²</span>
+                    </div>
+                    <div class="id-price">฿${(Number(it.Price)/1000000).toFixed(1)}M</div>
+                </div>
+                <div class="id-row-2">
+                    <span class="status-tag ${it.Status.toLowerCase()}">${it.Status}</span>
                 </div>
             `;
             list.appendChild(item);
@@ -171,11 +204,9 @@
         let data = [...projectData];
         const bed = document.getElementById('bedFilter').value;
         const sort = document.getElementById('priceSort').value;
-
         if (bed) data = (bed === "6") ? data.filter(it => Number(it.Bedrooms) >= 6) : data.filter(it => Number(it.Bedrooms) == bed);
         if (sort === "low") data.sort((a,b) => a.Price - b.Price);
         else if (sort === "high") data.sort((a,b) => b.Price - a.Price);
-
         renderGrid(data);
     }
 
@@ -183,7 +214,6 @@
         const grid = document.getElementById('grid');
         document.getElementById('loading').style.display = 'none';
         grid.innerHTML = items.length ? "" : `<div style="grid-column:1/-1; text-align:center; padding:50px;">ไม่พบข้อมูล</div>`;
-        
         items.forEach(it => {
             const card = document.createElement('div');
             card.className = 'card';
@@ -191,7 +221,7 @@
                 <div class="badge">${it.HP_ID} - ${it.ID}</div>
                 <img src="${it.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Smart+System'">
                 <div class="card-body">
-                    <div style="font-size:0.85rem; color:#7f8c8d;">🛌 ${it.Bedrooms} นอน | 📐 ${it['Living Area (sq.m)']} m²</div>
+                    <div style="font-size:0.8rem; color:#7f8c8d;">🛌 ${it.Bedrooms} นอน | 📐 ${it['Living Area (sq.m)']} m²</div>
                     <div class="price-text">฿${Number(it.Price).toLocaleString()}</div>
                     <a href="details.html?id=${it.HP_ID}" class="btn-detail">ดูรายละเอียด</a>
                 </div>
@@ -202,7 +232,6 @@
 
     function openIdModal() { document.getElementById('idModal').style.display = 'flex'; }
     function closeIdModal() { document.getElementById('idModal').style.display = 'none'; }
-    
     init();
 </script>
 </body>
