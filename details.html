@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Details - Smart System Global</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #f4f7f6; --text: #2c3e50; --white: #ffffff; --green: #27ae60; --gold: #f1c40f; --red: #e74c3c; }
@@ -24,50 +24,79 @@
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; }
         .sidebar-overlay.active { display: block; }
 
-        /* 🎯 Hero Section (ปรับปรุงใหม่) */
+        /* Hero Section */
         .back-nav { padding: 15px; background: #fff; }
         .back-btn { text-decoration: none; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .hero-box { position: relative; width: 100%; height: 400px; background: #ddd; } /* เพิ่มความสูงรูป */
+        .hero-box { position: relative; width: 100%; height: 400px; background: #ddd; }
         .main-img { width: 100%; height: 100%; object-fit: cover; }
         .hero-badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: white; padding: 6px 15px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-        /* 🎯 Layered Content Card (หัวใจสำคัญของการปรับดีไซน์) */
-        .main-container { max-width: 600px; margin: 0 auto; position: relative; z-index: 20; } /* Container กลาง */
-        
+        /* Main Container & Content Card */
+        .main-container { max-width: 600px; margin: 0 auto; position: relative; z-index: 20; padding-bottom: 120px; }
         .content-card {
-            background: #fff;
-            padding: 25px;
-            border-radius: 30px 30px 0 0; /* ความโค้งมนด้านบน */
-            margin: -50px 15px 0 15px; /* -50px ดึงขึ้นไปทับรูป, 15px เว้นระยะขอบซ้ายขวา */
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.08); /* เงาให้ดูลอยมีมิติ */
-            position: relative;
+            background: #fff; padding: 25px; border-radius: 30px 30px 0 0;
+            margin: -50px 15px 0 15px; box-shadow: 0 -10px 30px rgba(0,0,0,0.08); position: relative;
         }
 
-        /* Info Grid (คงเดิมตามที่มาสเตอร์ชอบ) */
-        .price-box { font-size: 2.4rem; color: var(--primary); font-weight: 600; margin: 10px 0 25px 0; }
+        /* 🎯 ปรับปรุงฟอนต์ราคา (ให้นุ่มนวลและเล็กลง) */
+        .price-box { 
+            font-size: 2rem; /* เล็กลงจาก 2.4rem */
+            color: var(--primary); 
+            font-weight: 500; /* ลดความหนาจาก 600 เป็น 500 ให้นุ่มนวลขึ้น */
+            margin: 10px 0 25px 0; 
+            letter-spacing: -0.5px; /* กระชับตัวเลขเล็กน้อย */
+        }
+
+        /* Info Grid */
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .info-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 15px; /* ปรับให้โค้งมนขึ้น */ }
+        .info-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 15px; }
         .info-item i { font-size: 1.2rem; color: var(--primary); width: 24px; text-align: center; }
         .info-label { color: #7f8c8d; font-size: 0.75rem; display: block; }
         .info-value { font-weight: 600; font-size: 0.9rem; color: var(--text); }
         .full-width { grid-column: 1 / -1; }
 
-        /* Sections อื่นๆ (ปรับให้เข้ากับดีไซน์ใหม่) */
+        /* Sections */
         .section-container { background: #fff; margin: 15px; padding: 25px; border-radius: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
         .download-section { text-align: center; }
         .btn-download { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: white; padding: 15px 30px; border-radius: 15px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(26,82,118,0.2); }
-        .share-section { text-align: center; }
-        .share-bar { display: flex; gap: 15px; overflow-x: auto; padding: 10px 10px 20px; justify-content: flex-start; scrollbar-width: none; }
-        .share-btn { width: 52px; height: 52px; border-radius: 50%; border: none; background: #f8f9fa; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-        .share-btn:hover { transform: scale(1.1); background: #eee; }
         
-        .related-section { padding: 25px 15px 120px; background: transparent; }
+        /* 🎯 กู้ชีพปุ่มแชร์ (Share Bar Restoration) */
+        .share-section { text-align: center; padding: 25px 15px; }
+        .share-bar-wrapper { /* เพิ่ม Wrapper เพื่อช่วยจัดกึ่งกลาง */
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .share-bar { 
+            display: flex; 
+            gap: 15px; 
+            overflow-x: auto; 
+            padding: 10px 5px 20px; /* ปรับ Padding */
+            justify-content: flex-start; /* จำเป็นสำหรับการเลื่อน */
+            scrollbar-width: none; 
+            -webkit-overflow-scrolling: touch; /* เพิ่มความลื่นไหลบนมือถือ */
+            scroll-behavior: smooth;
+            max-width: 100%;
+        }
+        .share-bar::-webkit-scrollbar { display: none; }
+        .share-btn { 
+            width: 52px; height: 52px; border-radius: 50%; border: none; background: #f8f9fa; 
+            flex-shrink: 0; /* ป้องกันปุ่มบีบตัว */
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .share-btn:hover { transform: scale(1.1); background: #fff; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        .share-btn img { width: 26px; height: 26px; }
+        
+        /* Related Section */
+        .related-section { padding: 10px 15px 0; background: transparent; }
         .related-title { font-weight: 600; margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; font-size: 1.1rem; padding-left: 10px; }
         .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .mini-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); cursor: pointer; position: relative; }
         .mini-img { width: 100%; height: 140px; object-fit: cover; }
         .mini-info { padding: 12px; }
 
+        /* Footer */
         .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #fff; padding: 15px; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 1000; left: 50%; transform: translateX(-50%); border-radius: 25px 25px 0 0; }
         .btn-line { display: flex; align-items: center; justify-content: center; gap: 10px; background: #00b900; color: #fff; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
     </style>
@@ -159,7 +188,7 @@
             <div class="main-container">
                 <div class="content-card">
                     <div style="display:flex; gap:8px; margin-bottom:15px;">${it.Status ? `<span style="background:var(--green); color:#fff; padding:4px 12px; border-radius:8px; font-size:0.8rem; font-weight:600;">${t[it.Status] || it.Status}</span>` : ''}${it.Badge ? `<span style="background:var(--gold); color:#000; padding:4px 12px; border-radius:8px; font-size:0.8rem; font-weight:600;">${it.Badge}</span>` : ''}</div>
-                    <h1 style="margin:0; font-size:1.6rem; color:var(--text); line-height:1.3;">${it.Project_Name}</h1>
+                    <h1 style="margin:0; font-size:1.4rem; color:var(--text); line-height:1.3;">${it.Project_Name}</h1>
                     <div class="price-box">฿${Number(it.Price).toLocaleString()}</div>
                     
                     <div class="info-grid">
@@ -191,21 +220,21 @@
 
                 <div class="section-container share-section">
                     <div style="font-weight:600; color:var(--primary); margin-bottom:15px;"><i class="fas fa-share-nodes"></i> ${t.shareTr}</div>
-                    <div class="share-bar">
-                        <button class="share-btn" onclick="share('line','${it.Project_Name}','${it.Price}')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"></button>
-                        <button class="share-btn" onclick="share('fb','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></button>
-                        <button class="share-btn" onclick="share('msg','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968771.png"></button>
-                        <button class="share-btn" onclick="share('wa','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></button>
-                        <button class="share-btn" onclick="share('tg','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></button>
-                        <button class="share-btn" onclick="share('sms','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/813/813636.png"></button>
-                        <button class="share-btn" onclick="share('mail','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png"></button>
-                        <button class="share-btn" onclick="share('copy','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png"></button>
+                    <div class="share-bar-wrapper">
+                        <div class="share-bar">
+                            <button class="share-btn" onclick="share('line','${it.Project_Name}','${it.Price}')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"></button>
+                            <button class="share-btn" onclick="share('fb','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></button>
+                            <button class="share-btn" onclick="share('msg','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968771.png"></button>
+                            <button class="share-btn" onclick="share('wa','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></button>
+                            <button class="share-btn" onclick="share('tg','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></button>
+                            <button class="share-btn" onclick="share('sms','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/813/813636.png"></button>
+                            <button class="share-btn" onclick="share('mail','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png"></button>
+                            <button class="share-btn" onclick="share('copy','${it.Project_Name}','${it.Price}')"><img src="https://cdn-icons-png.flaticon.com/512/1621/1621635.png"></button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="related-section">
-                <div class="main-container">
+                <div class="related-section">
                     <div class="related-title"><i class="fas fa-layer-group"></i> ${t.portfolio}</div>
                     <div class="related-grid">
                         ${related.map(r => `
