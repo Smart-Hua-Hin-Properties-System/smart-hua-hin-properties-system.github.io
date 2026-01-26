@@ -5,75 +5,226 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart-Hua Hin-Properties-System</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #2c3e50; }
-        header { text-align: center; margin-bottom: 40px; padding: 30px 10px; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 5px solid var(--primary); }
-        header h1 { color: var(--primary); margin: 0; font-size: 2.2rem; font-weight: 600; text-transform: uppercase; }
-        header p { color: white; background: var(--primary); display: inline-block; padding: 6px 25px; margin-top: 15px; font-size: 1rem; font-weight: 400; border-radius: 20px; }
-        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; }
-        .card:hover { transform: translateY(-8px); }
-        .card-img { width: 100%; height: 220px; object-fit: cover; background: #eee; cursor: pointer; }
-        .card-body { padding: 20px; }
-        .price { color: var(--primary); font-size: 1.6rem; font-weight: 600; margin: 10px 0; }
-        .btn-detail { display: block; width: 100%; padding: 12px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 8px; font-weight: 600; }
-        #loading { text-align: center; padding: 100px; font-size: 1.2rem; color: var(--primary); }
-        .no-photo-box { height: 220px; background: #ececec; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 1rem; font-weight: 600; text-align: center; padding: 10px; }
+        :root { --primary: #1a5276; --bg: #f0f2f5; --white: #ffffff; --green: #27ae60; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; overflow-x: hidden; }
+
+        /* 📱 Header & Navigation */
+        header { 
+            background: #fff; padding: 10px 15px; display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .menu-icon { font-size: 1.5rem; color: var(--primary); cursor: pointer; }
+        .brand-name { font-weight: 600; font-size: 1.1rem; color: var(--primary); text-transform: uppercase; }
+        
+        .flag-list { display: flex; gap: 5px; }
+        .flag-list img { width: 24px; height: 16px; border-radius: 2px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+
+        /* 🚪 Side Bar */
+        .sidebar {
+            position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: var(--white);
+            z-index: 2000; transition: 0.3s; box-shadow: 5px 0 15px rgba(0,0,0,0.1); padding-top: 60px;
+        }
+        .sidebar.active { left: 0; }
+        .sidebar-item { padding: 15px 25px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text); }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
+        .sidebar-overlay.active { display: block; }
+
+        /* 🔍 Filter Bar */
+        .filter-section { background: var(--white); padding: 15px; margin: 10px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .filter-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .filter-box { position: relative; }
+        select { 
+            width: 100%; padding: 12px 15px; border-radius: 10px; border: 1px solid #ddd; appearance: none;
+            background: #fff; font-family: 'Kanit'; font-size: 0.95rem; color: var(--primary); cursor: pointer;
+        }
+        .filter-box::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--primary); pointer-events: none; }
+
+        /* 🏠 Property Grid */
+        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; padding: 10px; }
+        .card { background: var(--white); border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .card-img-box { position: relative; height: 230px; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* 🏷️ Badge Style */
+        .hpid-badge { 
+            position: absolute; top: 12px; left: 12px; background: var(--green); color: white;
+            padding: 6px 15px; border-radius: 50px; font-weight: 600; font-size: 0.85rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 10;
+        }
+
+        .card-body { padding: 15px; }
+        .card-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: var(--primary); }
+        .card-info { font-size: 0.9rem; color: #7f8c8d; display: flex; gap: 10px; margin-bottom: 10px; }
+        .card-price { font-size: 1.4rem; font-weight: 600; color: var(--primary); }
+        .status-tag { display: inline-block; padding: 3px 10px; border-radius: 5px; font-size: 0.75rem; background: #e8f5e9; color: var(--green); font-weight: 600; }
+        
+        .btn-detail { 
+            display: block; width: 100%; padding: 12px; background: var(--primary); color: white;
+            text-align: center; text-decoration: none; border-radius: 10px; font-weight: 600; margin-top: 15px;
+        }
+
+        #loading { text-align: center; padding: 100px; font-size: 1.1rem; color: var(--primary); }
     </style>
 </head>
 <body>
+
 <header>
-    <h1 id="mainTitle">Smart-Hua Hin-Properties-System</h1>
-    <p id="subTitle">Master Command Center</p>
+    <div class="header-left">
+        <div class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        <div class="brand-name" id="currentProjectName">Smart Property</div>
+    </div>
+    <div class="flag-list">
+        <img src="https://flagcdn.com/w40/th.png" title="Thai">
+        <img src="https://flagcdn.com/w40/us.png" title="English">
+        <img src="https://flagcdn.com/w40/cn.png" title="Chinese">
+        <img src="https://flagcdn.com/w40/ru.png" title="Russian">
+        <img src="https://flagcdn.com/w40/de.png" title="German">
+        <img src="https://flagcdn.com/w40/fr.png" title="French">
+    </div>
 </header>
-<div id="loading">📡 กำลังเชื่อมต่อฐานข้อมูล Smart System...</div>
+
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+    <a href="#" class="sidebar-item"><i class="fas fa-home"></i> หน้าหลัก</a>
+    <a href="#" class="sidebar-item"><i class="fas fa-building"></i> โครงการทั้งหมด</a>
+    <a href="#" class="sidebar-item"><i class="fas fa-star"></i> รายการโปรด</a>
+    <a href="#" class="sidebar-item"><i class="fas fa-envelope"></i> ติดต่อเรา</a>
+</div>
+
+<div class="filter-section">
+    <div class="filter-grid">
+        <div class="filter-box">
+            <select id="idFilter" onchange="applyFilters()">
+                <option value="">เลือกแปลง/รหัสที่ต้องการ...</option>
+            </select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="filter-box">
+                <select id="bedroomFilter" onchange="applyFilters()">
+                    <option value="">ทุกขนาดห้องนอน</option>
+                    <option value="1">1 ห้องนอน</option>
+                    <option value="2">2 ห้องนอน</option>
+                    <option value="3">3 ห้องนอน</option>
+                    <option value="4">4 ห้องนอน</option>
+                    <option value="5">5 ห้องนอน</option>
+                    <option value="6">6+ ห้องนอน</option>
+                </select>
+            </div>
+            <div class="filter-box">
+                <select id="sortFilter" onchange="applyFilters()">
+                    <option value="low">ราคา: น้อย → มาก</option>
+                    <option value="high">ราคา: มาก → น้อย</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading"><i class="fas fa-spinner fa-spin"></i> กำลังเตรียมข้อมูล Smart Properties...</div>
 <div class="property-grid" id="grid"></div>
+
 <script>
     const webAppUrl = "https://script.google.com/macros/s/AKfycbytY48pBly91AAPJ4I6oy7QtuS451d-U5EKBvIwtobMQrty2Q3zsUw6P9LI3zm7Z4E7/exec";
+    let rawData = [];
     const urlParams = new URLSearchParams(window.location.search);
-    const filter = urlParams.get('project');
+    const initialProject = urlParams.get('project');
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+        document.querySelector('.sidebar-overlay').classList.toggle('active');
+    }
+
     async function loadData() {
         try {
             const res = await fetch(webAppUrl);
             const data = await res.json();
-            let items = data;
-            if (filter) {
-                items = data.filter(item => item.Project_Name && item.Project_Name.trim().toLowerCase() === filter.trim().toLowerCase());
-                const projectName = filter.trim();
-                document.getElementById('mainTitle').innerText = projectName;
-                document.getElementById('subTitle').innerText = projectName;
-                document.title = projectName + " - Smart System";
-            }
-            render(items);
+            rawData = data;
+            
+            // Set Brand Name
+            if (initialProject) document.getElementById('currentProjectName').innerText = initialProject;
+
+            // Populate ID Filter
+            const idFilter = document.getElementById('idFilter');
+            const uniqueIds = [...new Set(data.map(item => item.ID))].sort();
+            uniqueIds.forEach(id => {
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.innerText = "ID: " + id;
+                idFilter.appendChild(opt);
+            });
+
+            applyFilters();
         } catch (e) { document.getElementById('loading').innerText = "❌ ระบบขัดข้อง โปรดติดต่อ Admin"; }
     }
+
+    function applyFilters() {
+        let filtered = [...rawData];
+        const idVal = document.getElementById('idFilter').value;
+        const bedVal = document.getElementById('bedroomFilter').value;
+        const sortVal = document.getElementById('sortFilter').value;
+
+        // 1. Project Filter (From URL)
+        if (initialProject) {
+            filtered = filtered.filter(it => it.Project_Name && it.Project_Name.trim().toLowerCase() === initialProject.trim().toLowerCase());
+        }
+
+        // 2. ID Filter
+        if (idVal) filtered = filtered.filter(it => it.ID === idVal);
+
+        // 3. Bedroom Filter
+        if (bedVal) {
+            if (bedVal === "6") filtered = filtered.filter(it => parseInt(it.Bedrooms) >= 6);
+            else filtered = filtered.filter(it => parseInt(it.Bedrooms) === parseInt(bedVal));
+        }
+
+        // 4. Sort
+        filtered.sort((a, b) => {
+            return sortVal === "low" ? a.Price - b.Price : b.Price - a.Price;
+        });
+
+        render(filtered);
+    }
+
     function render(items) {
         const grid = document.getElementById('grid');
         document.getElementById('loading').style.display = 'none';
+        grid.innerHTML = "";
+
         if (items.length === 0) {
-            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; color:#999;">ไม่พบข้อมูลในโครงการ "${filter || ''}"</div>`;
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; color:#999;">ไม่พบข้อมูลตามเงื่อนไขที่เลือก</div>`;
             return;
         }
+
         items.forEach(item => {
             const card = document.createElement('div');
             card.className = 'card';
             const fPrice = Number(item.Price).toLocaleString();
             const detailUrl = 'details.html?id=' + item.HP_ID;
+            
             card.innerHTML = `
-                <div onclick="window.location.href='${detailUrl}'">
-                    ${item.Thumbnail ? `<img src="${item.Thumbnail}" class="card-img" onerror="this.outerHTML='<div class=\'no-photo-box\'>Smart Hua Hin Properties System</div>'">` : `<div class="no-photo-box">Smart-Hua Hin<br>Properties-System</div>`}
+                <div class="card-img-box" onclick="window.location.href='${detailUrl}'">
+                    <div class="hpid-badge">${item.HP_ID} - ${item.ID}</div>
+                    <img src="${item.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Smart+System'">
                 </div>
                 <div class="card-body">
-                    <div style="font-weight:600; font-size:1.1rem; margin-bottom:5px;">${item.Project_Name} (${item.ID})</div>
-                    <div class="price">฿${fPrice}</div>
+                    <div class="status-tag">${item.Status || 'Available'}</div>
+                    <div class="card-title">${item.Project_Name}</div>
+                    <div class="card-info">
+                        <span><i class="fas fa-bed"></i> ${item.Bedrooms || 0} Bed</span>
+                        <span><i class="fas fa-bath"></i> ${item.Bathrooms || 0} Bath</span>
+                        <span><i class="fas fa-vector-square"></i> ${item['Living Area (sq.m)'] || 0} m²</span>
+                    </div>
+                    <div class="card-price">฿${fPrice}</div>
                     <a href="${detailUrl}" class="btn-detail">ดูรายละเอียด</a>
                 </div>`;
             grid.appendChild(card);
         });
     }
+
     loadData();
 </script>
 </body>
-
 </html>
