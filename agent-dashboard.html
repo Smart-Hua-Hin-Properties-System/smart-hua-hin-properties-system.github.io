@@ -3,31 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent HQ V7.5 - Syntax Correct</title>
+    <title>Agent HQ V7.6 - Seamless Navigation</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #f0f4f7; --white: #ffffff; --orange: #e67e22; --green: #27ae60; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; color: #333; }
         .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; }
+        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        /* 🎯 ระบบเมนู 4 แท็บมหาอำนาจ */
         .nav-tabs { background: #fff; display: flex; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .tab-item { padding: 15px 5px; color: #7f8c8d; text-decoration: none; font-size: 0.78rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; transition: 0.3s; }
         .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
+
         .container { padding: 20px; max-width: 850px; margin: 0 auto; padding-bottom: 60px; }
         .card { background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        
         label { font-size: 0.75rem; color: #7f8c8d; margin-bottom: 6px; display: block; }
         input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Kanit'; box-sizing: border-box; font-weight: 300; outline: none; margin-bottom: 15px; background: #fafafa; font-size: 0.95rem; }
         .btn-submit { background: var(--primary); color: white; border: none; padding: 16px; width: 100%; border-radius: 15px; cursor: pointer; font-family: 'Kanit'; font-size: 1rem; font-weight: 400; }
-        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.65rem; background: #d4edda; color: #155724; }
+        
+        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.65rem; }
+        .active-st { background: #d4edda; color: #155724; }
+        .pending { background: #fff3cd; color: #856404; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <img id="agentPhoto" src="https://via.placeholder.com/90" class="profile-img">
-    <h2 id="agentName" style="margin:0; font-weight:400; letter-spacing:1px;">...</h2>
-    <div id="agencyBadge" style="font-size:0.8rem; opacity:0.8; margin-top:5px;">...</div>
+    <h2 id="agentName" style="margin:0; font-weight:400; letter-spacing:1px;">Agent Sovereign</h2>
+    <div id="agencyBadge" style="font-size:0.8rem; opacity:0.8; margin-top:5px;">Loading...</div>
 </div>
 
 <div class="nav-tabs">
@@ -39,13 +46,53 @@
 
 <div class="container">
     <div id="historySection" class="tab-content">
-        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-clipboard-list"></i> ประวัติงานเช็คอิน</h4>
+        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-clipboard-list"></i> ประวัติงานเช็คอินของท่าน</h4>
         <div id="visitLogs"></div>
     </div>
+
+    <div id="appointmentSection" class="tab-content" style="display:none;">
+        <div class="card">
+            <h4 style="margin-top:0; font-weight:400; color:var(--primary);"><i class="far fa-calendar-plus"></i> สร้างนัดหมายใหม่</h4>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div><label>วันที่นัดหมาย</label><input type="date" id="appDate"></div>
+                <div><label>เวลา</label><input type="time" id="appTime"></div>
+            </div>
+            <label>รหัสบ้าน (HP_ID)</label>
+            <select id="appHPID" onchange="fetchProject('app')"><option value="">-- เลือกรหัสบ้าน --</option></select>
+            <label>โครงการ</label><input type="text" id="appProject" readonly placeholder="ดึงอัตโนมัติ">
+            <label>ชื่อลูกค้า</label><input type="text" id="appCustomer" placeholder="ระบุชื่อลูกค้า">
+            <label>หมายเหตุ</label><textarea id="appNote" placeholder="รายละเอียดเพิ่มเติม" rows="3"></textarea>
+            <button class="btn-submit" onclick="saveApp()">ยืนยันนัดหมายและส่ง LINE</button>
+        </div>
+        <div id="appList"></div>
     </div>
 
+    <div id="checkinSection" class="tab-content" style="display:none;">
+        <div class="card">
+            <h4 style="margin-top:0; font-weight:400; color:var(--primary);"><i class="fas fa-satellite-dish"></i> รายงานตัวหน้างานจริง</h4>
+            <label>รหัสบ้านที่เข้าชม (HP_ID)</label>
+            <select id="checkHPID" onchange="fetchProject('check')"><option value="">-- เลือกรหัสบ้าน --</option></select>
+            <label>โครงการ</label><input type="text" id="checkProject" readonly>
+            <label>แนบรูปภาพ 1 (ภาพลูกค้า)</label><input type="url" id="img1" placeholder="วางลิงก์รูปถ่าย">
+            <label>แนบรูปภาพ 2 (ภาพหน้างาน)</label><input type="url" id="img2" placeholder="วางลิงก์รูปถ่าย">
+            <div id="gpsStatus" style="font-size:0.7rem; color:var(--orange); margin-bottom:10px; text-align:center;">กำลังล็อคพิกัด GPS...</div>
+            <button class="btn-submit" onclick="doCheckIn()" id="btnCheck">ยืนยันการเช็คอิน (GPS)</button>
+        </div>
+    </div>
+
+    <div id="profileSection" class="tab-content" style="display:none;">
+        <div class="card">
+            <h4 style="margin-top:0; font-weight:400;">แก้ไขโปรไฟล์มหาอำนาจ</h4>
+            <label>รูปถ่าย (URL)</label><input type="text" id="setPhoto">
+            <label>ชื่อ-นามสกุล</label><input type="text" id="setName">
+            <button onclick="saveProfile()" class="btn-submit">บันทึกข้อมูลมหาอำนาจ</button>
+            <button onclick="logout()" style="width:100%; margin-top:20px; border:none; background:none; color:red; cursor:pointer; font-family:Kanit;">ออกจากระบบ</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    // 🎯 สำคัญ: วาง URL เว็บแอปของมาสเตอร์ที่นี่ครับ
+    // 🎯 สำคัญ: เปลี่ยนเป็น URL เว็บแอปตัวล่าสุดของมาสเตอร์ครับ
     const api = "https://script.google.com/macros/s/AKfycbyvjIDptiWlUVKmTdHUGVkC0rMdQV5McDPTuTCLDkVHyjD7N_aX34WysVJkORq1ECFK/exec";
     const agentPin = localStorage.getItem('agentPin');
     let agentNameGlobal = "", lat = "", lng = "";
@@ -61,16 +108,78 @@
         document.getElementById('agentName').innerText = a.name;
         document.getElementById('agentPhoto').src = a.photo || "https://via.placeholder.com/90";
         document.getElementById('agencyBadge').innerText = a.agency;
+        document.getElementById('setName').value = a.name;
+        document.getElementById('setPhoto').value = a.photo || "";
+
+        // 📊 Render ประวัติ (Fixed Mapping)
+        document.getElementById('visitLogs').innerHTML = d.visits.map(v => `
+            <div class="card"><div style="display:flex; justify-content:space-between; align-items:center;">
+                <div><b>${v.Project || '-'}</b><br><small>${v.Timestamp ? new Date(v.Timestamp).toLocaleDateString('th-TH') : '-'}</small></div>
+                <span class="status-badge ${v.Status === 'Waiting' ? 'pending' : 'active-st'}">${v.Status || 'Waiting'}</span>
+            </div></div>`).join('') || '<div style="text-align:center; padding:30px; color:#999;">ไม่พบประวัติการเช็คอิน</div>';
+
+        // 🗓️ Render นัดหมาย
+        document.getElementById('appList').innerHTML = d.apps.map(ap => `
+            <div class="card">🗓️ <b>${ap.Customer || '-'}</b><br>
+                <small>${ap.Project || '-'} | ${ap.Date ? new Date(ap.Date).toLocaleDateString('th-TH') : '-'} (${ap.Time || '-'})</small>
+            </div>`).join('');
         
-        document.getElementById('visitLogs').innerHTML = d.visits.map(v => `<div class="card"><div style="display:flex; justify-content:space-between; align-items:center;"><div><b>${v.Project || '-'}</b><br><small>${v.Timestamp ? new Date(v.Timestamp).toLocaleDateString('th-TH') : '-'}</small></div><span class="status-badge">${v.Status || 'Waiting'}</span></div></div>`).join('');
+        loadHPIDs();
+        navigator.geolocation.getCurrentPosition(p => { lat = p.coords.latitude; lng = p.coords.longitude; document.getElementById('gpsStatus').innerText = `✅ GPS ล็อคพิกัดแล้ว`; });
     }
-    // (ฟังก์ชันเสริมเหมือนเดิม...)
+
+    async function loadHPIDs() {
+        const r = await fetch(`${api}?action=getAllHPIDs`);
+        const ids = await r.json();
+        const html = '<option value="">-- เลือกรหัส HP_ID --</option>' + ids.map(id => `<option value="${id}">${id}</option>`).join('');
+        document.getElementById('appHPID').innerHTML = html;
+        document.getElementById('checkHPID').innerHTML = html;
+    }
+
+    async function fetchProject(type) {
+        const hpId = document.getElementById(type + 'HPID').value;
+        const res = await fetch(`${api}?action=getProjectByHPID&hpId=${hpId}`);
+        const d = await res.json();
+        document.getElementById(type + 'Project').value = d.project;
+    }
+
+    async function saveApp() {
+        const d = { action: 'addAppointment', pin: agentPin, agentName: agentNameGlobal, date: document.getElementById('appDate').value, time: document.getElementById('appTime').value, hpId: document.getElementById('appHPID').value, project: document.getElementById('appProject').value, customer: document.getElementById('appCustomer').value, note: document.getElementById('appNote').value };
+        if(!d.date || !d.hpId) return alert("ข้อมูลไม่ครบ!");
+        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
+        alert("✅ นัดหมายสำเร็จ!"); location.reload();
+    }
+
+    async function doCheckIn() {
+        if(!lat) return alert("โปรดอนุญาต GPS ก่อนเช็คอิน!");
+        const d = { action: 'agentCheckIn', pin: agentPin, agentName: agentNameGlobal, projectName: document.getElementById('checkProject').value, hpId: document.getElementById('checkHPID').value, evidenceUrl1: document.getElementById('img1').value, evidenceUrl2: document.getElementById('img2').value, lat: lat, lng: lng };
+        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
+        alert("✅ เช็คอินสำเร็จ!"); location.reload();
+    }
+
+    async function saveProfile() {
+        await fetch(api, { method: 'POST', body: JSON.stringify({ action: 'updateAgentProfile', pin: agentPin, name: document.getElementById('setName').value, photoUrl: document.getElementById('setPhoto').value }) });
+        alert("บันทึกสำเร็จ!"); location.reload();
+    }
+
+    /**
+     * 🎯 ฟังก์ชันสลับแท็บมหาอำนาจ (Fixed V7.6)
+     * แก้ไข: บังคับให้ IDs ใน HTML ตรงกับพารามิเตอร์ t
+     */
     function showTab(t, el) {
+        // 1. ซ่อนทุกส่วนที่เป็นเนื้อหา
         document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+        // 2. ลบคลาส Active จากทุกปุ่มเมนู
         document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
-        document.getElementById(t + 'Section').style.display = 'block';
-        el.classList.add('active');
+        // 3. แสดงเนื้อหาที่เลือก (เช่น historySection, appointmentSection)
+        const target = document.getElementById(t + 'Section');
+        if (target) {
+            target.style.display = 'block';
+            el.classList.add('active');
+        }
     }
+
+    function logout() { localStorage.removeItem('agentPin'); window.location.href = 'login.html'; }
     init();
 </script>
 </body>
