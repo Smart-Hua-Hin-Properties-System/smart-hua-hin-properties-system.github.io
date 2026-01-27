@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Smart System V1.9</title>
+    <title>Admin Dashboard - Smart System</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,46 +11,92 @@
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
         .admin-header { background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .container { padding: 20px; max-width: 900px; margin: 0 auto; }
-        .btn-add { background: var(--primary); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; font-size: 1.1rem; }
+        .btn-add { background: var(--primary); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(26,82,118,0.2); }
         .property-list { background: #fff; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
         .property-item { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .btn-logout { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; overflow-y: auto; padding: 20px; }
+        .modal-content { background: #fff; border-radius: 25px; max-width: 800px; margin: 20px auto; padding: 35px; box-shadow: 0 15px 50px rgba(0,0,0,0.3); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: 1 / -1; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; }
+        input[readonly] { background: var(--locked); color: #7f8c8d; }
+        .btn-save { background: var(--green); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 25px; font-size: 1.1rem; }
     </style>
 </head>
 <body>
+
 <div class="admin-header">
-    <div><b>Smart Control</b> <span id="roleBadge" style="font-size: 0.7rem; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px;">Admin</span></div>
+    <div><b>Smart Control</b> <span id="roleBadge" style="font-size:0.7rem; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:10px;">Admin</span></div>
     <div id="adminName">Loading...</div>
-    <button class="btn-logout" onclick="logout()">ออกระบบ</button>
+    <button onclick="logout()" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">ออกระบบ</button>
 </div>
+
 <div class="container">
-    <h2 id="projectTitle">กำลังโหลดข้อมูลโครงการ...</h2>
-    <button class="btn-add" onclick="location.reload()"><i class="fas fa-sync-alt"></i> รีเฟรชรายการข้อมูล</button>
-    <div class="property-list" id="listBody">
-        <div style="padding:60px; text-align:center;"><i class="fas fa-circle-notch fa-spin fa-2x" style="color:var(--primary)"></i><br><br>กำลังดึงข้อมูลมหาอำนาจ...</div>
+    <h2 id="projectTitle" style="color:var(--primary);">อาณาจักรโครงการ...</h2>
+    <button class="btn-add" onclick="openAdd()"><i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่เข้าสู่ระบบ</button>
+    <div class="property-list" id="listBody"><div style="padding:60px; text-align:center;"><i class="fas fa-sync fa-spin"></i> กำลังดึงข้อมูล...</div></div>
+</div>
+
+<div class="modal" id="addModal">
+    <div class="modal-content">
+        <h2 id="modalTitle" style="margin-top:0; color:var(--primary);">เพิ่มทรัพย์ใหม่</h2>
+        <form id="propertyForm">
+            <div class="form-grid">
+                <div class="form-group full-width"><label>HP_ID (รหัสระบบ - ล็อค)</label><input type="text" name="HP_ID" readonly></div>
+                <div class="form-group"><label>ID (รหัสการตลาด)</label><input type="text" name="ID" required></div>
+                <div class="form-group"><label>Plot (แปลง)</label><input type="text" name="Plot"></div>
+                <div class="form-group"><label>Price (ราคาขาย)</label><input type="number" name="Price" required></div>
+                <div class="form-group"><label>Status</label><select name="Status"><option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option></select></div>
+                <div class="form-group"><label>Type</label><select name="Type"><option value="Villa">Villa</option><option value="House">House</option></select></div>
+                <div class="form-group"><label>Bedrooms</label><input type="number" name="Bedrooms"></div>
+                <div class="form-group"><label>Bathrooms</label><input type="number" name="Bathrooms"></div>
+                <div class="form-group full-width"><label>Description</label><textarea name="Description" rows="3"></textarea></div>
+            </div>
+            <button type="button" class="btn-save" onclick="saveData()">🚀 บันทึกข้อมูลเข้าศูนย์กลาง</button>
+            <button type="button" onclick="closeModal()" style="width:100%; border:none; background:none; color:#999; margin-top:10px; cursor:pointer;">ยกเลิก</button>
+        </form>
     </div>
 </div>
+
 <script>
     const api = "https://script.google.com/macros/s/AKfycbx0ICTtHVgCCIU48VQFb-6tO9yvKgD6_oOBIN31tBYB3oHQ3h2JTS_ZIU0JyGG2O-jc/exec";
     const user = JSON.parse(localStorage.getItem('smartAdmin'));
     if(!user) window.location.href = 'login.html';
-    
     document.getElementById('adminName').innerText = user.projectName;
     document.getElementById('projectTitle').innerText = "จัดการ " + user.projectName;
 
+    let allItems = [];
     async function loadData() {
         const body = document.getElementById('listBody');
         try {
             const res = await fetch(`${api}?action=adminData&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`);
-            const items = await res.json();
-            body.innerHTML = items.length ? "" : `<div style="padding:60px; text-align:center;">ยังไม่มีข้อมูลในโครงการนี้</div>`;
-            items.forEach(it => {
-                const row = document.createElement('div');
-                row.className = 'property-item';
-                row.innerHTML = `<div><div style="font-weight:600; color:var(--primary);">${it.HP_ID} - ${it.ID}</div><div style="font-size:0.85rem; color:#7f8c8d;">฿${Number(it.Price).toLocaleString()} | ${it.Status}</div></div><i class="fas fa-chevron-right" style="color:#ddd"></i>`;
+            allItems = await res.json();
+            body.innerHTML = allItems.length ? "" : `<div style="padding:40px; text-align:center;">ไม่พบข้อมูล</div>`;
+            allItems.forEach((it, index) => {
+                const row = document.createElement('div'); row.className = 'property-item';
+                row.innerHTML = `<div><b>${it.HP_ID} - ${it.ID}</b><br><small>฿${Number(it.Price).toLocaleString()} | ${it.Status}</small></div><button onclick="openEdit(${index})" style="background:none; border:none; color:var(--primary); cursor:pointer;"><i class="fas fa-edit fa-lg"></i></button>`;
                 body.appendChild(row);
             });
-        } catch(e) { body.innerHTML = `<div style="padding:60px; color:red; text-align:center;">❌ ขัดข้องในการโหลดข้อมูล โปรดตรวจสอบ API</div>`; }
+        } catch(e) { body.innerHTML = `<div style="padding:40px; color:red; text-align:center;">❌ ขัดข้องในการโหลดข้อมูล</div>`; }
+    }
+
+    function openModal() { document.getElementById('addModal').style.display = 'block'; }
+    function closeModal() { document.getElementById('addModal').style.display = 'none'; }
+    function openAdd() { document.getElementById('propertyForm').reset(); document.getElementById('modalTitle').innerText = "เพิ่มทรัพย์ใหม่"; openModal(); }
+    function openEdit(index) {
+        const it = allItems[index]; const form = document.getElementById('propertyForm');
+        Object.keys(it).forEach(key => { if(form[key]) form[key].value = it[key]; });
+        document.getElementById('modalTitle').innerText = "แก้ไขข้อมูล " + it.HP_ID; openModal();
+    }
+
+    async function saveData() {
+        const form = document.getElementById('propertyForm'); const data = Object.fromEntries(new FormData(form).entries());
+        data["Project_Name"] = user.projectName;
+        try {
+            const res = await fetch(`${api}?action=saveProperty&data=${encodeURIComponent(JSON.stringify(data))}`);
+            const result = await res.json();
+            if(result.success) { alert("✅ บันทึกสำเร็จ!"); closeModal(); loadData(); }
+        } catch(e) { alert("❌ การส่งข้อมูลขัดข้อง"); }
     }
     function logout() { localStorage.removeItem('smartAdmin'); window.location.href = 'login.html'; }
     loadData();
