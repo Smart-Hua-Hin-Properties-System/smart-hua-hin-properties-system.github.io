@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Control - Complete V3.0</title>
+    <title>Admin Control - Full Restoration V3.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -12,18 +12,18 @@
         .admin-header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
         #masterOnlySection { display: none; background: #fff3cd; border: 1px solid #ffeeba; padding: 20px; border-radius: 20px; margin-bottom: 25px; }
-        .btn-add { background: var(--primary); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(26,82,118,0.2); }
+        .btn-add { background: var(--primary); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(26,82,118,0.2); transition: 0.3s; }
         .property-list { background: #fff; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
         .property-item { padding: 18px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; overflow-y: auto; padding: 10px; }
-        .modal-content { background: #fff; border-radius: 30px; max-width: 900px; margin: 20px auto; padding: 30px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 2000; overflow-y: auto; padding: 10px; }
+        .modal-content { background: #fff; border-radius: 30px; max-width: 900px; margin: 10px auto; padding: 30px; box-shadow: 0 15px 50px rgba(0,0,0,0.3); }
         .form-section { border-bottom: 1px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 25px; }
-        .form-section h3 { color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
+        .form-section h3 { color: var(--primary); font-size: 1.1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
         label { font-size: 0.85rem; color: #7f8c8d; display: block; margin-bottom: 5px; font-weight: 500; }
         input, select, textarea { padding: 12px; border: 1.5px solid #ddd; border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; width: 100%; outline: none; }
-        input[readonly] { background: var(--locked); color: #7f8c8d; border-color: #eee; }
-        .btn-save { background: var(--green); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 25px; font-size: 1.2rem; }
+        input[readonly] { background: var(--locked); color: #7f8c8d; }
+        .btn-save { background: var(--green); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 20px; font-size: 1.2rem; }
     </style>
 </head>
 <body>
@@ -36,7 +36,7 @@
 
 <div class="container">
     <div id="masterOnlySection">
-        <h4 style="color:#856404; margin-top:0;"><i class="fas fa-crown"></i> ส่วนบริหารสูงสุด</h4>
+        <h4 style="color:#856404; margin-top:0;"><i class="fas fa-crown"></i> แผงควบคุมผู้บริหารสูงสุด</h4>
         <button onclick="window.location.href='dashboard.html'" style="background:#856404; color:white; width:100%; padding:15px; border:none; border-radius:12px; font-weight:600; cursor:pointer;"><i class="fas fa-chart-line"></i> สรุปยอดบริหาร (Executive Dashboard)</button>
     </div>
     <button class="btn-add" onclick="openAdd()"><i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่เข้าสู่ระบบ</button>
@@ -50,30 +50,30 @@
             <div class="form-section">
                 <h3><i class="fas fa-shield-alt"></i> ข้อมูลระบบ</h3>
                 <div class="form-grid">
-                    <div><label>HP_ID (ล็อค)</label><input type="text" name="HP_ID" readonly></div>
+                    <div><label>HP_ID (ล็อค)</label><input type="text" name="HP_ID" readonly placeholder="สร้างให้อัตโนมัติ"></div>
                     <div><label>Project_Name (ล็อค)</label><input type="text" name="Project_Name" readonly></div>
                     <div><label>Last_Updated</label><input type="text" name="Last_Updated" readonly></div>
                 </div>
             </div>
 
             <div class="form-section">
-                <h3><i class="fas fa-info-circle"></i> ข้อมูลพื้นฐาน</h3>
+                <h3><i class="fas fa-map-marker-alt"></i> ข้อมูลพื้นฐานและทำเล</h3>
                 <div class="form-grid">
-                    <div><label>ID (รหัสการตลาด)</label><input type="text" name="ID" required></div>
+                    <div><label>ID (รหัสการตลาด)</label><input type="text" name="ID" required placeholder="เช่น M16"></div>
                     <div><label>Plot (เลขแปลง)</label><input type="text" name="Plot"></div>
-                    <div><label>District (อำเภอ)</label><select name="District" id="dSelect" onchange="updSub()" required><option value="Hua Hin">Hua Hin (หัวหิน)</option><option value="Cha-am">Cha-am (ชะอำ)</option><option value="Pranburi">Pranburi (ปราณบุรี)</option></select></div>
-                    <div><label>SubDistrict (ตำบล)</label><select name="SubDistrict" id="sSelect" required></select></div>
-                    <div><label>Type</label><select name="Type"><option value="Villa">Villa</option><option value="House">House</option></select></div>
-                    <div><label>Status</label><select name="Status"><option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option></select></div>
-                    <div><label>Badge (ป้ายโปรโมชั่น)</label><input type="text" name="Badge"></div>
+                    <div><label>อำเภอ (District)</label><select name="District" id="dSelect" onchange="updSub()" required><option value="">-- เลือกอำเภอ --</option><option value="Hua Hin">Hua Hin (หัวหิน)</option><option value="Cha-am">Cha-am (ชะอำ)</option><option value="Pranburi">Pranburi (ปราณบุรี)</option></select></div>
+                    <div><label>ตำบล (SubDistrict)</label><select name="SubDistrict" id="sSelect" required><option value="">-- เลือกตำบล --</option></select></div>
+                    <div><label>ประเภท (Type)</label><select name="Type"><option value="Villa">Villa</option><option value="House">House</option></select></div>
+                    <div><label>สถานะ (Status)</label><select name="Status"><option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option></select></div>
+                    <div><label>ป้ายโปรโมชั่น (Badge)</label><input type="text" name="Badge" placeholder="Hot Deal"></div>
                 </div>
             </div>
 
             <div class="form-section">
-                <h3><i class="fas fa-home"></i> สเปกทรัพย์</h3>
+                <h3><i class="fas fa-home"></i> สเปกบ้านและที่ดิน</h3>
                 <div class="form-grid">
-                    <div><label>Bedrooms</label><input type="number" name="Bedrooms"></div>
-                    <div><label>Bathrooms</label><input type="number" name="Bathrooms"></div>
+                    <div><label>Bedrooms</label><input type="number" name="Bedrooms" value="3"></div>
+                    <div><label>Bathrooms</label><input type="number" name="Bathrooms" value="2"></div>
                     <div><label>Living Area (sq.m)</label><input type="number" step="0.01" name="Living Area (sq.m)" required></div>
                     <div><label>Land Area (sq.m)</label><input type="number" step="0.01" name="Land Area (sq.m)"></div>
                     <div><label>Land Area (sq.w)</label><input type="number" step="0.01" name="Land Area (sq.w)"></div>
@@ -86,26 +86,26 @@
             </div>
 
             <div class="form-section">
-                <h3><i class="fas fa-coins"></i> ราคาและการเงิน</h3>
+                <h3><i class="fas fa-coins"></i> ราคาและการขาย</h3>
                 <div class="form-grid">
-                    <div><label>Price (ราคาขาย)</label><input type="number" name="Price" required></div>
-                    <div><label>Commission (%)</label><input type="number" step="0.01" name="Commission (%)" value="3"></div>
-                    <div><label>Price_per_sqm (Auto)</label><input type="text" name="Price_per_sqm" readonly></div>
-                    <div><label>Comm_Amount_Baht (Auto)</label><input type="text" name="Comm_Amount_Baht" readonly></div>
+                    <div><label>ราคาขาย (Price)</label><input type="number" name="Price" required></div>
+                    <div><label>คอมมิชชัน (%)</label><input type="number" step="0.01" name="Commission (%)" value="3"></div>
+                    <div><label>ราคา/ตร.ม. (Auto)</label><input type="text" name="Price_per_sqm" readonly></div>
+                    <div><label>คอมมิชชัน (บาท - Auto)</label><input type="text" name="Comm_Amount_Baht" readonly></div>
                 </div>
             </div>
 
             <div class="form-section">
-                <h3><i class="fas fa-images"></i> สื่อและลิงก์</h3>
+                <h3><i class="fas fa-images"></i> สื่อและรายละเอียด</h3>
                 <div class="form-grid">
                     <div style="grid-column: 1/-1;"><label>Thumbnail URL</label><input type="text" name="Thumbnail"></div>
-                    <div style="grid-column: 1/-1;"><label>Image_List (คั่นด้วย , )</label><input type="text" name="Image_List"></div>
-                    <div><label>FBLink</label><input type="text" name="FBLink"></div>
-                    <div><label>FloorPlan</label><input type="text" name="FloorPlan"></div>
-                    <div><label>Map_Link</label><input type="text" name="Map_Link"></div>
-                    <div><label>Virtual_Tour</label><input type="text" name="Virtual_Tour"></div>
-                    <div style="grid-column: 1/-1;"><label>Extras (ของแถม)</label><textarea name="Extras" rows="2"></textarea></div>
-                    <div style="grid-column: 1/-1;"><label>Description</label><textarea name="Description" rows="3"></textarea></div>
+                    <div style="grid-column: 1/-1;"><label>Image List (คั่นด้วย , )</label><input type="text" name="Image_List"></div>
+                    <div><label>FB Link</label><input type="text" name="FBLink"></div>
+                    <div><label>Floor Plan Link</label><input type="text" name="FloorPlan"></div>
+                    <div><label>Map Link</label><input type="text" name="Map_Link"></div>
+                    <div><label>Virtual Tour Link</label><input type="text" name="Virtual_Tour"></div>
+                    <div style="grid-column: 1/-1;"><label>ของแถม (Extras)</label><textarea name="Extras" rows="2"></textarea></div>
+                    <div style="grid-column: 1/-1;"><label>รายละเอียด (Description)</label><textarea name="Description" rows="4"></textarea></div>
                 </div>
             </div>
 
@@ -116,19 +116,23 @@
 </div>
 
 <script>
-    // 🚀 URL มหาอำนาจล่าสุด
-    const api = "https://script.google.com/macros/s/AKfycbxpPmz0CBvb0j0gUkgmNpHdwjcRRr8EPL9MCnV98QGRe_pjEuXK2hQQZAyT15Rjnzg8/exec";
+    const api = "https://script.google.com/macros/s/AKfycbwsLs24d3ZAqovj76yipCRcW1YKd4YmyIOP05mC82AV36p8X-X7tGoW9Mr0HdfN5OEM/exec";
     const user = JSON.parse(localStorage.getItem('smartAdmin'));
     if(!user) window.location.href = 'login.html';
     document.getElementById('adminName').innerText = user.projectName;
     document.getElementById('roleBadge').innerText = user.role;
     if(user.role === 'Master') document.getElementById('masterOnlySection').style.display = 'block';
 
-    const subs = { "Hua Hin": ["Hua Hin (หัวหิน)", "Nong Kae (หนองแก)", "Hin Lek Fai (หินเหล็กไฟ)", "Thap Tai (ทับใต้)", "Huai Sat Yai (ห้วยสัตว์ใหญ่)", "Bueng Nakhon (บึงนคร)", "Nong Plap (หนองพลับ)"], "Cha-am": ["Cha-am (ชะอำ)", "Na Yang (นายาง)", "Khao Yai (เขาใหญ่)", "Nong Sala (หนองศาลา)", "Huai Sai Nuea (ห้วยทรายเหนือ)", "Rai Mai Phatthana (ไร่ใหม่พัฒนา)"], "Pranburi": ["Pranburi (ปราณบุรี)", "Khao Chao (เขาจ้าว)", "Nong Ta Taem (หนองตาแต้ม)", "Wang Phong (วังก์พง)", "Pak Nam Pran (ปากน้ำปราณ)", "Khuean Pran (เขื่อนปราณ)"] };
+    const subs = { 
+        "Hua Hin": ["Hua Hin (หัวหิน)", "Nong Kae (หนองแก)", "Hin Lek Fai (หินเหล็กไฟ)", "Thap Tai (ทับใต้)", "Huai Sat Yai (ห้วยสัตว์ใหญ่)", "Bueng Nakhon (บึงนคร)", "Nong Plap (หนองพลับ)"], 
+        "Cha-am": ["Cha-am (ชะอำ)", "Na Yang (นายาง)", "Khao Yai (เขาใหญ่)", "Nong Sala (หนองศาลา)", "Huai Sai Nuea (ห้วยทรายเหนือ)", "Rai Mai Phatthana (ไร่ใหม่พัฒนา)"], 
+        "Pranburi": ["Pranburi (ปราณบุรี)", "Khao Chao (เขาจ้าว)", "Nong Ta Taem (หนองตาแต้ม)", "Wang Phong (วังก์พง)", "Pak Nam Pran (ปากน้ำปราณ)", "Khuean Pran (เขื่อนปราณ)"] 
+    };
 
     function updSub(v="") {
         const d = document.getElementById('dSelect').value; const s = document.getElementById('sSelect');
-        s.innerHTML = subs[d].map(x => `<option value="${x}" ${x==v?'selected':''}>${x}</option>`).join('');
+        s.innerHTML = '<option value="">-- เลือกตำบล --</option>';
+        if(subs[d]) s.innerHTML += subs[d].map(x => `<option value="${x}" ${x==v?'selected':''}>${x}</option>`).join('');
     }
 
     let all = [];
@@ -139,17 +143,17 @@
             all = await r.json();
             body.innerHTML = all.map((it, i) => `
                 <div class="property-item">
-                    <div><b>${it.HP_ID} - ${it.ID}</b><br><small>฿${Number(it.Price).toLocaleString()} | ${it.Status}</small></div>
-                    <button onclick="openEdit(${i})" style="background:none; border:none; color:var(--primary); cursor:pointer;"><i class="fas fa-edit fa-lg"></i></button>
+                    <div><b>${it.HP_ID} - ${it.ID}</b><br><small>฿${Number(it.Price).toLocaleString()} | ${it.Status} | ⏰ ${it.Last_Updated || '-'}</small></div>
+                    <button onclick="openEdit(${i})" style="background:none; border:none; color:var(--primary); cursor:pointer;"><i class="fas fa-edit-box fa-edit fa-2x"></i></button>
                 </div>`).join('') || '<div style="padding:40px; text-align:center;">ยังไม่มีข้อมูล</div>';
-        } catch(e) { body.innerHTML = "❌ โหลดข้อมูลล้มเหลว โปรดเช็ค URL API"; }
+        } catch(e) { body.innerHTML = "❌ การดึงข้อมูลมหาอำนาจขัดข้อง"; }
     }
 
     function openModal() { document.getElementById('addModal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
     function closeModal() { document.getElementById('addModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
     function openAdd() { document.getElementById('propertyForm').reset(); document.querySelector('input[name="Project_Name"]').value = user.projectName; updSub(); openModal(); }
     
-    // 🎯 ฟังก์ชันโหลดข้อมูลเข้าฟอร์มแก้ไข
+    // 🎯 แก้บั๊ก Edit Icon: โหลดข้อมูลครบ 32 รายการ
     function openEdit(i) {
         const it = all[i]; const f = document.getElementById('propertyForm');
         Object.keys(it).forEach(k => { if(f[k]) f[k].value = it[k]; });
@@ -161,13 +165,13 @@
     async function saveData() {
         const btn = document.getElementById('saveBtn'); btn.innerText = "กำลังบันทึกข้อมูลมหาอำนาจ..."; btn.disabled = true;
         try {
-            const data = Object.fromEntries(new FormData(document.getElementById('propertyForm')).entries());
-            data["Project_Name"] = user.projectName;
-            const res = await fetch(`${api}?action=saveProperty&data=${encodeURIComponent(JSON.stringify(data))}`);
-            const result = await res.json();
-            if(result.success) { alert("✅ บันทึกสำเร็จ!"); closeModal(); loadData(); }
-            else { alert("❌ บันทึกไม่สำเร็จ: " + result.error); }
-        } catch(e) { alert("❌ ระบบขัดข้อง: ตรวจสอบการเชื่อมต่อ API"); }
+            const d = Object.fromEntries(new FormData(document.getElementById('propertyForm')).entries());
+            d["Project_Name"] = user.projectName;
+            const r = await fetch(`${api}?action=saveProperty&data=${encodeURIComponent(JSON.stringify(d))}`);
+            const res = await r.json();
+            if(res.success) { alert("✅ สำเร็จ!"); closeModal(); loadData(); }
+            else { alert("❌ ไม่สำเร็จ: " + res.error); }
+        } catch(e) { alert("❌ ระบบขัดข้อง"); }
         btn.innerText = "🚀 ยืนยันและบันทึกข้อมูลมหาอำนาจ"; btn.disabled = false;
     }
     function logout() { localStorage.removeItem('smartAdmin'); window.location.href = 'login.html'; }
