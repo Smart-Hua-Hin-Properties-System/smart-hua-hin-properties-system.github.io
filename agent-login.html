@@ -24,7 +24,7 @@
     <div id="error" style="color:red; margin-top:15px; display:none; font-size:0.85rem;">รหัส PIN ไม่ถูกต้อง</div>
 </div>
 <script>
-    const api = "https://script.google.com/macros/s/AKfycbyd68dXse7OuwzfIRgHYDRIGHRQPIXnYOBK2fxHTqeJoYQYLYbP2HZkOGUaPxIaahIS/exec";
+    const api = "https://script.google.com/macros/s/AKfycbzU-C1TW6omUqGiD9Cw69Szp6GrLUJJRfE9btJqynmqfGh_co6VCec3y56fqnJuCIPO/exec";
     async function handleLogin() {
         const pin = document.getElementById('agentPin').value;
         const res = await fetch(`${api}?action=agentLogin&pin=${pin}`);
