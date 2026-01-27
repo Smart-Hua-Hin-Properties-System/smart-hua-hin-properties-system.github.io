@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent HQ V6.3 - Strategic Scheduler</title>
+    <title>Agent Dashboard V6.4 - Property Link</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f0f4f7; --white: #ffffff; --green: #27ae60; --orange: #e67e22; }
+        :root { --primary: #1a5276; --bg: #f0f4f7; --white: #ffffff; --orange: #e67e22; --green: #27ae60; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; }
         
         .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 40px 40px; }
@@ -17,19 +17,18 @@
         .tab-item { padding: 15px 5px; color: #7f8c8d; text-decoration: none; font-size: 0.8rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; transition: 0.3s; }
         .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
 
-        .container { padding: 20px; max-width: 800px; margin: 0 auto; padding-bottom: 50px; }
+        .container { padding: 20px; max-width: 800px; margin: 0 auto; padding-bottom: 60px; }
         .card { background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* 🗓️ New Form Styles */
-        .form-row { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 10px; margin-bottom: 15px; }
+        /* 🗓️ New Strategic Layout */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         label { font-size: 0.75rem; color: #7f8c8d; margin-bottom: 5px; display: block; }
         input, select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Kanit'; box-sizing: border-box; font-weight: 300; outline: none; font-size: 0.95rem; }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); background: #fff; }
+        input:readonly { background: #f9f9f9; color: var(--primary); font-weight: 400; }
         
-        .btn-schedule { background: var(--primary); color: white; border: none; padding: 16px; width: 100%; border-radius: 15px; cursor: pointer; font-family: 'Kanit'; font-size: 1rem; font-weight: 400; box-shadow: 0 10px 20px rgba(26,82,118,0.2); }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 16px; width: 100%; border-radius: 15px; cursor: pointer; font-family: 'Kanit'; font-size: 1rem; font-weight: 400; box-shadow: 0 10px 20px rgba(26,82,118,0.2); }
         
-        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.7rem; }
-        .active-st { background: #d4edda; color: #155724; }
+        .status-badge { padding: 3px 12px; border-radius: 50px; font-size: 0.65rem; background: #e8f5e9; color: #2e7d32; }
     </style>
 </head>
 <body>
@@ -41,46 +40,53 @@
 </div>
 
 <div class="nav-tabs">
-    <div class="tab-item active" onclick="showTab('reports', this)"><i class="fas fa-file-alt"></i> รายงาน</div>
-    <div class="tab-item" onclick="showTab('apps', this)"><i class="fas fa-calendar-check"></i> นัดหมาย</div>
+    <div class="tab-item active" onclick="showTab('reports', this)"><i class="fas fa-file-invoice"></i> รายงาน</div>
+    <div class="tab-item" onclick="showTab('apps', this)"><i class="fas fa-calendar-plus"></i> นัดหมาย</div>
     <div class="tab-item" onclick="showTab('settings', this)"><i class="fas fa-user-cog"></i> ตั้งค่า</div>
 </div>
 
 <div class="container">
     <div id="reportsSection" class="tab-content">
-        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-history"></i> ประวัติการเช็คอิน</h4>
+        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-history"></i> ประวัติงานเช็คอิน</h4>
         <div id="visitLogs"></div>
     </div>
 
     <div id="appsSection" class="tab-content" style="display:none;">
         <div class="card">
-            <h3 style="margin-top:0; font-weight:400; color:var(--primary);"><i class="far fa-calendar-plus"></i> สร้างนัดหมายใหม่</h3>
+            <h3 style="margin-top:0; font-weight:400; color:var(--primary);"><i class="far fa-calendar-check"></i> สร้างนัดหมายรายบ้าน</h3>
             
             <div class="form-row">
                 <div><label>วันที่นัดหมาย</label><input type="date" id="appDate"></div>
-                <div><label>เวลาที่สะดวก</label><input type="time" id="appTime"></div> </div>
+                <div><label>เวลาที่สะดวก</label><input type="time" id="appTime"></div>
+            </div>
 
-            <label>โครงการที่เข้าชม (ดึงจากระบบ)</label>
-            <select id="appProject"> <option value="">...กำลังดึงรายชื่อโครงการ...</option>
+            <label>เลือกหรือกรอกรหัสบ้าน (HP_ID)</label>
+            <select id="appHPID" onchange="fetchProjectName()">
+                <option value="">-- กำลังดึงข้อมูลรหัสบ้าน --</option>
             </select>
+
+            <label style="margin-top:15px;">โครงการ (ระบบดึงให้อัตโนมัติ)</label>
+            <input type="text" id="appProject" placeholder="เลือก HP_ID เพื่อดึงชื่อโครงการ" readonly>
 
             <label style="margin-top:15px;">ชื่อลูกค้าผู้เข้าชม</label>
             <input type="text" id="appCustomer" placeholder="ระบุชื่อลูกค้า">
 
-            <label style="margin-top:15px;">โน้ตหรือหมายเหตุเพิ่มเติม</label>
-            <textarea id="appNote" placeholder="เช่น ลูกค้าสนใจบ้าน 3 ห้องนอนเป็นพิเศษ" rows="3"></textarea> <button class="btn-schedule" onclick="saveApp()">ยืนยันนัดหมายมหาอำนาจ</button>
+            <label style="margin-top:15px;">โน้ตหรือรายละเอียดเพิ่มเติม</label>
+            <textarea id="appNote" placeholder="ระบุความต้องการเพิ่มเติมของลูกค้า (ถ้ามี)" rows="3"></textarea>
+
+            <button class="btn-submit" onclick="saveApp()">ส่งนัดหมายมหาอำนาจ</button>
         </div>
 
-        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-list-check"></i> ตารางนัดหมายที่ยืนยันแล้ว</h4>
+        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-list-check"></i> รายการนัดหมายที่ยืนยันแล้ว</h4>
         <div id="appList"></div>
     </div>
 
     <div id="settingsSection" class="tab-content" style="display:none;">
         <div class="card">
-            <h4 style="margin-top:0; font-weight:400;">แก้ไขโปรไฟล์</h4>
+            <h4 style="margin-top:0; font-weight:400;">จัดการโปรไฟล์</h4>
             <label>รูปถ่าย (URL)</label><input type="text" id="setPhoto">
-            <label>ชื่อ-นามสกุล</label><input type="text" id="setName">
-            <button onclick="saveProfile()" class="btn-schedule">บันทึกข้อมูล</button>
+            <label>ชื่อเอเจนต์</label><input type="text" id="setName">
+            <button onclick="saveProfile()" class="btn-submit">บันทึกข้อมูล</button>
             <button onclick="logout()" style="width:100%; margin-top:20px; border:none; background:none; color:red; cursor:pointer; font-family:Kanit;">ออกจากระบบ</button>
         </div>
     </div>
@@ -89,6 +95,7 @@
 <script>
     const api = "https://script.google.com/macros/s/AKfycbxMc0a6TCPVwkUadpmiytGvEGwtHeqgJALA8O8dBW9nH5O7cggUldHP4sZ7mOk0mgNX/exec";
     const agentPin = localStorage.getItem('agentPin');
+    let agentNameStr = "";
 
     async function init() {
         if(!agentPin) window.location.href = 'login.html';
@@ -97,50 +104,60 @@
         if(!d.success) return;
 
         const a = d.agent;
+        agentNameStr = a.name;
         document.getElementById('agentName').innerText = a.name;
         document.getElementById('agentPhoto').src = a.photo || "https://via.placeholder.com/90";
-        document.getElementById('rateBadge').innerText = `Commission Rate: ${a.comRate}%`;
+        document.getElementById('rateBadge').innerText = `Commission: ${a.comRate}%`;
         document.getElementById('setName').value = a.name;
         document.getElementById('setPhoto').value = a.photo || "";
 
-        // 📊 Render Reports
-        document.getElementById('visitLogs').innerHTML = d.visits.map(v => `
-            <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                <div><b>${v[3]}</b><br><small style="color:#999;">${new Date(v[1]).toLocaleDateString('th-TH')}</small></div>
-                <span class="status-badge active-st">${v[6]}</span>
-            </div>`).join('') || '<div style="text-align:center; padding:30px; color:#999;">ยังไม่มีประวัติ</div>';
+        // Render Reports & Apps
+        document.getElementById('visitLogs').innerHTML = d.visits.map(v => `<div class="card" style="display:flex; justify-content:space-between; align-items:center;"><div><b>${v[3]}</b><br><small>${new Date(v[1]).toLocaleDateString('th-TH')}</small></div><span class="status-badge">${v[6]}</span></div>`).join('');
+        document.getElementById('appList').innerHTML = d.apps.map(ap => `<div class="card">🗓️ <b>${ap.customer}</b><br><small>${ap.project} (${ap.hpId}) | ${new Date(ap.date).toLocaleDateString('th-TH')} [${ap.time}]</small></div>`).join('');
 
-        // 🗓️ Render Appointments
-        document.getElementById('appList').innerHTML = d.apps.map(ap => `
-            <div class="card">🗓️ <b>${ap.customer}</b><br><small>${ap.project} | ${new Date(ap.date).toLocaleDateString('th-TH')} (${ap.time})</small></div>
-        `).join('');
-
-        loadProjects(); // 🎯 ดึงชื่อโครงการใส่ Dropdown
+        loadHPIDs(); // 🎯 ดึงรหัสบ้านใส่ Dropdown
     }
 
-    // 🎯 ดึงโครงการจริงจากระบบ
-    async function loadProjects() {
-        const r = await fetch(`${api}?action=getUniqueProjects`);
-        const projects = await r.json();
-        const sel = document.getElementById('appProject');
-        sel.innerHTML = '<option value="">-- เลือกโครงการ --</option>' + 
-            projects.map(p => `<option value="${p}">${p}</option>`).join('');
+    // 🎯 ดึงรหัส HP_ID ทั้งหมดจากระบบ
+    async function loadHPIDs() {
+        const r = await fetch(`${api}?action=getAllHPIDs`);
+        const ids = await r.json();
+        const sel = document.getElementById('appHPID');
+        sel.innerHTML = '<option value="">-- เลือกรหัส HP_ID --</option>' + 
+            ids.map(id => `<option value="${id}">${id}</option>`).join('');
+    }
+
+    // 🎯 ดึงโครงการอัตโนมัติเมื่อเลือก HP_ID
+    async function fetchProjectName() {
+        const hpId = document.getElementById('appHPID').value;
+        const projectField = document.getElementById('appProject');
+        if(!hpId) { projectField.value = ""; return; }
+        
+        projectField.value = "...กำลังค้นหาโครงการ...";
+        const r = await fetch(`${api}?action=getProjectByHPID&hpId=${hpId}`);
+        const d = await r.json();
+        projectField.value = d.project; // จะเป็นชื่อโครงการ หรือ "-" หากไม่พบ
     }
 
     async function saveApp() {
+        const btn = document.querySelector('.btn-submit');
         const d = { 
             action: 'addAppointment', 
             pin: agentPin, 
+            agentName: agentNameStr,
             date: document.getElementById('appDate').value, 
-            time: document.getElementById('appTime').value, // 🎯 ส่งเวลา
-            project: document.getElementById('appProject').value, // 🎯 ส่งโครงการจาก Dropdown
+            time: document.getElementById('appTime').value,
+            hpId: document.getElementById('appHPID').value,
+            project: document.getElementById('appProject').value,
             customer: document.getElementById('appCustomer').value,
-            note: document.getElementById('appNote').value // 🎯 ส่งโน้ต
+            note: document.getElementById('appNote').value
         };
-        if(!d.date || !d.time || !d.project) { alert("โปรดระบุวันที่ เวลา และโครงการให้ครบครับ"); return; }
         
+        if(!d.date || !d.time || !d.hpId || !d.customer) { alert("มาสเตอร์ครับ โปรดกรอกข้อมูลให้ครบทุกช่องเพื่อความกริบของระบบนัดหมายครับ"); return; }
+        
+        btn.innerText = "...กำลังส่งข้อมูลมหาอำนาจ..."; btn.disabled = true;
         await fetch(api, { method: 'POST', body: JSON.stringify(d) });
-        alert("✅ ยืนยันนัดหมายสำเร็จ! ระบบส่งแจ้งเตือนเข้ากลุ่มไลน์แล้ว");
+        alert("✅ นัดหมายสำเร็จ! แอดมินและโครงการได้รับแจ้งเตือนเรียบร้อย");
         location.reload();
     }
 
