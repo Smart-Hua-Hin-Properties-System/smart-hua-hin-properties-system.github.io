@@ -3,42 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Hub V8.7 - Sales Closer</title>
+    <title>Agent Hub V8.8 - Sovereign Commander</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #f0f4f7; --white: #ffffff; --orange: #e67e22; --green: #27ae60; --gray: #7f8c8d; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; color: #333; }
         
-        /* 🔵 Blue Area Configuration */
+        /* 🔵 Header with Overlaid Camera Icon */
         .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 40px 40px; position: relative; }
         .settings-btn { position: absolute; top: 20px; right: 20px; font-size: 1.4rem; color: rgba(255,255,255,0.7); cursor: pointer; }
-        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; }
+        .profile-container { position: relative; display: inline-block; }
+        .profile-img { width: 95px; height: 95px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; }
+        .cam-icon { position: absolute; bottom: 15px; right: 5px; background: white; color: var(--primary); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; }
         
-        /* 🎯 ระบบเมนู 4 แท็บ: ประวัติ, นัดหมาย, เช็คอิน, แจ้งปิดงาน */
-        .nav-tabs { background: #fff; display: flex; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .tab-item { padding: 15px 5px; color: var(--gray); text-decoration: none; font-size: 0.76rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; transition: 0.3s; }
+        .nav-tabs { background: #fff; display: flex; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+        .tab-item { padding: 15px 5px; color: var(--gray); text-decoration: none; font-size: 0.74rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; }
         .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
 
         .container { padding: 20px; max-width: 850px; margin: 0 auto; padding-bottom: 60px; }
         .card { background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .upload-area { border: 2.5px dashed #e1e8ed; padding: 25px; border-radius: 20px; text-align: center; cursor: pointer; color: var(--gray); margin-bottom: 15px; }
-        .preview-box { width: 100%; border-radius: 15px; margin-top: 15px; display: none; }
         
-        label { font-size: 0.72rem; color: var(--gray); margin-bottom: 5px; display: block; padding-left: 3px; }
+        /* 🎯 Commission Choice Icons */
+        .com-chips { display: flex; gap: 8px; margin-bottom: 15px; }
+        .chip { padding: 6px 12px; border-radius: 50px; background: #eee; font-size: 0.75rem; cursor: pointer; transition: 0.3s; }
+        .chip.selected { background: var(--orange); color: white; }
+
+        label { font-size: 0.72rem; color: var(--gray); margin-bottom: 5px; display: block; }
         input, select, textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Kanit'; box-sizing: border-box; font-weight: 300; outline: none; margin-bottom: 18px; background: #fafafa; font-size: 0.92rem; }
-        input:read-only { background: #f0f2f5; color: #95a5a6; }
-        .btn-submit { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; cursor: pointer; font-family: 'Kanit'; font-size: 1rem; font-weight: 400; box-shadow: 0 10px 20px rgba(26,82,118,0.2); }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; cursor: pointer; font-family: 'Kanit'; font-size: 1rem; font-weight: 400; }
         
         .status-badge { padding: 4px 14px; border-radius: 50px; font-size: 0.65rem; }
         .active-st { background: #d4edda; color: #155724; }
         .waiting-st { background: #fff3cd; color: #856404; }
+        .gps-lock { font-size: 0.7rem; color: var(--green); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; justify-content: center; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <div class="settings-btn" onclick="showTab('profile', this)"><i class="fas fa-cog"></i></div> <img id="agentPhoto" src="https://via.placeholder.com/90" class="profile-img">
+    <div class="settings-btn" onclick="showTab('profile', this)"><i class="fas fa-cog"></i></div>
+    <div class="profile-container">
+        <img id="agentPhoto" src="https://via.placeholder.com/95" class="profile-img">
+        <div class="cam-icon" onclick="document.getElementById('fileProf').click()"><i class="fas fa-camera"></i></div>
+        <input type="file" id="fileProf" hidden accept="image/*" onchange="handleFile(this, 'agentPhoto')">
+    </div>
     <h2 id="agentName" style="margin:0; font-weight:400; letter-spacing:1px;">...</h2>
     <div id="agencyBadge" style="font-size:0.8rem; opacity:0.8; margin-top:5px;">Loading...</div>
 </div>
@@ -47,11 +56,12 @@
     <div class="tab-item active" onclick="showTab('history', this)"><i class="fas fa-history"></i> ประวัติ</div>
     <div class="tab-item" onclick="showTab('appointment', this)"><i class="fas fa-calendar-check"></i> นัดหมาย</div>
     <div class="tab-item" onclick="showTab('checkin', this)"><i class="fas fa-image"></i> เช็คอิน</div>
-    <div class="tab-item" onclick="showTab('sales', this)"><i class="fas fa-file-invoice-dollar"></i> แจ้งยอดขาย</div> </div>
+    <div class="tab-item" onclick="showTab('sales', this)"><i class="fas fa-file-invoice-dollar"></i> แจ้งยอดขาย</div>
+</div>
 
 <div class="container">
     <div id="historySection" class="tab-content">
-        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-clipboard-list"></i> ประวัติการเข้างาน</h4>
+        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-clipboard-list"></i> ประวัติงานเช็คอิน (<span id="totalCheck" style="color:var(--orange);">0</span> ครั้ง)</h4>
         <div id="visitLogs"></div>
     </div>
 
@@ -65,41 +75,57 @@
             <label>รหัสบ้าน (HP_ID)</label><select id="appHPID" onchange="fetchProject('app')"><option value="">-- เลือกบ้าน --</option></select>
             <label>โครงการ</label><input type="text" id="appProject" readonly>
             <label>ชื่อลูกค้า</label><input type="text" id="appCustomer">
-            <button class="btn-submit" onclick="saveApp()">ยืนยันการนัดหมาย</button>
+            <label>หมายเหตุ</label><textarea id="appNote" placeholder="รายละเอียดนัดหมายเพิ่มเติม" rows="2"></textarea>
+            <button class="btn-submit" onclick="saveApp()">ยืนยันการนัดหมายมหาอำนาจ</button>
         </div>
     </div>
 
     <div id="checkinSection" class="tab-content" style="display:none;">
         <div class="card">
             <h4 style="margin:0 0 15px 0; font-weight:400; color:var(--primary);">เช็คอินหน้างานจริง</h4>
-            <label>รหัสบ้าน (HP_ID)</label><select id="checkHPID" onchange="fetchProject('check')"><option value="">-- เลือกบ้าน --</option></select>
+            <label>รหัสบ้านที่เข้าชม (HP_ID)</label><select id="checkHPID" onchange="fetchProject('check')"><option value="">-- เลือกบ้าน --</option></select>
             <label>โครงการ</label><input type="text" id="checkProject" readonly>
-            <div class="upload-area" onclick="document.getElementById('file1').click()">
-                <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพลูกค้า
+            <label>หมายเหตุ/ข้อมูลเพิ่มเติม [ไกด์: สนใจดูแปลงริมน้ำเพิ่มเติม]</label>
+            <textarea id="checkNote" placeholder="ระบุสิ่งที่ลูกค้าสนใจเป็นพิเศษ" rows="2"></textarea>
+            
+            <label>แนบรูปภาพลูกค้า</label>
+            <div style="border:1px dashed #ccc; padding:15px; border-radius:15px; margin-bottom:15px; text-align:center;" onclick="document.getElementById('file1').click()">
+                <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพ
                 <input type="file" id="file1" hidden accept="image/*" onchange="handleFile(this, 'prev1')">
-                <img id="prev1" class="preview-box">
+                <img id="prev1" style="width:100%; margin-top:10px; display:none; border-radius:10px;">
             </div>
+
+            <label>แนบรูปภาพหน้างาน</label>
+            <div style="border:1px dashed #ccc; padding:15px; border-radius:15px; margin-bottom:15px; text-align:center;" onclick="document.getElementById('file2').click()">
+                <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพ
+                <input type="file" id="file2" hidden accept="image/*" onchange="handleFile(this, 'prev2')">
+                <img id="prev2" style="width:100%; margin-top:10px; display:none; border-radius:10px;">
+            </div>
+
+            <div id="gpsStatus" class="gps-lock"><i class="fas fa-satellite"></i> กำลังล็อคพิกัด GPS...</div>
             <button class="btn-submit" onclick="doCheckIn()" id="btnCheck">ยืนยันเช็คอิน (GPS)</button>
         </div>
     </div>
 
     <div id="salesSection" class="tab-content" style="display:none;">
         <div class="card" style="border-left:5px solid var(--orange);">
-            <h4 style="margin:0 0 15px 0; color:var(--orange);"><i class="fas fa-calculator"></i> เครื่องคำนวณรายได้</h4>
-            <label>ราคาขายบ้าน (บาท)</label><input type="number" id="calcPrice" placeholder="0.00" oninput="calculateCom()">
+            <h4 style="margin:0 0 10px 0; color:var(--orange);"><i class="fas fa-calculator"></i> เครื่องคำนวณรายได้</h4>
+            <div class="com-chips">
+                <div class="chip" onclick="setCalcRate(1, this)">1%</div><div class="chip" onclick="setCalcRate(2, this)">2%</div><div class="chip selected" onclick="setCalcRate(3, this)">3%</div><div class="chip" onclick="setCalcRate(4, this)">4%</div><div class="chip" onclick="setCalcRate(5, this)">5%</div>
+            </div>
+            <label>ราคาที่ตกลงขาย (บาท)</label><input type="number" id="calcPrice" placeholder="0.00" oninput="calculateCom()">
             <label>ค่าคอมฯ ที่ท่านได้รับ (฿)</label><input type="text" id="calcResult" readonly style="color:var(--green); font-size:1.1rem; font-weight:400;">
-            <small style="color:var(--gray);">* คำนวณจากเรตของท่าน: <span id="myRate">-</span>%</small>
         </div>
         <div class="card">
-            <h4 style="margin:0 0 15px 0; color:var(--primary);"><i class="fas fa-check-circle"></i> แจ้งปิดการขาย (ขอรับคอมมิชชัน)</h4>
-            <label>รหัสบ้านที่ปิดการขาย</label><select id="saleHPID" onchange="fetchProject('sale')"><option value="">-- เลือกรหัสบ้าน --</option></select>
+            <h4 style="margin:0 0 15px 0; color:var(--primary);">แจ้งปิดการขาย (ขอรับคอมมิชชัน)</h4>
+            <label>รหัสบ้านที่ปิดการขาย</label><select id="saleHPID" onchange="fetchProject('sale')"><option value="">-- เลือกบ้าน --</option></select>
             <label>โครงการ</label><input type="text" id="saleProject" readonly>
-            <label>ชื่อลูกค้าผู้ซื้อ</label><input type="text" id="saleCustomer" placeholder="ชื่อ-นามสกุล">
-            <label>ราคาที่ตกลงขายได้ (บาท)</label><input type="number" id="saleFinalPrice">
-            <div class="upload-area" onclick="document.getElementById('fileSale').click()">
-                <i class="fas fa-file-contract fa-2x"></i><br>แนบหลักฐานการจอง/ตกลงซื้อขาย
+            <label>ชื่อลูกค้าผู้ซื้อ</label><input type="text" id="saleCustomer">
+            <label>ราคาที่ตกลงขาย (บาท)</label><input type="number" id="saleFinalPrice">
+            <div style="border:1px dashed #ccc; padding:15px; border-radius:15px; margin-bottom:15px; text-align:center;" onclick="document.getElementById('fileSale').click()">
+                <i class="fas fa-file-contract fa-2x"></i><br>แนบหลักฐานการจอง
                 <input type="file" id="fileSale" hidden accept="image/*" onchange="handleFile(this, 'prevSale')">
-                <img id="prevSale" class="preview-box">
+                <img id="prevSale" style="width:100%; margin-top:10px; display:none; border-radius:10px;">
             </div>
             <button class="btn-submit" onclick="submitSale()">ส่งรายงานปิดการขายมหาอำนาจ</button>
         </div>
@@ -107,11 +133,10 @@
 
     <div id="profileSection" class="tab-content" style="display:none;">
         <div class="card">
-            <h4 style="margin:0 0 15px 0; color:var(--primary);">ตั้งค่าโปรไฟล์</h4>
+            <h4 style="margin:0 0 15px 0; color:var(--primary);"><i class="fas fa-user-edit"></i> Edit Profile</h4>
             <label>เบอร์โทรศัพท์</label><input type="tel" id="profPhone">
             <label>Line ID</label><input type="text" id="profLine">
             <label>เลขบัญชีธนาคาร</label><textarea id="profAccount" rows="2"></textarea>
-            <label>ลิงก์รูปโปรไฟล์ (URL)</label><input type="url" id="profPhoto">
             <button class="btn-submit" onclick="saveProfile()">บันทึกข้อมูลตั้งค่า</button>
             <button onclick="logout()" style="width:100%; margin-top:20px; border:none; background:none; color:var(--red); cursor:pointer;">ออกจากระบบ</button>
         </div>
@@ -121,7 +146,7 @@
 <script>
     const api = "https://script.google.com/macros/s/AKfycbyBYEGI9CJrwtBk9Izgyo60Scoj5tfLOOfJ2g_VvyOZP5ws-DYyY77lg58Gywg6YHH6/exec";
     const agentPin = localStorage.getItem('agentPin');
-    let agentNameGlobal = "", myComRate = 0, saleImgBase64 = "";
+    let agentNameGlobal = "", myComRate = 3, lat = "", lng = "", img1B64 = "", img2B64 = "", saleImgB64 = "", newProfB64 = "";
 
     async function init() {
         if(!agentPin) window.location.href = 'login.html';
@@ -129,20 +154,39 @@
         const d = await r.json();
         if(!d.success) return;
 
-        const a = d.agent; agentNameGlobal = a.name; myComRate = a.comRate;
+        const a = d.agent; agentNameGlobal = a.name;
         document.getElementById('agentName').innerText = a.name;
-        document.getElementById('agentPhoto').src = a.photo || "https://via.placeholder.com/90";
+        document.getElementById('agentPhoto').src = a.photo || "https://via.placeholder.com/95";
         document.getElementById('agencyBadge').innerText = a.agency;
-        document.getElementById('myRate').innerText = myComRate;
         
-        // Load Settings Data
         document.getElementById('profPhone').value = a.phone || "";
         document.getElementById('profLine').value = a.lineId || "";
         document.getElementById('profAccount').value = a.accountInfo || "";
-        document.getElementById('profPhoto').value = a.photo || "";
 
+        // 📊 Render History Count
+        document.getElementById('totalCheck').innerText = d.visits.length;
         document.getElementById('visitLogs').innerHTML = d.visits.map(v => `<div class="card"><div style="display:flex; justify-content:space-between; align-items:center;"><div><b>${v.Project || '-'}</b><br><small>${new Date(v.Timestamp).toLocaleDateString('th-TH')}</small></div><span class="status-badge ${v.Status==='Active'?'active-st':'waiting-st'}">${v.Status}</span></div></div>`).join('');
         loadHPIDs();
+        navigator.geolocation.getCurrentPosition(p => { lat = p.coords.latitude; lng = p.coords.longitude; document.getElementById('gpsStatus').innerHTML = `<i class="fas fa-check-circle"></i> GPS ล็อคพิกัดมหาอำนาจสำเร็จ`; });
+    }
+
+    function handleFile(input, id) {
+        const r = new FileReader();
+        r.onload = e => {
+            const b64 = e.target.result;
+            if(id === 'prev1') img1B64 = b64;
+            else if(id === 'prev2') img2B64 = b64;
+            else if(id === 'prevSale') saleImgB64 = b64;
+            else if(id === 'agentPhoto') { newProfB64 = b64; document.getElementById(id).src = b64; }
+            if(id.startsWith('prev')) { const p = document.getElementById(id); p.src = b64; p.style.display = 'block'; }
+        };
+        r.readAsDataURL(input.files[0]);
+    }
+
+    function setCalcRate(rate, el) {
+        myComRate = rate;
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected'); calculateCom();
     }
 
     function calculateCom() {
@@ -150,33 +194,35 @@
         document.getElementById('calcResult').value = p ? ((p * myComRate) / 100).toLocaleString() : "0";
     }
 
+    async function saveApp() {
+        const d = { action: 'addAppointment', pin: agentPin, agentName: agentNameGlobal, date: document.getElementById('appDate').value, time: document.getElementById('appTime').value, hpId: document.getElementById('appHPID').value, project: document.getElementById('appProject').value, customer: document.getElementById('appCustomer').value, note: document.getElementById('appNote').value };
+        if(!d.date || !d.hpId) return alert("โปรดกรอกข้อมูลให้ครบครับ");
+        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
+        alert("✅ นัดหมายสำเร็จ!"); location.reload();
+    }
+
+    async function doCheckIn() {
+        if(!lat) return alert("โปรดอนุญาต GPS ก่อนครับ");
+        const d = { action: 'agentCheckIn', pin: agentPin, agentName: agentNameGlobal, projectName: document.getElementById('checkProject').value, hpId: document.getElementById('checkHPID').value, note: document.getElementById('checkNote').value, img1Data: img1B64, img2Data: img2B64, lat: lat, lng: lng };
+        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
+        alert("✅ เช็คอินสำเร็จ! ข้อมูลถูกส่งเข้า LINE เรียบร้อย"); location.reload();
+    }
+
     async function submitSale() {
         const hpId = document.getElementById('saleHPID').value;
         const price = document.getElementById('saleFinalPrice').value;
-        if(!hpId || !price) return alert("โปรดกรอกรหัสบ้านและราคาขายครับ");
-        
-        const d = { action: 'handleSalesClosing', pin: agentPin, agentName: agentNameGlobal, hpId: hpId, project: document.getElementById('saleProject').value, customer: document.getElementById('saleCustomer').value, closingPrice: price, commission: (price * myComRate) / 100, imgData: saleImgBase64 };
+        if(!hpId || !price) return alert("โปรดกรอกข้อมูลให้ครบครับ");
+        const d = { action: 'handleSalesClosing', pin: agentPin, agentName: agentNameGlobal, hpId: hpId, project: document.getElementById('saleProject').value, customer: document.getElementById('saleCustomer').value, closingPrice: price, commission: (price * myComRate) / 100, imgData: saleImgB64 };
         await fetch(api, { method: 'POST', body: JSON.stringify(d) });
-        alert("✅ แจ้งยอดขายสำเร็จ! มาสเตอร์จะตรวจสอบและดำเนินการจ่ายคอมมิชชันให้ท่านครับ");
-        location.reload();
-    }
-
-    function handleFile(input, prevId) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            if(prevId === 'prevSale') saleImgBase64 = e.target.result;
-            const p = document.getElementById(prevId); p.src = e.target.result; p.style.display = 'block';
-        };
-        reader.readAsDataURL(input.files[0]);
+        alert("✅ แจ้งยอดขายสำเร็จ! ข้อมูลเข้าสู่ระบบมหาอำนาจแล้ว"); location.reload();
     }
 
     async function saveProfile() {
-        const d = { action: 'updateAgentProfile', pin: agentPin, phone: document.getElementById('profPhone').value, lineId: document.getElementById('profLine').value, accountInfo: document.getElementById('profAccount').value, photoUrl: document.getElementById('profPhoto').value };
+        const d = { action: 'updateAgentProfile', pin: agentPin, phone: document.getElementById('profPhone').value, lineId: document.getElementById('profLine').value, accountInfo: document.getElementById('profAccount').value, newPhotoData: newProfB64 };
         await fetch(api, { method: 'POST', body: JSON.stringify(d) });
-        alert("บันทึกการตั้งค่าสำเร็จ!"); location.reload();
+        alert("✅ บันทึกโปรไฟล์มหาอำนาจสำเร็จ!"); location.reload();
     }
 
-    // ฟังก์ชันช่วยอื่นๆ
     function showTab(t, el) {
         document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
         document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
