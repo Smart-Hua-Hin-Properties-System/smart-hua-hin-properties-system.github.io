@@ -7,173 +7,62 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f8f9fa; --white: #ffffff; --green: #27ae60; --gold: #f1c40f; --locked: #f1f3f4; --master-bg: #fff3cd; --master-border: #ffeeba; }
+        :root { --primary: #1a5276; --bg: #f8f9fa; --white: #ffffff; --green: #27ae60; --gold: #f1c40f; --locked: #f1f3f4; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
-        
-        /* 📱 Header */
         .admin-header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .admin-info { display: flex; align-items: center; gap: 10px; }
-        .role-badge { font-size: 0.7rem; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-weight: 600; }
-        
         .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
-        
-        /* 👑 Master Section */
-        #masterOnlySection { display: none; background: var(--master-bg); border: 1px solid var(--master-border); padding: 20px; border-radius: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(133, 100, 4, 0.1); }
-        .master-title { color: #856404; margin: 0 0 15px 0; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
-        .btn-dashboard { background: #856404; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
-        .btn-dashboard:hover { background: #6d5203; transform: translateY(-2px); }
-
-        /* 🏠 Control Buttons & List */
-        .btn-add { background: var(--primary); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(26,82,118,0.2); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        #masterOnlySection { display: none; background: #fff3cd; border: 1px solid #ffeeba; padding: 20px; border-radius: 20px; margin-bottom: 25px; }
+        .btn-add { background: var(--primary); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(26,82,118,0.2); }
         .property-list { background: #fff; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
         .property-item { padding: 18px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .item-info b { color: var(--primary); font-size: 1rem; }
-        .item-info small { color: #7f8c8d; font-size: 0.8rem; }
-        
-        /* 📝 Full Form Modal */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 2000; overflow-y: auto; padding: 10px; }
-        .modal-content { background: #fff; border-radius: 30px; max-width: 900px; margin: 20px auto; padding: 30px; position: relative; }
-        .form-section { margin-bottom: 30px; border-bottom: 1px solid #f0f0f0; padding-bottom: 20px; }
-        .form-section h3 { color: var(--primary); font-size: 1.1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
-        .form-group { display: flex; flex-direction: column; }
-        label { font-size: 0.85rem; color: #7f8c8d; margin-bottom: 5px; font-weight: 500; }
-        input, select, textarea { padding: 12px; border: 1.5px solid #ddd; border-radius: 10px; font-family: 'Kanit'; font-size: 0.95rem; outline: none; }
-        input:focus, select:focus { border-color: var(--primary); }
-        input[readonly] { background: var(--locked); color: #7f8c8d; border-color: #eee; cursor: not-allowed; }
-        .full-width { grid-column: 1 / -1; }
-        .btn-save { background: var(--green); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 20px; font-size: 1.2rem; box-shadow: 0 4px 15px rgba(39,174,96,0.2); }
-        
-        .btn-logout { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; overflow-y: auto; padding: 10px; }
+        .modal-content { background: #fff; border-radius: 30px; max-width: 900px; margin: 15px auto; padding: 25px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        input, select, textarea { padding: 12px; border: 1.5px solid #ddd; border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; width: 100%; }
+        input[readonly] { background: var(--locked); color: #7f8c8d; }
     </style>
 </head>
 <body>
 
 <div class="admin-header">
-    <div class="admin-info">
-        <b>Smart Control</b> 
-        <span id="roleBadge" class="role-badge">Admin</span>
-    </div>
+    <div><b>Smart Control</b> <span id="roleBadge" style="font-size:0.7rem; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:10px;">Admin</span></div>
     <div id="adminName">Loading...</div>
-    <button class="btn-logout" onclick="logout()">ออกระบบ</button>
+    <button onclick="logout()" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">ออกระบบ</button>
 </div>
 
 <div class="container">
-    <h2 id="projectTitle" style="color:var(--primary); margin-top:10px;">การจัดการอาณาจักร...</h2>
-    
     <div id="masterOnlySection">
-        <h4 class="master-title"><i class="fas fa-crown"></i> สำหรับผู้บริหารสูงสุดเท่านั้น</h4>
-        <button class="btn-dashboard" onclick="window.location.href='dashboard.html'">
+        <h4 style="color:#856404; margin-top:0;"><i class="fas fa-crown"></i> ส่วนบริหารสูงสุด</h4>
+        <button onclick="window.location.href='dashboard.html'" style="background:#856404; color:white; width:100%; padding:15px; border:none; border-radius:12px; font-weight:600; cursor:pointer;">
             <i class="fas fa-chart-line"></i> เข้าสู่หน้าสรุปยอดบริหาร (Executive Dashboard)
         </button>
     </div>
 
-    <button class="btn-add" onclick="openAdd()">
-        <i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่เข้าสู่ระบบ
-    </button>
-    
-    <div class="property-list" id="listBody">
-        <div style="padding:60px; text-align:center;"><i class="fas fa-sync fa-spin fa-2x" style="color:var(--primary)"></i><br><br>กำลังดึงข้อมูลมหาอำนาจ...</div>
-    </div>
+    <button class="btn-add" onclick="openAdd()"><i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่</button>
+    <div class="property-list" id="listBody"><div style="padding:60px; text-align:center;"><i class="fas fa-sync fa-spin fa-2x"></i><br><br>กำลังดึงข้อมูล...</div></div>
 </div>
 
 <div class="modal" id="addModal">
     <div class="modal-content">
-        <h2 id="modalTitle" style="margin-top:0; color:var(--primary); border-bottom:3px solid var(--primary); padding-bottom:10px;">ข้อมูลทรัพย์เชิงลึก</h2>
+        <h2 id="modalTitle" style="color:var(--primary); border-bottom:3px solid var(--primary); padding-bottom:10px;">ข้อมูลทรัพย์</h2>
         <form id="propertyForm">
-            
-            <div class="form-section">
-                <h3><i class="fas fa-microchip"></i> ข้อมูลระบบ (ล็อคอัตโนมัติ)</h3>
-                <div class="form-grid">
-                    <div class="form-group"><label>HP_ID (รหัสระบบ)</label><input type="text" name="HP_ID" readonly></div>
-                    <div class="form-group"><label>Project_Name (โครงการ)</label><input type="text" name="Project_Name" readonly></div>
-                    <div class="form-group"><label>Last_Updated (แก้ไขล่าสุด)</label><input type="text" name="Last_Updated" readonly></div>
-                </div>
+            <div class="form-grid">
+                <div><label>HP_ID</label><input type="text" name="HP_ID" readonly></div>
+                <div><label>Project_Name</label><input type="text" name="Project_Name" readonly></div>
+                <div><label>ID</label><input type="text" name="ID" required></div>
+                <div><label>Plot</label><input type="text" name="Plot"></div>
+                <div><label>District</label><select name="District" id="dSelect" onchange="updSub()"><option value="Hua Hin">Hua Hin</option><option value="Cha-am">Cha-am</option><option value="Pranburi">Pranburi</option></select></div>
+                <div><label>SubDistrict</label><select name="SubDistrict" id="sSelect"></select></div>
+                <div><label>Status</label><select name="Status"><option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option></select></div>
+                <div><label>Price</label><input type="number" name="Price" required></div>
+                <div><label>Bedrooms</label><input type="number" name="Bedrooms"></div>
+                <div><label>Bathrooms</label><input type="number" name="Bathrooms"></div>
+                <div><label>Living Area (sq.m)</label><input type="number" name="Living Area (sq.m)"></div>
+                <div><label>Thumbnail URL</label><input type="text" name="Thumbnail"></div>
+                <div style="grid-column: 1/-1;"><label>Description</label><textarea name="Description" rows="3"></textarea></div>
             </div>
-
-            <div class="form-section">
-                <h3><i class="fas fa-map-marker-alt"></i> ข้อมูลพื้นฐานและทำเล</h3>
-                <div class="form-grid">
-                    <div class="form-group"><label>ID (รหัสการตลาด)</label><input type="text" name="ID" required placeholder="เช่น M16"></div>
-                    <div class="form-group"><label>Plot (เลขแปลง)</label><input type="text" name="Plot"></div>
-                    <div class="form-group">
-                        <label>District (อำเภอ)</label>
-                        <select name="District" id="districtSelect" onchange="updateSubDistricts()" required>
-                            <option value="">-- เลือกอำเภอ --</option>
-                            <option value="Hua Hin">Hua Hin (หัวหิน)</option>
-                            <option value="Cha-am">Cha-am (ชะอำ)</option>
-                            <option value="Pranburi">Pranburi (ปราณบุรี)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>SubDistrict (ตำบล)</label>
-                        <select name="SubDistrict" id="subDistrictSelect" required>
-                            <option value="">-- โปรดเลือกอำเภอก่อน --</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Status (สถานะ)</label>
-                        <select name="Status">
-                            <option value="Available">Available (ว่าง)</option>
-                            <option value="Pending">Pending (จองแล้ว)</option>
-                            <option value="Sold">Sold (ขายแล้ว)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Type (ประเภท)</label>
-                        <select name="Type">
-                            <option value="Villa">Villa (วิลล่า)</option>
-                            <option value="House">House (บ้านเดี่ยว)</option>
-                            <option value="Condo">Condo (คอนโด)</option>
-                            <option value="Land">Land (ที่ดิน)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h3><i class="fas fa-ruler-combined"></i> สเปกบ้านและที่ดิน</h3>
-                <div class="form-grid">
-                    <div class="form-group"><label>Bedrooms</label><input type="number" name="Bedrooms" value="3"></div>
-                    <div class="form-group"><label>Bathrooms</label><input type="number" name="Bathrooms" value="2"></div>
-                    <div class="form-group"><label>Living Area (sq.m)</label><input type="number" step="0.01" name="Living Area (sq.m)" required></div>
-                    <div class="form-group"><label>Land Area (sq.m)</label><input type="number" step="0.01" name="Land Area (sq.m)"></div>
-                    <div class="form-group"><label>Land Area (sq.w)</label><input type="number" step="0.01" name="Land Area (sq.w)"></div>
-                    <div class="form-group"><label>Pool Size</label><input type="text" name="Pool Size" placeholder="3x7m"></div>
-                    <div class="form-group"><label>Pool Depth</label><input type="text" name="Pool Depth" placeholder="1.2m"></div>
-                    <div class="form-group"><label>Furnishing</label><select name="Furnishing"><option value="Fully">Fully Furnished</option><option value="Partial">Partial</option><option value="None">None</option></select></div>
-                    <div class="form-group"><label>Parking</label><input type="text" name="Parking"></div>
-                    <div class="form-group"><label>Electricity</label><input type="text" name="Electricity" value="Underground"></div>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h3><i class="fas fa-coins"></i> ราคาและการขาย</h3>
-                <div class="form-grid">
-                    <div class="form-group"><label>Price (ราคาขายสุทธิ)</label><input type="number" name="Price" required></div>
-                    <div class="form-group"><label>Commission (%)</label><input type="number" name="Commission (%)" value="3"></div>
-                    <div class="form-group"><label>Badge</label><input type="text" name="Badge" placeholder="Hot Deal"></div>
-                    <div class="form-group"><label>Price/sqm (Auto)</label><input type="text" name="Price_per_sqm" readonly></div>
-                    <div class="form-group"><label>Comm Amount (Auto)</label><input type="text" name="Comm_Amount_Baht" readonly></div>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h3><i class="fas fa-photo-video"></i> สื่อและลิงก์เชื่อมโยง</h3>
-                <div class="form-grid">
-                    <div class="form-group full-width"><label>Thumbnail (รูปภาพหลัก)</label><input type="text" name="Thumbnail"></div>
-                    <div class="form-group full-width"><label>Image_List (ชุดรูปภาพ คั่นด้วย , )</label><input type="text" name="Image_List"></div>
-                    <div class="form-group"><label>FB Link</label><input type="text" name="FBLink"></div>
-                    <div class="form-group"><label>Floor Plan</label><input type="text" name="FloorPlan"></div>
-                    <div class="form-group"><label>Map Link</label><input type="text" name="Map_Link"></div>
-                    <div class="form-group"><label>Virtual Tour</label><input type="text" name="Virtual_Tour"></div>
-                    <div class="form-group full-width"><label>Extras (ของแถมพิเศษ)</label><textarea name="Extras" rows="2"></textarea></div>
-                    <div class="form-group full-width"><label>Description (รายละเอียดเชิงลึก)</label><textarea name="Description" rows="4"></textarea></div>
-                </div>
-            </div>
-
-            <button type="button" class="btn-save" id="saveBtn" onclick="saveData()">🚀 บันทึกข้อมูลมหาอำนาจ</button>
-            <button type="button" onclick="closeModal()" style="width:100%; border:none; background:none; color:#999; margin-top:15px; cursor:pointer;">ยกเลิกและย้อนกลับ</button>
+            <button type="button" onclick="saveData()" style="background:var(--green); color:white; width:100%; padding:18px; border:none; border-radius:12px; font-weight:600; margin-top:20px;">🚀 บันทึกข้อมูล</button>
+            <button type="button" onclick="closeModal()" style="width:100%; margin-top:10px; background:none; border:none; color:#999;">ยกเลิก</button>
         </form>
     </div>
 </div>
@@ -181,103 +70,45 @@
 <script>
     const api = "https://script.google.com/macros/s/AKfycbx0ICTtHVgCCIU48VQFb-6tO9yvKgD6_oOBIN31tBYB3oHQ3h2JTS_ZIU0JyGG2O-jc/exec";
     const user = JSON.parse(localStorage.getItem('smartAdmin'));
+    if(!user) window.location.href = 'login.html';
     
-    // 🛡️ Security Check
-    if(!user) {
-        window.location.href = 'login.html';
-    } else {
-        document.getElementById('adminName').innerText = user.projectName;
-        document.getElementById('projectTitle').innerText = "จัดการ " + (user.role === 'Master' ? "ทุกโครงการ" : user.projectName);
-        document.getElementById('roleBadge').innerText = user.role;
-        
-        // 👑 โชว์ปุ่ม Dashboard เฉพาะ Master [Requested]
-        if(user.role === 'Master') {
-            document.getElementById('masterOnlySection').style.display = 'block';
-        }
+    document.getElementById('adminName').innerText = user.projectName;
+    document.getElementById('roleBadge').innerText = user.role;
+    if(user.role === 'Master') document.getElementById('masterOnlySection').style.display = 'block';
+
+    const subs = { "Hua Hin": ["Nong Kae", "Hin Lek Fai", "Thap Tai"], "Cha-am": ["Cha-am", "Khao Yai"], "Pranburi": ["Pranburi", "Pak Nam Pran"] };
+    function updSub(v="") {
+        const d = document.getElementById('dSelect').value; const s = document.getElementById('sSelect');
+        s.innerHTML = subs[d].map(x => `<option value="${x}" ${x==v?'selected':''}>${x}</option>`).join('');
     }
 
-    // 🗺️ ระบบภูมิศาสตร์
-    const subDistricts = {
-        "Hua Hin": ["Hua Hin (หัวหิน)", "Nong Kae (หนองแก)", "Hin Lek Fai (หินเหล็กไฟ)", "Thap Tai (ทับใต้)", "Huai Sat Yai (ห้วยสัตว์ใหญ่)", "Bueng Nakhon (บึงนคร)", "Nong Plap (หนองพลับ)"],
-        "Cha-am": ["Cha-am (ชะอำ)", "Na Yang (นายาง)", "Khao Yai (เขาใหญ่)", "Nong Sala (หนองศาลา)", "Huai Sai Nuea (ห้วยทรายเหนือ)", "Rai Mai Phatthana (ไร่ใหม่พัฒนา)"],
-        "Pranburi": ["Pranburi (ปราณบุรี)", "Khao Chao (เขาจ้าว)", "Nong Ta Taem (หนองตาแต้ม)", "Wang Phong (วังก์พง)", "Pak Nam Pran (ปากน้ำปราณ)", "Khuean Pran (เขื่อนปราณ)"]
-    };
-
-    function updateSubDistricts(selectedVal = "") {
-        const district = document.getElementById('districtSelect').value;
-        const subSelect = document.getElementById('subDistrictSelect');
-        subSelect.innerHTML = '<option value="">-- เลือกตำบล --</option>';
-        if(subDistricts[district]) {
-            subDistricts[district].forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s; opt.textContent = s;
-                if(s === selectedVal) opt.selected = true;
-                subSelect.appendChild(opt);
-            });
-        }
-    }
-
-    let allItems = [];
-
+    let all = [];
     async function loadData() {
-        const body = document.getElementById('listBody');
         try {
-            const res = await fetch(`${api}?action=adminData&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`);
-            allItems = await res.json();
-            body.innerHTML = allItems.length ? "" : `<div style="padding:40px; text-align:center;">ยังไม่มีข้อมูล</div>`;
-            allItems.forEach((it, index) => {
-                const row = document.createElement('div'); row.className = 'property-item';
-                row.innerHTML = `
-                    <div class="item-info">
-                        <b>${it.HP_ID} - ${it.ID}</b><br>
-                        <small>฿${Number(it.Price).toLocaleString()} | ${it.Status} | ⏰ ${it.Last_Updated || '-'}</small>
-                    </div>
-                    <button onclick="openEdit(${index})" style="background:none; border:none; color:var(--primary); cursor:pointer;">
-                        <i class="fas fa-edit fa-lg"></i>
-                    </button>`;
-                body.appendChild(row);
-            });
-        } catch(e) { body.innerHTML = `<div style="padding:40px; color:red; text-align:center;">❌ การเชื่อมต่อล้มเหลว</div>`; }
+            const r = await fetch(`${api}?action=adminData&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`);
+            all = await r.json();
+            document.getElementById('listBody').innerHTML = all.map((it, i) => `
+                <div class="property-item">
+                    <div><b>${it.HP_ID} - ${it.ID}</b><br><small>฿${Number(it.Price).toLocaleString()} | ${it.Status}</small></div>
+                    <button onclick="openEdit(${i})" style="background:none; border:none; color:var(--primary); cursor:pointer;"><i class="fas fa-edit fa-lg"></i></button>
+                </div>`).join('') || '<div style="padding:40px; text-align:center;">ยังไม่มีข้อมูล</div>';
+        } catch(e) { document.getElementById('listBody').innerHTML = "❌ โหลดข้อมูลล้มเหลว"; }
     }
 
-    function openModal() { document.getElementById('addModal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
-    function closeModal() { document.getElementById('addModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
-
-    function openAdd() {
-        const form = document.getElementById('propertyForm');
-        form.reset();
-        form.querySelector('input[name="Project_Name"]').value = user.projectName;
-        updateSubDistricts();
-        document.getElementById('modalTitle').innerText = "เพิ่มทรัพย์ใหม่";
-        openModal();
+    function openModal() { document.getElementById('addModal').style.display = 'block'; }
+    function closeModal() { document.getElementById('addModal').style.display = 'none'; }
+    function openAdd() { document.getElementById('propertyForm').reset(); document.querySelector('input[name="Project_Name"]').value = user.projectName; updSub(); openModal(); }
+    function openEdit(i) {
+        const it = all[i]; const f = document.getElementById('propertyForm');
+        Object.keys(it).forEach(k => { if(f[k]) f[k].value = it[k]; });
+        updSub(it.SubDistrict); openModal();
     }
-
-    function openEdit(index) {
-        const it = allItems[index];
-        const form = document.getElementById('propertyForm');
-        Object.keys(it).forEach(key => { if(form[key]) form[key].value = it[key]; });
-        updateSubDistricts(it.SubDistrict);
-        document.getElementById('modalTitle').innerText = "แก้ไขข้อมูล " + it.HP_ID;
-        openModal();
-    }
-
     async function saveData() {
-        const btn = document.getElementById('saveBtn');
-        const form = document.getElementById('propertyForm');
-        const data = Object.fromEntries(new FormData(form).entries());
-        
-        btn.innerText = "正在บันทึกข้อมูล..."; btn.disabled = true;
-        try {
-            const res = await fetch(`${api}?action=saveProperty&data=${encodeURIComponent(JSON.stringify(data))}`);
-            const result = await res.json();
-            if(result.success) {
-                alert("✅ บันทึกเข้าอาณาจักรสำเร็จ!");
-                closeModal(); loadData();
-            } else { alert("❌ ผิดพลาด: " + result.error); }
-        } catch(e) { alert("❌ การส่งข้อมูลขัดข้อง"); }
-        btn.innerText = "🚀 บันทึกข้อมูลมหาอำนาจ"; btn.disabled = false;
+        const d = Object.fromEntries(new FormData(document.getElementById('propertyForm')).entries());
+        d["Project_Name"] = user.projectName;
+        await fetch(`${api}?action=saveProperty&data=${encodeURIComponent(JSON.stringify(d))}`);
+        alert("สำเร็จ!"); closeModal(); loadData();
     }
-
     function logout() { localStorage.removeItem('smartAdmin'); window.location.href = 'login.html'; }
     loadData();
 </script>
