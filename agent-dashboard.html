@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent HQ V13.1 - Restoration Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #1a5276; --bg: #f0f4f7; --orange: #e67e22; --green: #2ecc71; --gray: #7f8c8d; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; color: #333; }
+        .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 40px 40px; position: relative; }
+        .profile-img { width: 95px; height: 95px; border-radius: 50%; border: 3px solid white; object-fit: cover; background: white; margin-bottom: 10px; }
+        .status-text { font-size: 0.85rem; opacity: 0.95; margin-top: 5px; }
+        .nav-tabs { background: #fff; display: flex; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+        .tab-item { padding: 15px 5px; color: var(--gray); font-size: 0.74rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; }
+        .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
+        .container { padding: 20px; max-width: 850px; margin: 0 auto; padding-bottom: 60px; }
+        .card { background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        input, select, textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Kanit'; box-sizing: border-box; margin-bottom: 18px; outline: none; background: #fafafa; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; cursor: pointer; font-family: 'Kanit'; font-size: 1rem; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div style="position:absolute; top:20px; right:20px; font-size:1.4rem; opacity:0.7;" onclick="showTab('profile', this)"><i class="fas fa-cog"></i></div>
+    <div style="position:relative; display:inline-block;">
+        <img id="agentPhoto" src="https://via.placeholder.com/95" class="profile-img">
+        <div style="position:absolute; bottom:15px; right:0; background:white; color:var(--primary); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; box-shadow:0 2px 5px rgba(0,0,0,0.2);" onclick="document.getElementById('fileProf').click()"><i class="fas fa-camera"></i></div>
+        <input type="file" id="fileProf" hidden accept="image/*" onchange="handleFile(this, 'agentPhoto')">
+    </div>
+    <h2 id="agentName" style="margin:0; font-weight:400; letter-spacing:1px;">...</h2>
+    <div class="status-text" id="agentSubText"><span style="color:var(--green);">Active</span> | PIN: ...</div>
+</div>
+<div class="nav-tabs">
+    <div class="tab-item active" onclick="showTab('history', this)"><i class="fas fa-history"></i> ประวัติ</div>
+    <div class="tab-item" onclick="showTab('appointment', this)"><i class="fas fa-calendar-check"></i> นัดหมาย</div>
+    <div class="tab-item" onclick="showTab('checkin', this)"><i class="fas fa-image"></i> เช็คอิน</div>
+    <div class="tab-item" onclick="showTab('sales', this)"><i class="fas fa-file-invoice-dollar"></i> แจ้งยอดขาย</div>
+</div>
+<div class="container">
+    <div id="historySection" class="tab-content"><h4 style="font-weight:400; color:var(--primary);">ประวัติเช็คอิน (<span id="totalCheck" style="color:var(--orange);">0</span> ครั้ง)</h4><div id="visitLogs"></div></div>
+    <div id="appointmentSection" class="tab-content" style="display:none;"><div class="card"><h4>นัดหมายลูกค้า</h4><label>รหัสบ้าน</label><select id="appHPID"></select><input type="text" id="appCustomer" placeholder="ชื่อลูกค้า"><button class="btn-submit" onclick="saveApp()">ยืนยันนัดหมาย</button></div></div>
+    <div id="checkinSection" class="tab-content" style="display:none;"><div class="card"><h4>เช็คอินหน้างาน</h4><label>รหัสบ้าน</label><select id="checkHPID"></select><textarea id="checkNote" placeholder="ระบุหมายเหตุ" rows="2"></textarea><button class="btn-submit" onclick="doCheckIn()">ยืนยันเช็คอิน (GPS)</button></div></div>
+    <div id="salesSection" class="tab-content" style="display:none;"><div class="card"><h4>แจ้งปิดยอดขาย</h4><label>รหัสบ้าน</label><select id="saleHPID"></select><input type="number" id="salePrice" placeholder="ราคาขายจริง"><button class="btn-submit" onclick="submitSale()">ส่งรายงานปิดยอด</button></div></div>
+    <div id="profileSection" class="tab-content" style="display:none;">
+        <div class="card">
+            <h4>Edit Profile</h4>
+            <label>ชื่อ-นามสกุล</label><input type="text" id="profName">
+            <label>สังกัด</label><input type="text" id="profAgency">
+            <label>สถานะ</label><input type="text" id="profStatus">
+            <label>เบอร์โทรศัพท์</label><input type="tel" id="profPhone">
+            <label>เลขบัญชีธนาคาร</label><textarea id="profAccount" rows="2"></textarea>
+            <button class="btn-submit" onclick="saveProfile()">บันทึกและสถาปนาลง Sheet</button>
+            <button onclick="logout()" style="width:100%; margin-top:25px; color:red; border:none; background:none; cursor:pointer;">ออกจากระบบ</button>
+        </div>
+    </div>
+</div>
+<script>
+    const api = "https://script.google.com/macros/s/AKfycbwRIkEYZj0CKFiHEbhc29mJ19kyqwymEj8_O2p4qThvjjueQ-ug07okMTFn-e0zz_4l/exec";
+    const agentPin = localStorage.getItem('agentPin');
+    let agentNameGlobal = "", newProfB64 = "";
+    async function init() {
+        if(!agentPin) window.location.href = 'login.html';
+        const r = await fetch(`${api}?action=getAgentData&agentPin=${agentPin}`);
+        const d = await r.json();
+        if(!d.success) return;
+        const a = d.agent; agentNameGlobal = a.name;
+        document.getElementById('agentName').innerText = a.name;
+        document.getElementById('agentSubText').innerHTML = `<span style="color:var(--green); font-weight:400;">${a.status}</span> | PIN: ${a.pin}`;
+        document.getElementById('agentPhoto').src = a.photo || "https://via.placeholder.com/95";
+        document.getElementById('profName').value = a.name;
+        document.getElementById('profAgency').value = a.agency;
+        document.getElementById('profStatus').value = a.status;
+        document.getElementById('profPhone').value = a.phone || "";
+        document.getElementById('profAccount').value = a.bankAccNum || "";
+        document.getElementById('totalCheck').innerText = d.visits ? d.visits.length : 0;
+        document.getElementById('visitLogs').innerHTML = d.visits.map(v => `<div class="card"><b>${v.Project || '-'}</b><br><small>${new Date(v.Timestamp).toLocaleDateString('th-TH')}</small></div>`).join('');
+        loadHPIDs();
+    }
+    function handleFile(input, id) { const reader = new FileReader(); reader.onload = e => { if(id === 'agentPhoto') { newProfB64 = e.target.result; document.getElementById(id).src = e.target.result; } }; reader.readAsDataURL(input.files[0]); }
+    async function saveProfile() {
+        const d = { action: 'updateAgentProfile', pin: agentPin, name: document.getElementById('profName').value, agency: document.getElementById('profAgency').value, status: document.getElementById('profStatus').value, phone: document.getElementById('profPhone').value, bankAccNum: document.getElementById('profAccount').value, newPhotoData: newProfB64 };
+        const res = await (await fetch(api, { method: 'POST', body: JSON.stringify(d) })).json();
+        if(res.success) { alert("✅ บันทึกโปรไฟล์สำเร็จ!"); location.reload(); }
+    }
+    function showTab(t,el){document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');document.querySelectorAll('.tab-item').forEach(i=>i.classList.remove('active'));const target=document.getElementById(t+'Section');if(target){target.style.display='block';if(el.classList.contains('tab-item'))el.classList.add('active');}}
+    async function loadHPIDs(){const r=await fetch(`${api}?action=getAllHPIDs`);const ids=await r.json();const h='<option value="">-- เลือกบ้าน --</option>'+ids.map(id=>`<option value="${id}">${id}</option>`).join('');if(document.getElementById('appHPID'))document.getElementById('appHPID').innerHTML=h;if(document.getElementById('checkHPID'))document.getElementById('checkHPID').innerHTML=h;if(document.getElementById('saleHPID'))document.getElementById('saleHPID').innerHTML=h;}
+    async function saveApp(){const d={action:'addAppointment',pin:agentPin,agentName:agentNameGlobal,hpId:document.getElementById('appHPID').value,customer:document.getElementById('appCustomer').value};await fetch(api,{method:'POST',body:JSON.stringify(d)});alert("✅ นัดหมายสำเร็จ!");location.reload();}
+    async function doCheckIn(){const d={action:'agentCheckIn',pin:agentPin,agentName:agentNameGlobal,hpId:document.getElementById('checkHPID').value,note:document.getElementById('checkNote').value};await fetch(api,{method:'POST',body:JSON.stringify(d)});alert("✅ เช็คอินสำเร็จ!");location.reload();}
+    function logout(){localStorage.removeItem('agentPin');window.location.href='login.html';}
+    init();
+</script>
+</body>
+</html>
