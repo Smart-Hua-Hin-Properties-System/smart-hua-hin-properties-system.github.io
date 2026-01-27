@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Hub V8.8 - Sovereign Commander</title>
+    <title>Agent Hub V8.9 - Sovereign Identity Fix</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #f0f4f7; --white: #ffffff; --orange: #e67e22; --green: #27ae60; --gray: #7f8c8d; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; color: #333; }
         
-        /* 🔵 Header with Overlaid Camera Icon */
+        /* 🎯 Header Identity Area */
         .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 40px 40px; position: relative; }
         .settings-btn { position: absolute; top: 20px; right: 20px; font-size: 1.4rem; color: rgba(255,255,255,0.7); cursor: pointer; }
         .profile-container { position: relative; display: inline-block; }
-        .profile-img { width: 95px; height: 95px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; }
+        .profile-img { width: 95px; height: 95px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; background: white; }
         .cam-icon { position: absolute; bottom: 15px; right: 5px; background: white; color: var(--primary); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; }
         
         .nav-tabs { background: #fff; display: flex; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
@@ -23,20 +23,15 @@
 
         .container { padding: 20px; max-width: 850px; margin: 0 auto; padding-bottom: 60px; }
         .card { background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        
-        /* 🎯 Commission Choice Icons */
         .com-chips { display: flex; gap: 8px; margin-bottom: 15px; }
-        .chip { padding: 6px 12px; border-radius: 50px; background: #eee; font-size: 0.75rem; cursor: pointer; transition: 0.3s; }
+        .chip { padding: 6px 12px; border-radius: 50px; background: #eee; font-size: 0.75rem; cursor: pointer; }
         .chip.selected { background: var(--orange); color: white; }
-
         label { font-size: 0.72rem; color: var(--gray); margin-bottom: 5px; display: block; }
         input, select, textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Kanit'; box-sizing: border-box; font-weight: 300; outline: none; margin-bottom: 18px; background: #fafafa; font-size: 0.92rem; }
         .btn-submit { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; cursor: pointer; font-family: 'Kanit'; font-size: 1rem; font-weight: 400; }
-        
         .status-badge { padding: 4px 14px; border-radius: 50px; font-size: 0.65rem; }
         .active-st { background: #d4edda; color: #155724; }
         .waiting-st { background: #fff3cd; color: #856404; }
-        .gps-lock { font-size: 0.7rem; color: var(--green); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; justify-content: center; }
     </style>
 </head>
 <body>
@@ -75,7 +70,7 @@
             <label>รหัสบ้าน (HP_ID)</label><select id="appHPID" onchange="fetchProject('app')"><option value="">-- เลือกบ้าน --</option></select>
             <label>โครงการ</label><input type="text" id="appProject" readonly>
             <label>ชื่อลูกค้า</label><input type="text" id="appCustomer">
-            <label>หมายเหตุ</label><textarea id="appNote" placeholder="รายละเอียดนัดหมายเพิ่มเติม" rows="2"></textarea>
+            <label>หมายเหตุ</label><textarea id="appNote" placeholder="รายละเอียดเพิ่มเติม" rows="2"></textarea>
             <button class="btn-submit" onclick="saveApp()">ยืนยันการนัดหมายมหาอำนาจ</button>
         </div>
     </div>
@@ -83,26 +78,24 @@
     <div id="checkinSection" class="tab-content" style="display:none;">
         <div class="card">
             <h4 style="margin:0 0 15px 0; font-weight:400; color:var(--primary);">เช็คอินหน้างานจริง</h4>
-            <label>รหัสบ้านที่เข้าชม (HP_ID)</label><select id="checkHPID" onchange="fetchProject('check')"><option value="">-- เลือกบ้าน --</option></select>
+            <label>รหัสบ้าน (HP_ID)</label><select id="checkHPID" onchange="fetchProject('check')"><option value="">-- เลือกบ้าน --</option></select>
             <label>โครงการ</label><input type="text" id="checkProject" readonly>
-            <label>หมายเหตุ/ข้อมูลเพิ่มเติม [ไกด์: สนใจดูแปลงริมน้ำเพิ่มเติม]</label>
-            <textarea id="checkNote" placeholder="ระบุสิ่งที่ลูกค้าสนใจเป็นพิเศษ" rows="2"></textarea>
+            <label>หมายเหตุ/บันทึกเพิ่มเติม</label><textarea id="checkNote" rows="2"></textarea>
             
             <label>แนบรูปภาพลูกค้า</label>
-            <div style="border:1px dashed #ccc; padding:15px; border-radius:15px; margin-bottom:15px; text-align:center;" onclick="document.getElementById('file1').click()">
+            <div style="border:1px dashed #ccc; padding:15px; border-radius:15px; text-align:center;" onclick="document.getElementById('file1').click()">
                 <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพ
                 <input type="file" id="file1" hidden accept="image/*" onchange="handleFile(this, 'prev1')">
                 <img id="prev1" style="width:100%; margin-top:10px; display:none; border-radius:10px;">
             </div>
 
-            <label>แนบรูปภาพหน้างาน</label>
-            <div style="border:1px dashed #ccc; padding:15px; border-radius:15px; margin-bottom:15px; text-align:center;" onclick="document.getElementById('file2').click()">
+            <label style="margin-top:15px;">แนบรูปภาพหน้างาน</label>
+            <div style="border:1px dashed #ccc; padding:15px; border-radius:15px; text-align:center;" onclick="document.getElementById('file2').click()">
                 <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพ
                 <input type="file" id="file2" hidden accept="image/*" onchange="handleFile(this, 'prev2')">
                 <img id="prev2" style="width:100%; margin-top:10px; display:none; border-radius:10px;">
             </div>
-
-            <div id="gpsStatus" class="gps-lock"><i class="fas fa-satellite"></i> กำลังล็อคพิกัด GPS...</div>
+            <div id="gpsStatus" style="font-size:0.7rem; color:var(--green); margin:10px 0; text-align:center;">กำลังล็อคพิกัด GPS...</div>
             <button class="btn-submit" onclick="doCheckIn()" id="btnCheck">ยืนยันเช็คอิน (GPS)</button>
         </div>
     </div>
@@ -114,18 +107,18 @@
                 <div class="chip" onclick="setCalcRate(1, this)">1%</div><div class="chip" onclick="setCalcRate(2, this)">2%</div><div class="chip selected" onclick="setCalcRate(3, this)">3%</div><div class="chip" onclick="setCalcRate(4, this)">4%</div><div class="chip" onclick="setCalcRate(5, this)">5%</div>
             </div>
             <label>ราคาที่ตกลงขาย (บาท)</label><input type="number" id="calcPrice" placeholder="0.00" oninput="calculateCom()">
-            <label>ค่าคอมฯ ที่ท่านได้รับ (฿)</label><input type="text" id="calcResult" readonly style="color:var(--green); font-size:1.1rem; font-weight:400;">
+            <label>ค่าคอมฯ ที่ท่านได้รับ (฿)</label><input type="text" id="calcResult" readonly style="color:var(--green);">
         </div>
         <div class="card">
-            <h4 style="margin:0 0 15px 0; color:var(--primary);">แจ้งปิดการขาย (ขอรับคอมมิชชัน)</h4>
-            <label>รหัสบ้านที่ปิดการขาย</label><select id="saleHPID" onchange="fetchProject('sale')"><option value="">-- เลือกบ้าน --</option></select>
+            <h4 style="margin:0 0 15px 0; color:var(--primary);">แจ้งปิดการขาย (ขอรับค่าคอมฯ)</h4>
+            <label>รหัสบ้าน</label><select id="saleHPID" onchange="fetchProject('sale')"></select>
             <label>โครงการ</label><input type="text" id="saleProject" readonly>
-            <label>ชื่อลูกค้าผู้ซื้อ</label><input type="text" id="saleCustomer">
+            <label>ชื่อลูกค้า</label><input type="text" id="saleCustomer">
             <label>ราคาที่ตกลงขาย (บาท)</label><input type="number" id="saleFinalPrice">
-            <div style="border:1px dashed #ccc; padding:15px; border-radius:15px; margin-bottom:15px; text-align:center;" onclick="document.getElementById('fileSale').click()">
+            <div style="border:1px dashed #ccc; padding:15px; text-align:center;" onclick="document.getElementById('fileSale').click()">
                 <i class="fas fa-file-contract fa-2x"></i><br>แนบหลักฐานการจอง
                 <input type="file" id="fileSale" hidden accept="image/*" onchange="handleFile(this, 'prevSale')">
-                <img id="prevSale" style="width:100%; margin-top:10px; display:none; border-radius:10px;">
+                <img id="prevSale" style="width:100%; display:none; margin-top:10px;">
             </div>
             <button class="btn-submit" onclick="submitSale()">ส่งรายงานปิดการขายมหาอำนาจ</button>
         </div>
@@ -134,11 +127,11 @@
     <div id="profileSection" class="tab-content" style="display:none;">
         <div class="card">
             <h4 style="margin:0 0 15px 0; color:var(--primary);"><i class="fas fa-user-edit"></i> Edit Profile</h4>
-            <label>เบอร์โทรศัพท์</label><input type="tel" id="profPhone">
+            <label>ชื่อ-นามสกุล 🔒</label><input type="text" id="profName"> <label>เบอร์โทรศัพท์</label><input type="tel" id="profPhone">
             <label>Line ID</label><input type="text" id="profLine">
             <label>เลขบัญชีธนาคาร</label><textarea id="profAccount" rows="2"></textarea>
-            <button class="btn-submit" onclick="saveProfile()">บันทึกข้อมูลตั้งค่า</button>
-            <button onclick="logout()" style="width:100%; margin-top:20px; border:none; background:none; color:var(--red); cursor:pointer;">ออกจากระบบ</button>
+            <button class="btn-submit" onclick="saveProfile()">บันทึกข้อมูลและอัปเดตรูปมหาอำนาจ</button>
+            <button onclick="logout()" style="width:100%; margin-top:25px; border:none; background:none; color:var(--red); cursor:pointer;">ออกจากระบบ</button>
         </div>
     </div>
 </div>
@@ -159,76 +152,68 @@
         document.getElementById('agentPhoto').src = a.photo || "https://via.placeholder.com/95";
         document.getElementById('agencyBadge').innerText = a.agency;
         
+        // 🎯 ดึงชื่อเข้าช่องแก้ไข
+        document.getElementById('profName').value = a.name;
         document.getElementById('profPhone').value = a.phone || "";
         document.getElementById('profLine').value = a.lineId || "";
         document.getElementById('profAccount').value = a.accountInfo || "";
 
-        // 📊 Render History Count
         document.getElementById('totalCheck').innerText = d.visits.length;
         document.getElementById('visitLogs').innerHTML = d.visits.map(v => `<div class="card"><div style="display:flex; justify-content:space-between; align-items:center;"><div><b>${v.Project || '-'}</b><br><small>${new Date(v.Timestamp).toLocaleDateString('th-TH')}</small></div><span class="status-badge ${v.Status==='Active'?'active-st':'waiting-st'}">${v.Status}</span></div></div>`).join('');
         loadHPIDs();
-        navigator.geolocation.getCurrentPosition(p => { lat = p.coords.latitude; lng = p.coords.longitude; document.getElementById('gpsStatus').innerHTML = `<i class="fas fa-check-circle"></i> GPS ล็อคพิกัดมหาอำนาจสำเร็จ`; });
+        navigator.geolocation.getCurrentPosition(p => { lat = p.coords.latitude; lng = p.coords.longitude; document.getElementById('gpsStatus').innerText = "✅ GPS ล็อคพิกัดมหาอำนาจสำเร็จ"; });
     }
 
     function handleFile(input, id) {
-        const r = new FileReader();
-        r.onload = e => {
+        const reader = new FileReader();
+        reader.onload = e => {
             const b64 = e.target.result;
             if(id === 'prev1') img1B64 = b64;
             else if(id === 'prev2') img2B64 = b64;
             else if(id === 'prevSale') saleImgB64 = b64;
-            else if(id === 'agentPhoto') { newProfB64 = b64; document.getElementById(id).src = b64; }
+            else if(id === 'agentPhoto') { 
+                newProfB64 = b64; // 🎯 เตรียมส่งไปลบรูปเก่า
+                document.getElementById(id).src = b64; 
+            }
             if(id.startsWith('prev')) { const p = document.getElementById(id); p.src = b64; p.style.display = 'block'; }
         };
-        r.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(input.files[0]);
     }
 
-    function setCalcRate(rate, el) {
-        myComRate = rate;
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected'); calculateCom();
+    async function saveProfile() {
+        const btn = document.querySelector('#profileSection .btn-submit');
+        btn.innerText = "...กำลังสถาปนาอัตลักษณ์..."; btn.disabled = true;
+        const d = { action: 'updateAgentProfile', pin: agentPin, name: document.getElementById('profName').value, phone: document.getElementById('profPhone').value, lineId: document.getElementById('profLine').value, accountInfo: document.getElementById('profAccount').value, newPhotoData: newProfB64 };
+        const res = await (await fetch(api, { method: 'POST', body: JSON.stringify(d) })).json();
+        if(res.success) {
+            alert("✅ สถาปนาอัตลักษณ์ขุนพลสำเร็จ!"); 
+            location.reload(); // 🎯 รีโหลดเพื่อให้หน้าจอโซนสีน้ำเงินอัปเดตรูปและชื่อ
+        }
     }
 
-    function calculateCom() {
-        const p = document.getElementById('calcPrice').value;
-        document.getElementById('calcResult').value = p ? ((p * myComRate) / 100).toLocaleString() : "0";
+    async function doCheckIn() {
+        if(!lat) return alert("โปรดอนุญาต GPS!");
+        const d = { action: 'agentCheckIn', pin: agentPin, agentName: agentNameGlobal, projectName: document.getElementById('checkProject').value, hpId: document.getElementById('checkHPID').value, note: document.getElementById('checkNote').value, img1Data: img1B64, img2Data: img2B64, lat: lat, lng: lng };
+        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
+        alert("✅ เช็คอินสำเร็จ!"); location.reload();
     }
 
     async function saveApp() {
         const d = { action: 'addAppointment', pin: agentPin, agentName: agentNameGlobal, date: document.getElementById('appDate').value, time: document.getElementById('appTime').value, hpId: document.getElementById('appHPID').value, project: document.getElementById('appProject').value, customer: document.getElementById('appCustomer').value, note: document.getElementById('appNote').value };
-        if(!d.date || !d.hpId) return alert("โปรดกรอกข้อมูลให้ครบครับ");
         await fetch(api, { method: 'POST', body: JSON.stringify(d) });
         alert("✅ นัดหมายสำเร็จ!"); location.reload();
     }
 
-    async function doCheckIn() {
-        if(!lat) return alert("โปรดอนุญาต GPS ก่อนครับ");
-        const d = { action: 'agentCheckIn', pin: agentPin, agentName: agentNameGlobal, projectName: document.getElementById('checkProject').value, hpId: document.getElementById('checkHPID').value, note: document.getElementById('checkNote').value, img1Data: img1B64, img2Data: img2B64, lat: lat, lng: lng };
-        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
-        alert("✅ เช็คอินสำเร็จ! ข้อมูลถูกส่งเข้า LINE เรียบร้อย"); location.reload();
-    }
-
     async function submitSale() {
-        const hpId = document.getElementById('saleHPID').value;
         const price = document.getElementById('saleFinalPrice').value;
-        if(!hpId || !price) return alert("โปรดกรอกข้อมูลให้ครบครับ");
-        const d = { action: 'handleSalesClosing', pin: agentPin, agentName: agentNameGlobal, hpId: hpId, project: document.getElementById('saleProject').value, customer: document.getElementById('saleCustomer').value, closingPrice: price, commission: (price * myComRate) / 100, imgData: saleImgB64 };
+        const d = { action: 'handleSalesClosing', pin: agentPin, agentName: agentNameGlobal, hpId: document.getElementById('saleHPID').value, project: document.getElementById('saleProject').value, customer: document.getElementById('saleCustomer').value, closingPrice: price, commission: (price * myComRate) / 100, imgData: saleImgB64 };
         await fetch(api, { method: 'POST', body: JSON.stringify(d) });
-        alert("✅ แจ้งยอดขายสำเร็จ! ข้อมูลเข้าสู่ระบบมหาอำนาจแล้ว"); location.reload();
+        alert("✅ แจ้งยอดขายมหาอำนาจสำเร็จ!"); location.reload();
     }
 
-    async function saveProfile() {
-        const d = { action: 'updateAgentProfile', pin: agentPin, phone: document.getElementById('profPhone').value, lineId: document.getElementById('profLine').value, accountInfo: document.getElementById('profAccount').value, newPhotoData: newProfB64 };
-        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
-        alert("✅ บันทึกโปรไฟล์มหาอำนาจสำเร็จ!"); location.reload();
-    }
-
-    function showTab(t, el) {
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
-        const target = document.getElementById(t + 'Section');
-        if(target) { target.style.display = 'block'; if(el.classList.contains('tab-item')) el.classList.add('active'); }
-    }
+    function setCalcRate(r, el) { myComRate = r; document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); calculateCom(); }
+    function calculateCom() { const p = document.getElementById('calcPrice').value; document.getElementById('calcResult').value = p ? ((p * myComRate) / 100).toLocaleString() + " บาท" : "0 บาท"; }
+    function showTab(t, el) { document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none'); document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active')); const target = document.getElementById(t + 'Section'); if(target) { target.style.display = 'block'; if(el.classList.contains('tab-item')) el.classList.add('active'); } }
     async function loadHPIDs(){const r=await fetch(`${api}?action=getAllHPIDs`);const ids=await r.json();const h='<option value="">-- เลือกบ้าน --</option>'+ids.map(id=>`<option value="${id}">${id}</option>`).join('');document.getElementById('appHPID').innerHTML=h;document.getElementById('checkHPID').innerHTML=h;document.getElementById('saleHPID').innerHTML=h;}
     async function fetchProject(type){const id=document.getElementById(type+'HPID').value;const r=await (await fetch(`${api}?action=getProjectByHPID&hpId=${id}`)).json();document.getElementById(type+'Project').value=r.project;}
     function logout(){localStorage.removeItem('agentPin');window.location.href='login.html';}
