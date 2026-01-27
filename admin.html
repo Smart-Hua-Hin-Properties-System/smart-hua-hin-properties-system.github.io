@@ -3,167 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Matching Portal V5.6</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+    <title>Master Control V11.1 - Ultimate Authority</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --orange: #e67e22; --red: #e74c3c; --blue: #3498db; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; color: #333; }
-        
-        .admin-header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .nav-tabs { background: #fff; display: flex; border-bottom: 1px solid #eee; position: sticky; top: 58px; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .tab-item { padding: 15px; color: #7f8c8d; text-decoration: none; font-size: 0.82rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; transition: 0.3s; }
-        .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
-
-        .container { padding: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: #fff; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        
-        /* 🕵️ Matching Table */
-        .report-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .report-table th { text-align: left; padding: 12px; border-bottom: 2px solid #f0f0f0; color: var(--primary); font-weight: 400; }
-        .report-table td { padding: 12px; border-bottom: 1px solid #f9f9f9; vertical-align: middle; }
-        
-        .badge { padding: 4px 12px; border-radius: 50px; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
-        .badge-pending { background: #fff3cd; color: #856404; }
-        .badge-active { background: #d4edda; color: #155724; }
-        .badge-com { background: #e8f4fd; color: #007bff; font-weight: 400; }
-
-        .btn-action { background: none; border: none; cursor: pointer; color: var(--primary); font-size: 1.1rem; padding: 5px; display: inline-flex; align-items: center; transition: 0.2s; }
-        .btn-action:hover { transform: scale(1.2); color: var(--orange); }
-        .approver-tag { font-size: 0.6rem; color: var(--green); display: block; margin-top: 3px; }
-        
-        .img-stack { display: flex; gap: 8px; align-items: center; }
+        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #2ecc71; --orange: #e67e22; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; }
+        .admin-header { background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border-bottom: 4px solid var(--primary); }
+        .stat-value { font-size: 1.5rem; font-weight: 600; color: var(--primary); }
+        .card { background: white; border-radius: 25px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .btn-logout { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="admin-header">
-    <div style="font-weight:400;">SMART SYSTEM <span id="projectLabel" style="font-size:0.75rem; opacity:0.8;"></span></div>
-    <button onclick="logout()" style="background:var(--red); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-family:'Kanit';">LOGOUT</button>
-</div>
-
-<div class="nav-tabs">
-    <div class="tab-item active" onclick="showTab('property', this)"><i class="fas fa-home"></i> ข้อมูลบ้าน</div>
-    <div class="tab-item" onclick="showTab('report', this)"><i class="fas fa-clipboard-check"></i> รายงานเช็คอิน</div>
-    <div class="tab-item" onclick="showTab('matching', this)"><i class="fas fa-users-cog"></i> คัดกรอง Agent</div> <div class="tab-item" onclick="showTab('info', this)"><i class="fas fa-info-circle"></i> ข้อมูลโครงการ</div>
+    <div><i class="fas fa-shield-alt"></i> MASTER NODE <span id="userProject" style="font-size:0.8rem; opacity:0.7;"></span></div>
+    <button class="btn-logout" onclick="logout()">LOGOUT</button>
 </div>
 
 <div class="container">
-    <div id="propertySection" class="tab-content">
-        <button onclick="window.location.href='index.html'" style="background:var(--primary); color:white; border:none; padding:15px; width:100%; border-radius:15px; cursor:pointer; font-family:'Kanit'; margin-bottom:20px;">+ เพิ่มข้อมูลบ้านใหม่</button>
-        <div id="propertyList"></div>
+    <h3 style="font-weight:400; color:var(--primary);"><i class="fas fa-chart-line"></i> Executive Dashboard</h3>
+    
+    <div class="stat-grid">
+        <div class="stat-card"><div>ยูนิตทั้งหมด</div><div class="stat-value" id="totalUnits">0</div></div>
+        <div class="stat-card"><div>มูลค่ารวม</div><div class="stat-value" id="totalValue">฿0</div></div>
+        <div class="stat-card" style="border-color:var(--green);"><div>ปิดการขายแล้ว</div><div class="stat-value" id="soldUnits" style="color:var(--green);">0</div></div>
     </div>
 
-    <div id="reportSection" class="tab-content" style="display:none;">
-        <div class="card" style="padding:0; overflow-x:auto;">
-            <table class="report-table">
-                <thead>
-                    <tr>
-                        <th>วันเวลา / เอเจนต์</th>
-                        <th>รหัสทรัพย์</th>
-                        <th style="color:var(--orange)">แก้ไขสถานะการเข้าชม</th>
-                        <th>หลักฐานภาพ / GPS</th>
-                    </tr>
-                </thead>
-                <tbody id="reportLogs"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="matchingSection" class="tab-content" style="display:none;">
-        <div class="card" style="padding:0; overflow-x:auto;">
-            <table class="report-table">
-                <thead>
-                    <tr>
-                        <th>PIN / ชื่อเอเจนต์ (สังกัด)</th>
-                        <th>ข้อตกลงคอมฯ</th>
-                        <th>ข้อมูลบัญชีรับเงิน</th>
-                        <th>สถานะ</th>
-                    </tr>
-                </thead>
-                <tbody id="agentMatchingLogs"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="infoSection" class="tab-content" style="display:none;">
-        <div class="card">
-            <h3 id="infoProjectName" style="color:var(--primary); font-weight:400; margin-top:0;">ข้อมูลโครงการ</h3>
-            <div style="background:#f0f7ff; padding:20px; border-radius:15px; border-left:5px solid var(--blue);">
-                <p id="agreementText" style="line-height:1.8; color:#555;">กำลังดึงข้อมูล...</p>
-            </div>
-        </div>
-    </div>
+    <h3 style="font-weight:400; color:var(--primary); margin-top:40px;"><i class="fas fa-list-ul"></i> รายการทรัพย์ในอาณาจักร</h3>
+    <div id="propList"><div style="text-align:center; padding:50px;"><i class="fas fa-sync fa-spin fa-2x" style="color:var(--primary)"></i></div></div>
 </div>
 
 <script>
-    const api = "https://script.google.com/macros/s/AKfycbyBYEGI9CJrwtBk9Izgyo60Scoj5tfLOOfJ2g_VvyOZP5ws-DYyY77lg58Gywg6YHH6/exec";
-    const user = JSON.parse(localStorage.getItem('smartAdmin'));
-    if(!user) window.location.href = 'login.html';
-    document.getElementById('projectLabel').innerText = "| " + user.projectName;
+    const api = "https://script.google.com/macros/s/AKfycbwgTcTvExSRBb84LRqCjFKjKnfczuSWmmV3C-2r_DrqzCWa4_S--GERuINNBfwg4ZNo/exec";
+    const pin = localStorage.getItem('agentPin');
 
-    function showTab(t, el) {
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
-        document.getElementById(t + 'Section').style.display = 'block';
-        el.classList.add('active');
-        if(t === 'report') loadReports();
-        if(t === 'matching') loadAgentMatching();
-        if(t === 'property') loadProperties();
-    }
+    async function init() {
+        if(!pin) location.href = 'login.html';
+        try {
+            const r = await fetch(api);
+            const d = await r.json();
+            
+            // 📊 คำนวณ Financial IQ อัตโนมัติ
+            document.getElementById('totalUnits').innerText = d.length;
+            const totalVal = d.reduce((acc, curr) => acc + Number(curr.Price || 0), 0);
+            document.getElementById('totalValue').innerText = `฿${(totalVal/1000000).toFixed(1)}M`;
+            document.getElementById('soldUnits').innerText = d.filter(x => x.Status === 'Sold').length;
 
-    // 📍 รายงานเช็คอินพร้อมแจ้งเตือน
-    async function loadReports() {
-        const body = document.getElementById('reportLogs');
-        const data = await (await fetch(`${api}?action=getVisitLogs&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`)).json();
-        body.innerHTML = data.map(v => `
-            <tr>
-                <td><b>${v.Agent_Name}</b><br><small>${new Date(v.Timestamp).toLocaleString('th-TH')}</small></td>
-                <td>${v.Marketing_ID}</td>
-                <td>
-                    ${v.Status === 'Waiting' ? 
-                        `<span class="badge badge-pending" onclick="toggleStatus('${v.Log_ID}', 'Active')"><i class="fas fa-hourglass-half"></i> Pending</span>` : 
-                        `<div><span class="badge badge-active" onclick="toggleStatus('${v.Log_ID}', 'Waiting')"><i class="fas fa-check-circle"></i> Active</span><span class="approver-tag">by ${v.Approved_By}</span></div>`
-                    }
-                </td>
-                <td>
-                    <div class="img-stack">
-                        ${v.Evidence_URL_1 ? `<a href="${v.Evidence_URL_1}" target="_blank" class="btn-action"><i class="fas fa-image"></i></a>` : '<i class="fas fa-image" style="color:#eee"></i>'}
-                        ${v.Evidence_URL_2 ? `<a href="${v.Evidence_URL_2}" target="_blank" class="btn-action"><i class="fas fa-image"></i></a>` : '<i class="fas fa-image" style="color:#eee"></i>'}
-                        <a href="http://maps.google.com/?q=${v.Lat},${v.Lng}" target="_blank" class="btn-action" title="GPS"><i class="fas fa-map-marker-alt" style="color:var(--orange);"></i></a>
+            document.getElementById('propList').innerHTML = d.map(it => `
+                <div class="card">
+                    <div><b>${it.HP_ID}</b> - ${it.ID}<br><small>${it.Project_Name}</small></div>
+                    <div style="text-align:right;">
+                        <span style="font-size:0.9rem; color:var(--primary);">฿${Number(it.Price).toLocaleString()}</span><br>
+                        <small style="color:${it.Status === 'Available' ? 'var(--green)' : 'red'}">${it.Status}</small>
                     </div>
-                </td>
-            </tr>`).join('') || '<tr><td colspan="4" style="text-align:center; padding:30px;">ไม่มีข้อมูล</td></tr>';
+                </div>
+            `).join('');
+        } catch(e) { console.log("Admin Load Error"); }
     }
 
-    // 🕵️ คัดกรองเอเจนต์มหาอำนาจ (% คอมมิชชัน)
-    async function loadAgentMatching() {
-        const body = document.getElementById('agentMatchingLogs');
-        const data = await (await fetch(`${api}?action=getAllAgents`)).json();
-        body.innerHTML = data.map(a => `
-            <tr>
-                <td><b>${a.Agent_PIN}</b> - ${a.Agent_Name}<br><small style="color:#777;">${a.Agency}</small></td>
-                <td><span class="badge badge-com">${a.Com_Rate || 3}%</span></td>
-                <td><small>${a.Account_Info || '-'}</small></td>
-                <td><span class="badge badge-active">${a.Status}</span></td>
-            </tr>`).join('') || '<tr><td colspan="4" style="text-align:center; padding:30px;">ไม่พบข้อมูลเอเจนต์</td></tr>';
-    }
-
-    async function toggleStatus(id, newSt) {
-        const approver = user.role === "Master" ? "Master Admin" : user.projectName;
-        if(!confirm("ยืนยันการเปลี่ยนแปลงสถานะมหาอำนาจ?")) return;
-        await fetch(api, { method: 'POST', body: JSON.stringify({ action: 'updateStatus', logId: id, newStatus: newSt, approvedBy: approver }) });
-        alert("✅ แก้ไขเรียบร้อย!"); loadReports();
-    }
-
-    async function loadProperties() {
-        const list = document.getElementById('propertyList');
-        const data = await (await fetch(`${api}?action=adminData&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`)).json();
-        list.innerHTML = data.map(it => `<div class="card" style="display:flex; justify-content:space-between; align-items:center;"><div><b>${it.HP_ID} - ${it.ID}</b><br><small>฿${Number(it.Price).toLocaleString()} | ${it.Status}</small></div><i class="fas fa-edit" style="color:var(--primary);"></i></div>`).join('');
-    }
-
-    function logout() { localStorage.removeItem('smartAdmin'); window.location.href = 'login.html'; }
-    loadProperties();
+    function logout() { localStorage.clear(); location.href = 'login.html'; }
+    init();
 </script>
 </body>
 </html>
