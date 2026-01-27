@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Dashboard V8.0 - Official Launch</title>
+    <title>Agent Dashboard V8.1 - Professional Identity</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #f0f4f7; --white: #ffffff; --orange: #e67e22; --green: #27ae60; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; color: #333; }
         .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; }
+        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .nav-tabs { background: #fff; display: flex; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .tab-item { padding: 15px 5px; color: #7f8c8d; text-decoration: none; font-size: 0.78rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; transition: 0.3s; }
         .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
@@ -82,7 +82,6 @@
 </div>
 
 <script>
-    // 🎯 สำคัญ: เปลี่ยนเป็น URL เว็บแอปตัวล่าสุดของมาสเตอร์ครับ
     const api = "https://script.google.com/macros/s/AKfycbyBYEGI9CJrwtBk9Izgyo60Scoj5tfLOOfJ2g_VvyOZP5ws-DYyY77lg58Gywg6YHH6/exec";
     const agentPin = localStorage.getItem('agentPin');
     let agentNameGlobal = "", lat = "", lng = "";
@@ -120,27 +119,47 @@
         document.getElementById(type + 'Project').value = d.project;
     }
 
+    /**
+     * 🎯 ปรับปรุงการแจ้งเตือนผลลัพธ์ (Clean Notification)
+     */
+    async function processAction(data, type) {
+        const btn = document.querySelector(type === 'app' ? '#appointmentSection .btn-submit' : '#btnCheck');
+        const oldText = btn.innerText;
+        btn.innerText = "...กำลังส่งข้อมูลมหาอำนาจ..."; btn.disabled = true;
+        
+        try {
+            const r = await fetch(api, { method: 'POST', body: JSON.stringify(data) });
+            const res = await r.json();
+            
+            if(res.success) {
+                // 🎯 แสดงข้อความที่เป็นมิตร แทนรหัส JSON
+                alert("🏛️ SMART HUA HIN PROPERTIES SYSTEM\n━━━━━━━━━━━━━━━\n✅ บันทึกข้อมูลและส่งแจ้งเตือน LINE เรียบร้อยแล้วครับ");
+                location.reload();
+            } else {
+                alert("❌ เกิดข้อผิดพลาด: " + res.error);
+                btn.innerText = oldText; btn.disabled = false;
+            }
+        } catch(e) { 
+            alert("❌ การเชื่อมต่อล้มเหลว โปรดตรวจสอบอินเทอร์เน็ตครับ"); 
+            btn.innerText = oldText; btn.disabled = false;
+        }
+    }
+
     async function saveApp() {
         const d = { action: 'addAppointment', pin: agentPin, agentName: agentNameGlobal, date: document.getElementById('appDate').value, time: document.getElementById('appTime').value, hpId: document.getElementById('appHPID').value, project: document.getElementById('appProject').value, customer: document.getElementById('appCustomer').value, note: document.getElementById('appNote').value };
-        if(!d.date || !d.hpId) return alert("ข้อมูลไม่ครบ!");
-        const r = await (await fetch(api, { method: 'POST', body: JSON.stringify(d) })).json();
-        if(r.lineSent) alert("✅ นัดหมายและแจ้งเตือน LINE สำเร็จ!");
-        else alert("⚠️ บันทึกสำเร็จแต่ LINE ไม่เตือน: " + r.lineDetails);
-        location.reload();
+        if(!d.date || !d.hpId || !d.customer) return alert("โปรดกรอกข้อมูลให้ครบถ้วนครับ");
+        await processAction(d, 'app');
     }
 
     async function doCheckIn() {
         if(!lat) return alert("โปรดอนุญาต GPS ก่อนเช็คอิน!");
         const d = { action: 'agentCheckIn', pin: agentPin, agentName: agentNameGlobal, projectName: document.getElementById('checkProject').value, hpId: document.getElementById('checkHPID').value, evidenceUrl1: document.getElementById('img1').value, evidenceUrl2: document.getElementById('img2').value, lat: lat, lng: lng };
-        const r = await (await fetch(api, { method: 'POST', body: JSON.stringify(d) })).json();
-        if(r.lineSent) alert("✅ เช็คอินและแจ้งเตือน LINE สำเร็จ!");
-        else alert("⚠️ เช็คอินสำเร็จแต่ LINE ไม่เตือน: " + r.lineDetails);
-        location.reload();
+        await processAction(d, 'check');
     }
 
     async function saveProfile() {
         await fetch(api, { method: 'POST', body: JSON.stringify({ action: 'updateAgentProfile', pin: agentPin, name: document.getElementById('setName').value, photoUrl: document.getElementById('setPhoto').value }) });
-        alert("บันทึกสำเร็จ!"); location.reload();
+        alert("บันทึกข้อมูลเรียบร้อย!"); location.reload();
     }
 
     function showTab(t, el) {
