@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard - Sovereignty V5.7</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #1a5276; --bg: #f0f4f7; --green: #27ae60; --orange: #e67e22; --white: #ffffff; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; font-weight: 300; }
+        .header { background: var(--primary); color: white; padding: 30px; text-align: center; border-radius: 0 0 30px 30px; }
+        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid white; object-fit: cover; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        .nav-tabs { background: #fff; display: flex; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .tab-item { padding: 15px 10px; color: #7f8c8d; text-decoration: none; font-size: 0.8rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; }
+        .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
 
+        .container { padding: 20px; max-width: 900px; margin: 0 auto; }
+        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
+        
+        /* 📊 Report Styles */
+        .report-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f9f9f9; }
+        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.7rem; }
+        .pending { background: #fff3cd; color: #856404; }
+        .active-st { background: #d4edda; color: #155724; }
+
+        .btn-action { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; cursor: pointer; font-family: 'Kanit'; margin-top: 10px; }
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 12px; font-family: 'Kanit'; box-sizing: border-box; font-weight: 300; }
+        label { font-size: 0.8rem; color: #777; margin-bottom: 5px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img id="agentPhoto" src="https://via.placeholder.com/90" class="profile-img">
+    <h3 id="agentName" style="margin:0; font-weight:400;">Agent Sovereign</h3>
+    <div id="comRateBadge" style="font-size:0.75rem; background:rgba(255,255,255,0.2); display:inline-block; padding:3px 10px; border-radius:10px; margin-top:8px;">Commission Rate: - %</div>
+</div>
+
+<div class="nav-tabs">
+    <div class="tab-item active" onclick="showTab('work', this)"><i class="fas fa-clipboard-list"></i> รายงาน</div>
+    <div class="tab-item" onclick="showTab('app', this)"><i class="fas fa-calendar-check"></i> นัดหมาย</div>
+    <div class="tab-item" onclick="showTab('money', this)"><i class="fas fa-coins"></i> ค่าคอมฯ</div>
+    <div class="tab-item" onclick="showTab('profile', this)"><i class="fas fa-user-cog"></i> ตั้งค่า</div>
+</div>
+
+<div class="container">
+    <div id="workSection" class="tab-content">
+        <h4 style="font-weight:400; color:var(--primary);"><i class="fas fa-history"></i> ประวัติการเข้าชมของท่าน</h4>
+        <div id="visitLogs" class="card"><div style="text-align:center; padding:30px;"><i class="fas fa-sync fa-spin"></i></div></div>
+    </div>
+
+    <div id="appSection" class="tab-content" style="display:none;">
+        <div class="card">
+            <h4 style="margin-top:0; font-weight:400;">สร้างนัดหมายใหม่</h4>
+            <input type="date" id="appDate">
+            <input type="text" id="appCustomer" placeholder="ชื่อลูกค้า">
+            <input type="text" id="appProject" placeholder="ชื่อโครงการ (เช่น CoCo 88)">
+            <button class="btn-action" onclick="saveApp()">ยืนยันนัดหมายมหาอำนาจ</button>
+        </div>
+        <div id="appList"></div>
+    </div>
+
+    <div id="moneySection" class="tab-content" style="display:none;">
+        <div class="card" style="background:var(--primary); color:white;">
+            <small>เครื่องคำนวณรายได้มหาอำนาจ</small>
+            <div style="font-size:0.8rem; opacity:0.8; margin-top:5px;">รายได้ที่ท่านจะได้รับ = (ราคาขาย x % ของท่าน)</div>
+            <div id="calcResult" style="font-size:1.8rem; margin:10px 0; font-weight:400;">฿ 0.00</div>
+            <input type="number" id="calcPrice" placeholder="ระบุราคาบ้านเพื่อคำนวณ" oninput="calculate()" style="background:rgba(255,255,255,0.1); border:none; color:white; font-size:1rem;">
+        </div>
+        <div class="card">
+            <h4 style="margin-top:0; font-weight:400;">ยื่นคำร้องเบิกเงิน (เมื่อปิดการขายได้)</h4>
+            <input type="text" id="comHP" placeholder="รหัส HP-ID (เช่น HP-0012)">
+            <input type="number" id="comAmount" placeholder="ยอดเงินที่ขอเบิก">
+            <button class="btn-action" style="background:var(--green)" onclick="saveCom()">ส่งคำร้องหา Master Admin</button>
+        </div>
+        <div id="comList"></div>
+    </div>
+
+    <div id="profileSection" class="tab-content" style="display:none;">
+        <div class="card">
+            <h4 style="margin-top:0; font-weight:400;">จัดการข้อมูลส่วนตัว</h4>
+            <label>ลิงก์รูปโปรไฟล์ (URL)</label>
+            <input type="text" id="editPhoto" placeholder="วางลิงก์รูปภาพของท่าน">
+            <label>ชื่อเอเจนต์</label>
+            <input type="text" id="editName">
+            <label>บัญชีธนาคารสำหรับรับเงิน</label>
+            <textarea id="editBank" placeholder="ระบุชื่อธนาคาร และ เลขบัญชี"></textarea>
+            <button class="btn-action" onclick="saveProfile()">บันทึกโปรไฟล์มหาอำนาจ</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const api = "https://script.google.com/macros/s/AKfycbyd68dXse7OuwzfIRgHYDRIGHRQPIXnYOBK2fxHTqeJoYQYLYbP2HZkOGUaPxIaahIS/exec";
+    const agentPin = localStorage.getItem('agentPin');
+    let myRate = 3;
+
+    if(!agentPin) window.location.href = 'agent-login.html';
+
+    async function init() {
+        const r = await fetch(`${api}?action=getAgentData&agentPin=${agentPin}`);
+        const d = await r.json();
+        const a = d.agent;
+        myRate = a.comRate || 3;
+        
+        document.getElementById('agentName').innerText = a.name;
+        document.getElementById('agentPhoto').src = a.photo || "https://via.placeholder.com/90";
+        document.getElementById('comRateBadge').innerText = `Commission Rate: ${myRate}%`;
+        document.getElementById('editName').value = a.name;
+        document.getElementById('editBank').value = a.accountInfo;
+        document.getElementById('editPhoto').value = a.photo || "";
+
+        // Render Reports
+        document.getElementById('visitLogs').innerHTML = d.visits.map(v => `
+            <div class="report-row">
+                <div><b>${v.Project}</b><br><small>${new Date(v.Timestamp).toLocaleDateString('th-TH')}</small></div>
+                <span class="status-badge ${v.Status === 'Waiting' ? 'pending' : 'active-st'}">${v.Status === 'Waiting' ? '🔴 รออนุมัติ' : '🟢 อนุมัติแล้ว'}</span>
+            </div>
+        `).join('') || '<div style="text-align:center; color:#999;">ยังไม่มีประวัติการเช็คอิน</div>';
+
+        // Render Appointments
+        document.getElementById('appList').innerHTML = d.apps.map(ap => `
+            <div class="card">🗓️ <b>${ap.customer}</b><br><small>${ap.project} | ${new Date(ap.date).toLocaleDateString('th-TH')}</small></div>
+        `).join('');
+
+        // Render Commissions
+        document.getElementById('comList').innerHTML = d.coms.map(c => `
+            <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div><b>${c.hpId}</b><br><small>฿${Number(c.amount).toLocaleString()}</small></div>
+                <span class="status-badge active-st">${c.status}</span>
+            </div>
+        `).join('');
+    }
+
+    function calculate() {
+        const price = document.getElementById('calcPrice').value;
+        const result = (price * myRate) / 100;
+        document.getElementById('calcResult').innerText = `฿ ${result.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+    }
+
+    async function saveProfile() {
+        const data = { action: 'updateAgentProfile', pin: agentPin, name: document.getElementById('editName').value, accountInfo: document.getElementById('editBank').value, photoUrl: document.getElementById('editPhoto').value };
+        await fetch(api, { method: 'POST', body: JSON.stringify(data) });
+        alert("บันทึกข้อมูลเรียบร้อย!"); location.reload();
+    }
+
+    async function saveApp() {
+        const data = { action: 'addAppointment', pin: agentPin, date: document.getElementById('appDate').value, customer: document.getElementById('appCustomer').value, project: document.getElementById('appProject').value };
+        await fetch(api, { method: 'POST', body: JSON.stringify(data) });
+        alert("บันทึกนัดหมายสำเร็จ!"); location.reload();
+    }
+
+    async function saveCom() {
+        const data = { action: 'requestCommission', pin: agentPin, project: "-", hpId: document.getElementById('comHP').value, amount: document.getElementById('comAmount').value, account: document.getElementById('editBank').value };
+        await fetch(api, { method: 'POST', body: JSON.stringify(data) });
+        alert("ส่งคำร้องเบิกคอมมิชชันแล้ว!"); location.reload();
+    }
+
+    function showTab(t, el) {
+        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(t + 'Section').style.display = 'block';
+        el.classList.add('active');
+    }
+    init();
+</script>
+</body>
+</html>
