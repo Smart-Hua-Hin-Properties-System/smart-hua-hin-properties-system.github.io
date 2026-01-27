@@ -3,88 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Details - Sovereign V13.2</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Details - Sovereign V14.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --orange: #e67e22; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding-bottom: 120px; font-weight: 300; color: #333; }
-        header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .hero-box { position: relative; width: 100%; height: 380px; background: #ddd; overflow: hidden; }
+        :root { --primary: #1a5276; --bg: #f4f7f6; --green: #27ae60; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding-bottom: 120px; font-weight: 300; }
+        .hero-box { position: relative; width: 100%; height: 350px; background: #ddd; }
         .main-img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: white; padding: 6px 15px; border-radius: 50px; font-size: 0.85rem; font-weight: 400; z-index: 10; }
-        .main-container { max-width: 600px; margin: -50px auto 0; position: relative; padding: 0 15px; }
-        .content-card { background: #fff; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        .price-box { font-size: 2rem; color: var(--primary); margin: 10px 0 25px 0; font-weight: 400; letter-spacing: -1px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .info-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 15px; }
-        .info-item i { color: var(--primary); width: 22px; text-align: center; }
-        .info-label { color: #7f8c8d; font-size: 0.7rem; display: block; }
-        .full-width { grid-column: 1/-1; }
-        .share-bar { display: flex; gap: 15px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
-        .share-bar::-webkit-scrollbar { display: none; }
-        .share-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: #f8f9fa; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .share-btn img { width: 26px; }
-        .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #fff; padding: 15px; left: 50%; transform: translateX(-50%); border-radius: 25px 25px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 2000; }
-        .btn-line { display: flex; align-items: center; justify-content: center; gap: 10px; background: #00b900; color: #fff; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: 400; font-size: 1.1rem; }
+        .hero-badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: white; padding: 6px 15px; border-radius: 50px; font-size: 0.85rem; }
+        .content-card { background: #fff; padding: 25px; border-radius: 30px; margin: -50px 15px 0 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); position: relative; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .info-item { padding: 12px; background: #f8f9fa; border-radius: 15px; font-size: 0.85rem; }
+        .share-bar { display: flex; gap: 15px; overflow-x: auto; padding: 10px 0; }
+        .share-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: #f8f9fa; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #fff; padding: 15px; left: 50%; transform: translateX(-50%); border-radius: 25px 25px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
-
-<header>
-    <div style="color:var(--primary); font-weight:400; cursor:pointer;" onclick="location.href='index.html'"><i class="fas fa-arrow-left"></i> PROPERTY DETAILS</div>
-</header>
-
 <div id="mainContent">
-    <div style="text-align:center; padding:100px;"><i class="fas fa-sync fa-spin fa-2x" style="color:var(--primary)"></i></div>
+    <div style="text-align:center; padding:100px;"><i class="fas fa-sync fa-spin fa-2x"></i></div>
 </div>
-
 <script>
     const api = "https://script.google.com/macros/s/AKfycbwRIkEYZj0CKFiHEbhc29mJ19kyqwymEj8_O2p4qThvjjueQ-ug07okMTFn-e0zz_4l/exec";
     const pId = new URLSearchParams(window.location.search).get('id');
-
     async function load() {
-        try {
-            const r = await fetch(api);
-            const data = await r.json();
-            const prop = data.find(x => x.HP_ID === pId);
-            if (prop) render(prop);
-        } catch(e) { document.getElementById('mainContent').innerHTML = "❌ Connection Error"; }
-    }
-
-    function render(it) {
-        document.getElementById('mainContent').innerHTML = `
-            <div class="hero-box">
-                <div class="hero-badge">${it.HP_ID} | ${it.ID}</div>
-                <img src="${it.Thumbnail}" class="main-img" onerror="this.src='https://placehold.co/600x400?text=Sovereign+System'">
-            </div>
-            <div class="main-container">
+        const r = await fetch(api); const d = await r.json();
+        const it = d.find(x => x.HP_ID === pId);
+        if (it) {
+            document.getElementById('mainContent').innerHTML = `
+                <div class="hero-box"><div class="hero-badge">${it.HP_ID}</div><img src="${it.Thumbnail}" class="main-img"></div>
                 <div class="content-card">
-                    <h1 style="margin:0; font-size:1.4rem; color:var(--primary);">${it.Project_Name}</h1>
-                    <div class="price-box">฿${Number(it.Price).toLocaleString()}</div>
+                    <h1 style="margin:0; font-size:1.3rem; color:var(--primary);">${it.Project_Name}</h1>
+                    <div style="font-size:1.8rem; margin:10px 0;">฿${Number(it.Price).toLocaleString()}</div>
                     <div class="info-grid">
-                        <div class="info-item"><i class="fas fa-house"></i><div><span class="info-label">ประเภท</span>${it.Type || '-'}</div></div>
-                        <div class="info-item"><i class="fas fa-map-marker-alt"></i><div><span class="info-label">แปลง</span>${it.Plot || '-'}</div></div>
-                        <div class="info-item"><i class="fas fa-bed"></i><div><span class="info-label">ห้องนอน</span>${it.Bedrooms || 0}</div></div>
-                        <div class="info-item"><i class="fas fa-bath"></i><div><span class="info-label">ห้องน้ำ</span>${it.Bathrooms || 0}</div></div>
-                        <div class="info-item"><i class="fas fa-vector-square"></i><div><span class="info-label">ใช้สอย (ตร.ม.)</span>${it['Living Area (sq.m)'] || 0}</div></div>
-                        <div class="info-item"><i class="fas fa-maximize"></i><div><span class="info-label">ที่ดิน (ตร.ว.)</span>${it['Land Area (sq.w)'] || 0}</div></div>
-                        <div class="info-item full-width"><i class="fas fa-location-dot"></i><div><span class="info-label">ทำเล</span>${it.SubDistrict}, ${it.District}</div></div>
-                    </div>
-                    <div style="margin-top:25px;">
-                        <h3 style="color:var(--primary); font-size:1rem; margin-bottom:10px;">คำอธิบายมหาอำนาจ</h3>
-                        <p style="color:#555; font-size:0.95rem; line-height:1.7;">${it.Description || '-'}</p>
+                        <div class="info-item"><b>ประเภท:</b> ${it.Type}</div>
+                        <div class="info-item"><b>ห้องนอน:</b> ${it.Bedrooms}</div>
+                        <div class="info-item"><b>ห้องน้ำ:</b> ${it.Bathrooms}</div>
+                        <div class="info-item"><b>ใช้สอย:</b> ${it['Living Area (sq.m)']}m²</div>
                     </div>
                 </div>
-
-                <div style="background:#fff; margin-top:20px; padding:25px; border-radius:25px; box-shadow:0 5px 20px rgba(0,0,0,0.03); text-align:center;">
-                    <div style="font-weight:400; color:var(--primary); margin-bottom:15px;"><i class="fas fa-share-nodes"></i> 8 STRATEGIC SHARE ICONS</div>
+                <div style="padding:20px; text-align:center;">
+                    <div style="font-weight:400; color:var(--primary); margin-bottom:10px;">8 STRATEGIC SHARE ICONS</div>
                     <div class="share-bar">
-                        <button class="share-btn" onclick="share('line')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"></button>
-                        <button class="share-btn" onclick="share('fb')"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></button>
-                        <button class="share-btn" onclick="share('wa')"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></button>
-                        <button class="share-btn" onclick="share('tg')"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></button>
-                        <button class="share-btn" onclick="share('sms')"><img src="https://cdn-icons-png.flaticon.com/512/813/813636.png"></button>
-                        <button class="share-btn" onclick="share('mail')"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png"></button>
-                        <button class="share-btn" onclick="share('msg')"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968771.png"></button>
-                        <button class="share-btn" onclick="share('copy')"><i class="fas fa-link" style="color:#777;">
+                        <button class="share-btn" onclick="share('line')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" width="24"></button>
+                        <button class="share-btn" onclick="share('copy')"><i class="fas fa-link"></i></button>
+                    </div>
+                </div>
+                <div class="footer-action"><a href="https://line.me/R/msg/text/?สนใจรหัส: ${it.HP_ID}" style="display:block; background:#00b900; color:white; text-align:center; padding:16px; border-radius:15px; text-decoration:none;">สอบถามผ่าน LINE</a></div>`;
+        }
+    }
+    function share(p) { if(p === 'copy') { navigator.clipboard.writeText(window.location.href); alert("Copied!"); } }
+    load();
+</script>
+</body>
+</html>
