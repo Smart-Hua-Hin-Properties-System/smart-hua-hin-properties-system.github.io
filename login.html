@@ -3,56 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART LOGIN V10.0 - Sovereign Reset</title>
+    <title>SMART LOGIN V10.1 - Absolute Recovery</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Kanit', sans-serif; background: #f0f4f7; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         .login-card { background: white; padding: 45px; border-radius: 35px; box-shadow: 0 20px 50px rgba(26,82,118,0.15); width: 340px; text-align: center; }
-        h2 { color: #1a5276; margin-bottom: 5px; font-weight: 400; letter-spacing: 1px; }
-        p { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 30px; }
         input { width: 100%; padding: 18px; border-radius: 15px; border: 1.5px solid #eee; box-sizing: border-box; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 25px; background: #fafafa; }
         button { width: 100%; padding: 18px; border-radius: 15px; border: none; background: #1a5276; color: white; font-family: 'Kanit'; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(26,82,118,0.2); }
-        button:hover { background: #154360; transform: translateY(-2px); }
+        #msg { color:#e74c3c; font-size:0.85rem; margin-top:15px; display:none; }
     </style>
 </head>
 <body>
     <div class="login-card">
         <div style="background:#1a5276; width:70px; height:70px; border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 20px;"><i class="fas fa-shield-alt" style="color:white; font-size:2rem;"></i></div>
-        <h2>SMART LOGIN</h2>
-        <p>ระบุรหัสประจำตัวเพื่อเข้าสู่อาณาจักรมหาอำนาจ</p>
-        <input type="password" id="pinInput" placeholder="รหัส PIN ของท่าน">
+        <h2 style="color:#1a5276; font-weight:400; letter-spacing:1px; margin-bottom:5px;">SMART LOGIN</h2>
+        <p style="font-size:0.8rem; color:#7f8c8d; margin-bottom:30px;">ป้อนรหัสขุนพลเพื่อเชื่อมต่อมหาอำนาจ</p>
+        <input type="password" id="pinInput" placeholder="กรอกรหัส PIN ของท่าน">
         <button onclick="login()" id="btnLogin">เข้าสู่แผงควบคุม</button>
-        <div id="msg" style="color:#e74c3c; font-size:0.85rem; margin-top:15px; display:none; font-weight:400;">❌ รหัสไม่ถูกต้อง หรือการเชื่อมต่อล้มเหลว</div>
+        <div id="msg">❌ รหัสไม่ถูกต้อง โปรดตรวจสอบรหัสใน Google Sheet ครับ</div>
     </div>
-
     <script>
-        // 🎯 สถาปนา URL มาตรฐานที่มาสเตอร์กำหนด
+        // 🎯 สถาปนา URL มาตรฐานตามบัญชามาสเตอร์
         const api = "https://script.google.com/macros/s/AKfycbyBYEGI9CJrwtBk9Izgyo60Scoj5tfLOOfJ2g_VvyOZP5ws-DYyY77lg58Gywg6YHH6/exec";
-
         async function login() {
-            const pin = document.getElementById('pinInput').value;
-            if(!pin) return;
-            const btn = document.getElementById('btnLogin');
-            btn.innerText = "...กำลังสื่อสารกับมหาอำนาจ..."; btn.disabled = true;
+            const pin = document.getElementById('pinInput').value; if(!pin) return;
+            const btn = document.getElementById('btnLogin'); btn.innerText = "...กำลังเชื่อมต่อ..."; btn.disabled = true;
             document.getElementById('msg').style.display = 'none';
-
             try {
-                // 🎯 เรียกใช้ universalLogin เพื่อตรวจสอบทั้งแผ่นดิน
                 const r = await fetch(`${api}?action=universalLogin&key=${encodeURIComponent(pin)}`);
                 const d = await r.json();
-
-                if(d.success) {
-                    localStorage.setItem('agentPin', pin);
-                    window.location.href = (d.type === 'STAFF') ? 'admin.html' : 'agent-dashboard.html';
-                } else {
-                    document.getElementById('msg').style.display = 'block';
-                    btn.innerText = "เข้าสู่แผงควบคุม"; btn.disabled = false;
-                }
-            } catch(e) {
-                alert("วิกฤต: การเชื่อมต่อฐานข้อมูลล้มเหลว โปรดตรวจสอบขั้นตอนการ Deploy ใน Apps Script");
-                btn.innerText = "เข้าสู่แผงควบคุม"; btn.disabled = false;
-            }
+                if(d.success) { localStorage.setItem('agentPin', pin); window.location.href = d.type === 'STAFF' ? 'admin.html' : 'agent-dashboard.html'; }
+                else { document.getElementById('msg').style.display = 'block'; btn.innerText = "เข้าสู่แผงควบคุม"; btn.disabled = false; }
+            } catch(e) { alert("วิกฤต: การเชื่อมต่อขัดข้อง โปรดเช็คสิทธิ์ Deployment เป็น Anyone"); btn.innerText = "เข้าสู่แผงควบคุม"; btn.disabled = false; }
         }
     </script>
 </body>
