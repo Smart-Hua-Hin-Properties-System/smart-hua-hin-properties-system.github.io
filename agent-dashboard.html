@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Hub V8.3 - Identity Sovereign</title>
+    <title>Agent Hub V8.4 - Identity Sovereign</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,29 +15,28 @@
         .tab-item { padding: 15px 5px; color: var(--gray); text-decoration: none; font-size: 0.78rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; transition: 0.3s; }
         .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
         .container { padding: 20px; max-width: 850px; margin: 0 auto; padding-bottom: 60px; }
-        .card { background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.01); }
+        .card { background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* 📸 Photo Upload UI (Minimalist) */
-        .upload-area { border: 2.5px dashed #e1e8ed; padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; color: var(--gray); margin-bottom: 20px; transition: 0.3s; background: #fafafa; }
-        .upload-area:hover { border-color: var(--primary); background: #f0f7fb; }
-        .preview-box { width: 100%; border-radius: 15px; margin-top: 15px; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        /* 📸 Minimalist Upload UI */
+        .upload-box { border: 2px dashed #e1e8ed; padding: 25px; border-radius: 20px; text-align: center; cursor: pointer; color: var(--gray); margin-bottom: 15px; background: #fafafa; }
+        .preview-img { width: 100%; border-radius: 12px; margin-top: 15px; display: none; }
         
-        label { font-size: 0.75rem; color: var(--gray); margin-bottom: 6px; display: block; padding-left: 5px; }
+        label { font-size: 0.75rem; color: var(--gray); margin-bottom: 6px; display: block; }
         input, select, textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Kanit'; box-sizing: border-box; font-weight: 300; outline: none; margin-bottom: 18px; background: #fafafa; font-size: 0.95rem; }
-        input:read-only { background: #f0f2f5; color: #95a5a6; cursor: not-allowed; }
+        input:read-only { background: #f0f2f5; color: #95a5a6; }
         .btn-submit { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; cursor: pointer; font-family: 'Kanit'; font-size: 1rem; font-weight: 400; box-shadow: 0 10px 20px rgba(26,82,118,0.2); }
         
-        .status-badge { padding: 4px 14px; border-radius: 50px; font-size: 0.65rem; font-weight: 400; }
-        .active-st { background: #d4edda; color: #155724; }
-        .waiting-st { background: #fff3cd; color: #856404; }
+        .status-badge { padding: 4px 14px; border-radius: 50px; font-size: 0.65rem; }
+        .active-st { background: #d4edda; color: #155724; } /* สีเขียว */
+        .waiting-st { background: #fff3cd; color: #856404; } /* สีส้ม/เหลือง */
     </style>
 </head>
 <body>
 
 <div class="header">
     <img id="agentPhoto" src="https://via.placeholder.com/90" class="profile-img">
-    <h2 id="agentName" style="margin:0; font-weight:400; letter-spacing:1px;">Agent Sovereign</h2>
-    <div id="agencyBadge" style="font-size:0.8rem; opacity:0.8; margin-top:5px;">Loading...</div>
+    <h2 id="agentName" style="margin:0; font-weight:400; letter-spacing:1px;">...</h2>
+    <div id="agencyBadge" style="font-size:0.8rem; opacity:0.8; margin-top:5px;">...</div>
 </div>
 
 <div class="nav-tabs">
@@ -70,21 +69,25 @@
 
     <div id="checkinSection" class="tab-content" style="display:none;">
         <div class="card">
-            <h4 style="margin-top:0; font-weight:400; color:var(--primary);"><i class="fas fa-satellite-dish"></i> รายงานตัวหน้างานจริง</h4>
+            <h4 style="margin-top:0; font-weight:400; color:var(--primary);"><i class="fas fa-satellite-dish"></i> รายงานตัวเข้าชมพื้นที่จริง</h4>
             <label>รหัสบ้านที่เข้าชม (HP_ID)</label>
             <select id="checkHPID" onchange="fetchProject('check')"><option value="">-- เลือกรหัสบ้าน --</option></select>
-            <label>โครงการ</label><input type="text" id="checkProject" readonly>
+            <label>โครงการ (ดึงข้อมูลอัตโนมัติ)</label><input type="text" id="checkProject" readonly>
             
+            <label>หมายเหตุ/ข้อมูลเพิ่มเติม [ไกด์: เช่น สนใจดูบ้านเพิ่มเติมหลังที่ 2]</label> <textarea id="checkNote" placeholder="ระบุรายละเอียดเพิ่มเติมเพื่อแจ้งมาสเตอร์" rows="2"></textarea>
+
             <label>แนบรูปภาพ 1 (ภาพลูกค้า)</label>
-            <div class="upload-area" onclick="document.getElementById('file1').click()">
-                <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพ <input type="file" id="file1" hidden accept="image/*" onchange="handleFile(this, 'prev1')">
-                <img id="prev1" class="preview-box">
+            <div class="upload-box" onclick="document.getElementById('file1').click()">
+                <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพ
+                <input type="file" id="file1" hidden accept="image/*" onchange="handleFile(this, 'prev1')">
+                <img id="prev1" class="preview-img">
             </div>
 
             <label>แนบรูปภาพ 2 (ภาพหน้างาน)</label>
-            <div class="upload-area" onclick="document.getElementById('file2').click()">
-                <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพ <input type="file" id="file2" hidden accept="image/*" onchange="handleFile(this, 'prev2')">
-                <img id="prev2" class="preview-box">
+            <div class="upload-box" onclick="document.getElementById('file2').click()">
+                <i class="fas fa-image fa-2x"></i><br>แนบรูปภาพ
+                <input type="file" id="file2" hidden accept="image/*" onchange="handleFile(this, 'prev2')">
+                <img id="prev2" class="preview-img">
             </div>
 
             <div id="gpsStatus" style="font-size:0.7rem; color:var(--orange); margin-bottom:15px; text-align:center;">กำลังล็อคพิกัด GPS...</div>
@@ -94,23 +97,13 @@
 
     <div id="profileSection" class="tab-content" style="display:none;">
         <div class="card">
-            <h4 style="margin-top:0; font-weight:400; color:var(--primary);"><i class="fas fa-shield-alt"></i> จัดการโปรไฟล์ของท่าน</h4>
-            
-            <label>รหัสประจำตัว (PIN) 🔒</label>
-            <input type="text" id="profPIN" readonly> <label>ชื่อ-นามสกุล</label>
-            <input type="text" id="profName" placeholder="ระบุชื่อจริงของท่าน">
-            
-            <label>สังกัด (Agency)</label>
-            <input type="text" id="profAgency" placeholder="ระบุชื่อบริษัท/ทีม">
-
-            <label>ข้อมูลบัญชีธนาคาร (สำหรับการโอนค่าคอมฯ)</label>
-            <textarea id="profAccount" placeholder="เช่น กสิกรไทย 123-4-56789-0" rows="2"></textarea>
-
-            <label>ลิงก์รูปโปรไฟล์ (URL)</label>
-            <input type="url" id="profPhoto" placeholder="https://...">
-
-            <button class="btn-submit" onclick="saveProfile()">สถาปนาข้อมูลโปรไฟล์</button>
-            <button onclick="logout()" style="width:100%; margin-top:25px; border:none; background:none; color:var(--red); cursor:pointer; font-family:Kanit;">ออกจากอาณาจักร (Logout)</button>
+            <h4 style="margin-top:0; font-weight:400; color:var(--primary);"><i class="fas fa-user-shield"></i> ข้อมูลขุนพลเอเจนต์</h4>
+            <label>รหัสประจำตัว (PIN) 🔒</label><input type="text" id="profPIN" readonly> <label>ชื่อ-นามสกุล</label><input type="text" id="profName">
+            <label>สังกัด (Agency)</label><input type="text" id="profAgency">
+            <label>บัญชีธนาคาร (โอนค่าคอมฯ)</label><textarea id="profAccount" rows="2"></textarea>
+            <label>ลิงก์รูปโปรไฟล์ (URL)</label><input type="url" id="profPhoto">
+            <button class="btn-submit" onclick="saveProfile()">บันทึกโปรไฟล์มหาอำนาจ</button>
+            <button onclick="logout()" style="width:100%; margin-top:25px; border:none; background:none; color:var(--red); cursor:pointer; font-family:Kanit;">ออกจากระบบ (Logout)</button>
         </div>
     </div>
 </div>
@@ -126,20 +119,19 @@
         const d = await r.json();
         if(!d.success) return;
 
-        const a = d.agent;
-        agentNameGlobal = a.name;
+        const a = d.agent; agentNameGlobal = a.name;
         document.getElementById('agentName').innerText = a.name;
         document.getElementById('agentPhoto').src = a.photo || "https://via.placeholder.com/90";
         document.getElementById('agencyBadge').innerText = a.agency;
 
-        // 🎯 ดึงข้อมูลเข้าสู่หน้าโปรไฟล์
+        // 🎯 สถาปนาข้อมูลเข้าสู่หน้าโปรไฟล์
         document.getElementById('profPIN').value = a.pin;
         document.getElementById('profName').value = a.name;
         document.getElementById('profAgency').value = a.agency;
         document.getElementById('profAccount').value = a.accountInfo || "";
         document.getElementById('profPhoto').value = a.photo || "";
 
-        // Render History
+        // Render History พร้อมสีแถบมหาอำนาจ
         document.getElementById('visitLogs').innerHTML = d.visits.map(v => `
             <div class="card"><div style="display:flex; justify-content:space-between; align-items:center;">
                 <div><b>${v.Project || '-'}</b><br><small>${v.Timestamp ? new Date(v.Timestamp).toLocaleDateString('th-TH') : '-'}</small></div>
@@ -154,37 +146,28 @@
         const file = input.files[0]; if(!file) return;
         const reader = new FileReader();
         reader.onload = e => {
-            const b64 = e.target.result;
-            if(prevId === 'prev1') img1Base64 = b64; else img2Base64 = b64;
-            const p = document.getElementById(prevId); p.src = b64; p.style.display = 'block';
+            if(prevId === 'prev1') img1Base64 = e.target.result; else img2Base64 = e.target.result;
+            const p = document.getElementById(prevId); p.src = e.target.result; p.style.display = 'block';
         };
         reader.readAsDataURL(file);
-    }
-
-    async function saveProfile() {
-        const btn = document.querySelector('#profileSection .btn-submit');
-        btn.innerText = "...กำลังสถาปนาข้อมูล..."; btn.disabled = true;
-        const d = { 
-            action: 'updateAgentProfile', pin: agentPin, 
-            name: document.getElementById('profName').value,
-            agency: document.getElementById('profAgency').value,
-            accountInfo: document.getElementById('profAccount').value,
-            photoUrl: document.getElementById('profPhoto').value 
-        };
-        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
-        alert("✅ บันทึกข้อมูลสำเร็จ! โปรไฟล์ของท่านได้รับการสถาปนาแล้ว");
-        location.reload();
     }
 
     async function doCheckIn() {
         if(!lat) return alert("โปรดอนุญาต GPS ก่อนครับ");
         if(!img1Base64 || !img2Base64) return alert("โปรดแนบรูปภาพทั้ง 2 ใบตามกฎมหาอำนาจครับ");
         const btn = document.getElementById('btnCheck');
-        btn.innerText = "...ส่งรูปและแผนที่เข้า LINE..."; btn.disabled = true;
-        const d = { action: 'agentCheckIn', pin: agentPin, agentName: agentNameGlobal, projectName: document.getElementById('checkProject').value, hpId: document.getElementById('checkHPID').value, img1Data: img1Base64, img2Data: img2Base64, lat: lat, lng: lng };
+        btn.innerText = "...กำลังส่งข้อมูลและรูปภาพมหาอำนาจ..."; btn.disabled = true;
+        
+        const d = { action: 'agentCheckIn', pin: agentPin, agentName: agentNameGlobal, projectName: document.getElementById('checkProject').value, hpId: document.getElementById('checkHPID').value, note: document.getElementById('checkNote').value, img1Data: img1Base64, img2Data: img2Base64, lat: lat, lng: lng };
         await fetch(api, { method: 'POST', body: JSON.stringify(d) });
         alert("✅ เช็คอินสำเร็จ! รูปและแผนที่ถูกส่งถึงมาสเตอร์แล้ว");
         location.reload();
+    }
+
+    async function saveProfile() {
+        const d = { action: 'updateAgentProfile', pin: agentPin, name: document.getElementById('profName').value, agency: document.getElementById('profAgency').value, accountInfo: document.getElementById('profAccount').value, photoUrl: document.getElementById('profPhoto').value };
+        await fetch(api, { method: 'POST', body: JSON.stringify(d) });
+        alert("✅ บันทึกโปรไฟล์สำเร็จ!"); location.reload();
     }
 
     async function loadHPIDs(){const r=await fetch(`${api}?action=getAllHPIDs`);const ids=await r.json();const html='<option value="">-- เลือกรหัส HP_ID --</option>'+ids.map(id=>`<option value="${id}">${id}</option>`).join('');document.getElementById('appHPID').innerHTML=html;document.getElementById('checkHPID').innerHTML=html;}
