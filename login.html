@@ -3,61 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART LOGIN - Ultimate Authority</title>
+    <title>SMART LOGIN - Absolute Authority</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Kanit', sans-serif; background: #f0f4f7; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .login-card { background: white; padding: 45px; border-radius: 35px; box-shadow: 0 20px 50px rgba(26,82,118,0.15); width: 340px; text-align: center; border: 1px solid rgba(26,82,118,0.05); }
-        h2 { color: #1a5276; margin-bottom: 5px; font-weight: 400; letter-spacing: 1px; }
-        p { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 30px; }
-        input { width: 100%; padding: 18px; border-radius: 15px; border: 1.5px solid #eee; box-sizing: border-box; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 25px; background: #fafafa; transition: 0.3s; }
-        input:focus { border-color: #1a5276; background: #fff; }
+        .login-card { background: white; padding: 45px; border-radius: 35px; box-shadow: 0 20px 50px rgba(26,82,118,0.15); width: 340px; text-align: center; }
+        input { width: 100%; padding: 18px; border-radius: 15px; border: 1.5px solid #eee; box-sizing: border-box; font-family: 'Kanit'; font-size: 1.1rem; text-align: center; outline: none; margin-bottom: 25px; background: #fafafa; }
         button { width: 100%; padding: 18px; border-radius: 15px; border: none; background: #1a5276; color: white; font-family: 'Kanit'; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(26,82,118,0.2); }
-        button:hover { background: #154360; transform: translateY(-2px); }
-        #msg { color:#e74c3c; font-size:0.85rem; margin-top:15px; display:none; font-weight:400; }
+        #msg { color:#e74c3c; font-size:0.85rem; margin-top:15px; display:none; }
     </style>
 </head>
 <body>
     <div class="login-card">
-        <div style="background:#1a5276; width:70px; height:70px; border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 20px;">
-            <i class="fas fa-shield-alt" style="color:white; font-size:2rem;"></i>
-        </div>
+        <div style="background:#1a5276; width:70px; height:70px; border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 20px;"><i class="fas fa-shield-alt" style="color:white; font-size:2rem;"></i></div>
         <h2>SMART LOGIN</h2>
-        <p>ระบุรหัสประจำตัวเพื่อเข้าสู่อาณาจักรมหาอำนาจ</p>
+        <p>ระบุรหัส PIN เพื่อสถาปนาอำนาจ</p>
         <input type="password" id="pinInput" placeholder="รหัส PIN ของท่าน">
         <button onclick="login()" id="btnLogin">เข้าสู่แผงควบคุม</button>
         <div id="msg">❌ รหัสไม่ถูกต้อง โปรดตรวจสอบใน Sheet ครับ</div>
     </div>
-
     <script>
-        // 🎯 สถาปนา URL ใหม่ตามบัญชามาสเตอร์
-        const api = "https://script.google.com/macros/s/AKfycbwgTcTvExSRBb84LRqCjFKjKnfczuSWmmV3C-2r_DrqzCWa4_S--GERuINNBfwg4ZNo/exec";
-
+        const api = "https://script.google.com/macros/s/AKfycbwRIkEYZj0CKFiHEbhc29mJ19kyqwymEj8_O2p4qThvjjueQ-ug07okMTFn-e0zz_4l/exec";
         async function login() {
-            const pin = document.getElementById('pinInput').value;
+            const pin = document.getElementById('pinInput').value.trim();
             if(!pin) return;
-            const btn = document.getElementById('btnLogin');
-            btn.innerText = "...กำลังสื่อสารกับมหาอำนาจ..."; btn.disabled = true;
+            const btn = document.getElementById('btnLogin'); btn.innerText = "...กำลังเชื่อมต่อ..."; btn.disabled = true;
             document.getElementById('msg').style.display = 'none';
-
             try {
                 const r = await fetch(`${api}?action=universalLogin&key=${encodeURIComponent(pin)}`);
                 const d = await r.json();
-
-                if(d.success) {
-                    localStorage.setItem('agentPin', pin);
-                    localStorage.setItem('userType', d.type);
-                    // แยกเส้นทางตามระดับสิทธิ์ขุนพล
-                    window.location.href = (d.type === 'STAFF') ? 'admin.html' : 'agent-dashboard.html';
-                } else {
-                    document.getElementById('msg').style.display = 'block';
-                    btn.innerText = "เข้าสู่แผงควบคุม"; btn.disabled = false;
-                }
-            } catch(e) {
-                alert("วิกฤต: การเชื่อมต่อล้มเหลว โปรดตรวจสอบสถานะการ Deploy เป็น Anyone");
-                btn.innerText = "เข้าสู่แผงควบคุม"; btn.disabled = false;
-            }
+                if(d.success) { localStorage.setItem('agentPin', pin); window.location.href = d.type === 'STAFF' ? 'admin.html' : 'agent-dashboard.html'; }
+                else { document.getElementById('msg').style.display = 'block'; btn.innerText = "เข้าสู่แผงควบคุม"; btn.disabled = false; }
+            } catch(e) { alert("การเชื่อมต่อล้มเหลว โปรดเช็คสิทธิ์ Deployment"); btn.disabled = false; }
         }
     </script>
 </body>
