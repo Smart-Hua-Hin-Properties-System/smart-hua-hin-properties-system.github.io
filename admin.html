@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Control - Ultimate 32-Fields</title>
+    <title>Admin Control - Geo-Dynamic 32-Fields</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,7 +15,7 @@
         .property-list { background: #fff; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
         .property-item { padding: 18px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         
-        /* 📝 ฟอร์มยักษ์สไตล์โมเดิร์น */
+        /* 📝 Full Form Modal Style */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; overflow-y: auto; padding: 15px; }
         .modal-content { background: #fff; border-radius: 25px; max-width: 900px; margin: 10px auto; padding: 30px; box-shadow: 0 15px 50px rgba(0,0,0,0.3); }
         .form-section { margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
@@ -23,7 +23,8 @@
         .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-size: 0.85rem; color: #7f8c8d; margin-bottom: 5px; font-weight: 500; }
-        input, select, textarea { padding: 12px; border: 1.5px solid #ddd; border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; font-size: 0.95rem; }
+        input, select, textarea { padding: 12px; border: 1.5px solid #ddd; border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; font-size: 0.95rem; outline: none; transition: 0.2s; }
+        input:focus, select:focus { border-color: var(--primary); }
         input[readonly] { background: var(--locked); color: #7f8c8d; border-color: #eee; cursor: not-allowed; }
         .full-width { grid-column: 1 / -1; }
         .btn-save { background: var(--green); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 25px; font-size: 1.2rem; }
@@ -40,18 +41,19 @@
 <div class="container">
     <h2 id="projectTitle" style="color:var(--primary);">อาณาจักรโครงการ...</h2>
     <button class="btn-add" onclick="openAdd()"><i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่เข้าสู่ระบบ</button>
-    <div class="property-list" id="listBody"><div style="padding:60px; text-align:center;"><i class="fas fa-sync fa-spin"></i> กำลังดึงข้อมูล...</div></div>
+    <div class="property-list" id="listBody"><div style="padding:60px; text-align:center;"><i class="fas fa-sync fa-spin"></i> กำลังดึงข้อมูลมหาอำนาจ...</div></div>
 </div>
 
 <div class="modal" id="addModal">
     <div class="modal-content">
         <h2 id="modalTitle" style="margin-top:0; color:var(--primary); border-bottom:3px solid var(--primary); padding-bottom:10px;">จัดการข้อมูลทรัพย์</h2>
         <form id="propertyForm">
+            
             <div class="form-section">
                 <h3><i class="fas fa-shield-alt"></i> ข้อมูลระบบ (ล็อคอัตโนมัติ)</h3>
                 <div class="form-grid">
-                    <div class="form-group"><label>HP_ID</label><input type="text" name="HP_ID" readonly placeholder="ระบบสร้างให้"></div>
-                    <div class="form-group"><label>Last_Updated</label><input type="text" name="Last_Updated" readonly placeholder="อัปเดตเวลาอัตโนมัติ"></div>
+                    <div class="form-group"><label>HP_ID</label><input type="text" name="HP_ID" readonly placeholder="ระบบรันให้อัตโนมัติ"></div>
+                    <div class="form-group"><label>Last_Updated</label><input type="text" name="Last_Updated" readonly placeholder="บันทึกเวลาอัตโนมัติ"></div>
                     <div class="form-group"><label>Project_Name</label><input type="text" name="Project_Name" readonly></div>
                 </div>
             </div>
@@ -59,11 +61,27 @@
             <div class="form-section">
                 <h3><i class="fas fa-map-marker-alt"></i> ข้อมูลพื้นฐานและทำเล</h3>
                 <div class="form-grid">
-                    <div class="form-group"><label>ID (รหัสการตลาด)</label><input type="text" name="ID" required></div>
+                    <div class="form-group"><label>ID (รหัสการตลาด)</label><input type="text" name="ID" required placeholder="เช่น M16"></div>
                     <div class="form-group"><label>Plot (เลขแปลง)</label><input type="text" name="Plot"></div>
-                    <div class="form-group"><label>District (อำเภอ)</label><input type="text" name="District" value="Hua Hin"></div>
-                    <div class="form-group"><label>SubDistrict (ตำบล)</label><input type="text" name="SubDistrict"></div>
-                    <div class="form-group"><label>Type (ประเภททรัพย์)</label><select name="Type"><option value="Villa">Villa</option><option value="House">House</option><option value="Land">Land</option></select></div>
+                    
+                    <div class="form-group">
+                        <label>District (อำเภอ)</label>
+                        <select name="District" id="districtSelect" onchange="updateSubDistricts()" required>
+                            <option value="">-- เลือกอำเภอ --</option>
+                            <option value="Hua Hin">Hua Hin (หัวหิน)</option>
+                            <option value="Cha-am">Cha-am (ชะอำ)</option>
+                            <option value="Pranburi">Pranburi (ปราณบุรี)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>SubDistrict (ตำบล)</label>
+                        <select name="SubDistrict" id="subDistrictSelect" required>
+                            <option value="">-- โปรดเลือกอำเภอก่อน --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group"><label>Type (ประเภททรัพย์)</label><select name="Type"><option value="Villa">Villa</option><option value="House">House</option><option value="Condo">Condo</option><option value="Land">Land</option></select></div>
                     <div class="form-group"><label>Status (สถานะ)</label><select name="Status"><option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option></select></div>
                 </div>
             </div>
@@ -71,15 +89,15 @@
             <div class="form-section">
                 <h3><i class="fas fa-expand-arrows-alt"></i> สเปกบ้านและที่ดิน</h3>
                 <div class="form-grid">
-                    <div class="form-group"><label>Bedrooms</label><input type="number" name="Bedrooms"></div>
-                    <div class="form-group"><label>Bathrooms</label><input type="number" name="Bathrooms"></div>
-                    <div class="form-group"><label>Living Area (sq.m)</label><input type="number" name="Living Area (sq.m)" required></div>
-                    <div class="form-group"><label>Land Area (sq.m)</label><input type="number" name="Land Area (sq.m)"></div>
-                    <div class="form-group"><label>Land Area (sq.w)</label><input type="number" name="Land Area (sq.w)"></div>
-                    <div class="form-group"><label>Pool Size</label><input type="text" name="Pool Size"></div>
-                    <div class="form-group"><label>Pool Depth</label><input type="text" name="Pool Depth"></div>
+                    <div class="form-group"><label>Bedrooms</label><input type="number" name="Bedrooms" value="3"></div>
+                    <div class="form-group"><label>Bathrooms</label><input type="number" name="Bathrooms" value="2"></div>
+                    <div class="form-group"><label>Living Area (sq.m)</label><input type="number" step="0.01" name="Living Area (sq.m)" required></div>
+                    <div class="form-group"><label>Land Area (sq.m)</label><input type="number" step="0.01" name="Land Area (sq.m)"></div>
+                    <div class="form-group"><label>Land Area (sq.w)</label><input type="number" step="0.01" name="Land Area (sq.w)"></div>
+                    <div class="form-group"><label>Pool Size</label><input type="text" name="Pool Size" placeholder="เช่น 3x7m"></div>
+                    <div class="form-group"><label>Pool Depth</label><input type="text" name="Pool Depth" placeholder="เช่น 1.2m"></div>
                     <div class="form-group"><label>Furnishing</label><select name="Furnishing"><option value="Fully">Fully Furnished</option><option value="Partial">Partial</option><option value="None">None</option></select></div>
-                    <div class="form-group"><label>Parking</label><input type="text" name="Parking"></div>
+                    <div class="form-group"><label>Parking</label><input type="text" name="Parking" placeholder="จำนวนคัน"></div>
                     <div class="form-group"><label>Electricity</label><input type="text" name="Electricity" value="Underground"></div>
                 </div>
             </div>
@@ -87,10 +105,10 @@
             <div class="form-section">
                 <h3><i class="fas fa-coins"></i> ราคาและการขาย</h3>
                 <div class="form-grid">
-                    <div class="form-group"><label>Price (ราคาขาย)</label><input type="number" name="Price" required></div>
+                    <div class="form-group"><label>Price (ราคาขายสุทธิ)</label><input type="number" name="Price" required></div>
                     <div class="form-group"><label>Commission (%)</label><input type="number" name="Commission (%)" value="3"></div>
-                    <div class="form-group"><label>Price_per_sqm (Auto)</label><input type="text" name="Price_per_sqm" readonly></div>
-                    <div class="form-group"><label>Comm_Amount_Baht (Auto)</label><input type="text" name="Comm_Amount_Baht" readonly></div>
+                    <div class="form-group"><label>Price_per_sqm (ล็อค)</label><input type="text" name="Price_per_sqm" readonly placeholder="คำนวณให้อัตโนมัติ"></div>
+                    <div class="form-group"><label>Comm_Amount_Baht (ล็อค)</label><input type="text" name="Comm_Amount_Baht" readonly placeholder="คำนวณให้อัตโนมัติ"></div>
                     <div class="form-group"><label>Badge (ป้ายโปรโมชั่น)</label><input type="text" name="Badge" placeholder="เช่น Hot Deal"></div>
                 </div>
             </div>
@@ -98,30 +116,51 @@
             <div class="form-section">
                 <h3><i class="fas fa-images"></i> สื่อและคำอธิบาย</h3>
                 <div class="form-grid">
-                    <div class="form-group full-width"><label>Thumbnail (รูปภาพหลัก)</label><input type="text" name="Thumbnail"></div>
-                    <div class="form-group full-width"><label>Image_List (ชุดรูปภาพ)</label><input type="text" name="Image_List"></div>
-                    <div class="form-group"><label>FBLink</label><input type="text" name="FBLink"></div>
-                    <div class="form-group"><label>FloorPlan</label><input type="text" name="FloorPlan"></div>
-                    <div class="form-group"><label>Map_Link</label><input type="text" name="Map_Link"></div>
-                    <div class="form-group"><label>Virtual_Tour</label><input type="text" name="Virtual_Tour"></div>
+                    <div class="form-group full-width"><label>Thumbnail (รูปภาพหลัก)</label><input type="text" name="Thumbnail" placeholder="ลิงก์ URL รูปภาพ"></div>
+                    <div class="form-group full-width"><label>Image_List (ชุดรูปภาพ)</label><input type="text" name="Image_List" placeholder="คั่นด้วยเครื่องหมายคอมม่า ,"></div>
+                    <div class="form-group"><label>FBLink (ลิงก์ Facebook)</label><input type="text" name="FBLink"></div>
+                    <div class="form-group"><label>FloorPlan (ลิงก์แปลนบ้าน)</label><input type="text" name="FloorPlan"></div>
+                    <div class="form-group"><label>Map_Link (พิกัด Google Map)</label><input type="text" name="Map_Link"></div>
+                    <div class="form-group"><label>Virtual_Tour (ลิงก์ 360/Video)</label><input type="text" name="Virtual_Tour"></div>
                     <div class="form-group full-width"><label>Extras (ของแถมพิเศษ)</label><textarea name="Extras" rows="2"></textarea></div>
-                    <div class="form-group full-width"><label>Description (รายละเอียด)</label><textarea name="Description" rows="3"></textarea></div>
+                    <div class="form-group full-width"><label>Description (รายละเอียดเชิงลึก)</label><textarea name="Description" rows="4"></textarea></div>
                 </div>
             </div>
 
             <button type="button" class="btn-save" onclick="saveData()">🚀 ยืนยันและบันทึกข้อมูลมหาอำนาจ</button>
-            <button type="button" onclick="closeModal()" style="width:100%; border:none; background:none; color:#999; margin-top:15px; cursor:pointer;">ยกเลิก</button>
+            <button type="button" onclick="closeModal()" style="width:100%; border:none; background:none; color:#999; margin-top:10px; cursor:pointer;">ยกเลิก</button>
         </form>
     </div>
 </div>
 
 <script>
-    // 🚀 URL มหาอำนาจของมาสเตอร์
     const api = "https://script.google.com/macros/s/AKfycbx0ICTtHVgCCIU48VQFb-6tO9yvKgD6_oOBIN31tBYB3oHQ3h2JTS_ZIU0JyGG2O-jc/exec";
     const user = JSON.parse(localStorage.getItem('smartAdmin'));
     if(!user) window.location.href = 'login.html';
+    
     document.getElementById('adminName').innerText = user.projectName;
     document.getElementById('projectTitle').innerText = "จัดการ " + user.projectName;
+
+    // 🗺️ ข้อมูลตำบลตามอำเภอ
+    const subDistricts = {
+        "Hua Hin": ["Hua Hin (หัวหิน)", "Nong Kae (หนองแก)", "Hin Lek Fai (หินเหล็กไฟ)", "Thap Tai (ทับใต้)", "Huai Sat Yai (ห้วยสัตว์ใหญ่)", "Bueng Nakhon (บึงนคร)", "Nong Plap (หนองพลับ)"],
+        "Cha-am": ["Cha-am (ชะอำ)", "Na Yang (นายาง)", "Khao Yai (เขาใหญ่)", "Nong Sala (หนองศาลา)", "Huai Sai Nuea (ห้วยทรายเหนือ)", "Rai Mai Phatthana (ไร่ใหม่พัฒนา)"],
+        "Pranburi": ["Pranburi (ปราณบุรี)", "Khao Chao (เขาจ้าว)", "Nong Ta Taem (หนองตาแต้ม)", "Wang Phong (วังก์พง)", "Pak Nam Pran (ปากน้ำปราณ)", "Khuean Pran (เขื่อนปราณ)"]
+    };
+
+    function updateSubDistricts(selectedVal = "") {
+        const district = document.getElementById('districtSelect').value;
+        const subSelect = document.getElementById('subDistrictSelect');
+        subSelect.innerHTML = '<option value="">-- เลือกตำบล --</option>';
+        if(subDistricts[district]) {
+            subDistricts[district].forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s; opt.textContent = s;
+                if(s === selectedVal) opt.selected = true;
+                subSelect.appendChild(opt);
+            });
+        }
+    }
 
     let allItems = [];
     async function loadData() {
@@ -140,15 +179,24 @@
 
     function openModal() { document.getElementById('addModal').style.display = 'block'; }
     function closeModal() { document.getElementById('addModal').style.display = 'none'; }
-    function openAdd() { document.getElementById('propertyForm').reset(); document.querySelector('input[name="Project_Name"]').value = user.projectName; document.getElementById('modalTitle').innerText = "เพิ่มทรัพย์ใหม่"; openModal(); }
+    function openAdd() { 
+        document.getElementById('propertyForm').reset(); 
+        document.querySelector('input[name="Project_Name"]').value = user.projectName; 
+        updateSubDistricts();
+        document.getElementById('modalTitle').innerText = "เพิ่มทรัพย์ใหม่"; 
+        openModal(); 
+    }
+    
     function openEdit(index) {
         const it = allItems[index]; const form = document.getElementById('propertyForm');
         Object.keys(it).forEach(key => { if(form[key]) form[key].value = it[key]; });
+        // โหลดข้อมูลตำบลให้ตรงกับที่บันทึกไว้
+        updateSubDistricts(it.SubDistrict);
         document.getElementById('modalTitle').innerText = "แก้ไขข้อมูล " + it.HP_ID; openModal();
     }
 
     async function saveData() {
-        const btn = document.querySelector('.btn-save'); btn.innerText = "正在บันทึกข้อมูล..."; btn.disabled = true;
+        const btn = document.querySelector('.btn-save'); btn.innerText = "กำลังบันทึกข้อมูลมหาอำนาจ..."; btn.disabled = true;
         const form = document.getElementById('propertyForm'); const data = Object.fromEntries(new FormData(form).entries());
         data["Project_Name"] = user.projectName;
         try {
