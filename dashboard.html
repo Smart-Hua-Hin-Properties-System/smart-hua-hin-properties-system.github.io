@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Dashboard - Smart System Capital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #1a5276; --gold: #f1c40f; --green: #27ae60; --bg: #f4f7f6; --white: #ffffff; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
+        .header { background: var(--primary); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .container { padding: 20px; max-width: 1100px; margin: 0 auto; }
+        
+        /* 💰 KPI Cards */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .kpi-card { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; border-bottom: 5px solid var(--primary); }
+        .kpi-card i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
+        .kpi-value { font-size: 1.8rem; font-weight: 600; color: var(--primary); margin: 5px 0; }
+        .kpi-label { font-size: 0.9rem; color: #7f8c8d; text-transform: uppercase; }
+
+        /* 📊 Charts & Tables */
+        .dashboard-row { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .data-box { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .data-title { font-weight: 600; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f8f9fa; padding-bottom: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; padding: 12px; background: #f8f9fa; color: var(--primary); font-size: 0.9rem; }
+        td { padding: 15px 12px; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+        
+        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+        .available { background: #e8f5e9; color: var(--green); }
+        .sold { background: #fdeaea; color: #e74c3c; }
+
+        .btn-back { display: inline-block; margin-bottom: 20px; text-decoration: none; color: var(--primary); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2 style="margin:0;"><i class="fas fa-chart-line"></i> EXECUTIVE SALES DASHBOARD</h2>
+    <small>อาณาจักร Smart-Hua Hin Properties</small>
+</div>
+
+<div class="container">
+    <a href="admin.html" class="btn-back"><i class="fas fa-arrow-left"></i> กลับหน้าจัดการ</a>
+
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <i class="fas fa-home"></i>
+            <div class="kpi-label">มูลค่าทรัพย์ทั้งหมดในระบบ</div>
+            <div class="kpi-value" id="totalValue">฿0</div>
+        </div>
+        <div class="kpi-card" style="border-color: var(--green);">
+            <i class="fas fa-hand-holding-usd" style="color: var(--green);"></i>
+            <div class="kpi-label">ยอดขายที่ปิดได้ (Sold)</div>
+            <div class="kpi-value" id="totalSold" style="color: var(--green);">฿0</div>
+        </div>
+        <div class="kpi-card" style="border-color: var(--gold);">
+            <i class="fas fa-percentage" style="color: var(--gold);"></i>
+            <div class="kpi-label">ค่าคอมมิชชันรอรับ (3% Avg)</div>
+            <div class="kpi-value" id="totalComm" style="color: var(--gold);">฿0</div>
+        </div>
+    </div>
+
+    <div class="dashboard-row">
+        <div class="data-box">
+            <div class="data-title"><i class="fas fa-city"></i> สรุปยอดแยกตามโครงการ</div>
+            <div id="tableContent">
+                <div style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-spin fa-2x"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const api = "https://script.google.com/macros/s/AKfycbx0ICTtHVgCCIU48VQFb-6tO9yvKgD6_oOBIN31tBYB3oHQ3h2JTS_ZIU0JyGG2O-jc/exec"; // ⚠️ ใส่ URL มหาอำนาจของมาสเตอร์
+    
+    // ตรวจสอบสิทธิ์ (เฉพาะ Master เท่านั้น)
+    const user = JSON.parse(localStorage.getItem('smartAdmin'));
+    if(!user || user.role !== 'Master') {
+        alert("ขออภัย! หน้านี้สำหรับผู้บริหารสูงสุดเท่านั้น");
+        window.location.href = 'admin.html';
+    }
+
+    async function loadDashboard() {
+        try {
+            const res = await fetch(`${api}?action=salesSummary`);
+            const d = await res.json();
+
+            // อัปเดต KPI
+            document.getElementById('totalValue').innerText = `฿${(d.totalValue/1000000).toFixed(2)}M`;
+            document.getElementById('totalSold').innerText = `฿${(d.totalSoldValue/1000000).toFixed(2)}M`;
+            document.getElementById('totalComm').innerText = `฿${d.totalCommission.toLocaleString()}`;
+
+            // สร้างตารางสรุปโครงการ
+            let html = `<table><thead><tr><th>ชื่อโครงการ</th><th>จำนวนบ้าน</th><th>มูลค่ารวม</th><th>ค่าคอมมิชชัน</th></tr></thead><tbody>`;
+            for (const [name, info] of Object.entries(d.projectBreakdown)) {
+                html += `<tr>
+                    <td><b>${name}</b></td>
+                    <td>${info.count} หลัง</td>
+                    <td>฿${Number(info.value).toLocaleString()}</td>
+                    <td style="color:var(--green); font-weight:600;">฿${Number(info.comm).toLocaleString()}</td>
+                </tr>`;
+            }
+            html += `</tbody></table>`;
+            document.getElementById('tableContent').innerHTML = html;
+
+        } catch (e) {
+            document.getElementById('tableContent').innerHTML = "❌ ไม่สามารถโหลดข้อมูลสรุปได้";
+        }
+    }
+
+    loadDashboard();
+</script>
+</body>
+</html>
