@@ -3,47 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART CATALOG V15.0 - Genesis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+    <title>Smart Catalog - Imperial Filter System V15.2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f4f7f6; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; }
-        header { background: #fff; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); color: var(--primary); font-weight: 400; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
-        .card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; padding-bottom: 20px; }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .btn { display: inline-block; margin-top: 15px; padding: 10px 30px; background: var(--primary); color: white; text-decoration: none; border-radius: 50px; }
+        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --gold: #f1c40f; --red: #e74c3c; --border: #ddd; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); font-weight: 300; }
+        h1, h2, h3, b, strong { font-weight: 400; }
+
+        /* 📱 Header & Language Flags */
+        header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .brand-name { font-weight: 400; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .flag-list { display: flex; gap: 5px; }
+        .flag-btn { border: none; background: none; padding: 0; cursor: pointer; transition: 0.2s; }
+        .flag-btn img { width: 22px; height: 14px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+
+        /* 🍔 Universal Sidebar */
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #fff; z-index: 2500; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 60px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); }
+        .sidebar.active { left: 0; }
+        .sidebar-item { padding: 18px 25px; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text); transition: 0.3s; }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; backdrop-filter: blur(2px); }
+        .sidebar-overlay.active { display: block; }
+
+        /* 🔍 Filter Area (Smart Filter V3.2) */
+        .filter-area { padding: 15px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+        .id-selector-trigger { 
+            width: 100%; padding: 14px 15px; background: #fff; border: 1.5px solid var(--border); border-radius: 15px;
+            color: var(--primary); display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 10px; box-sizing: border-box;
+        }
+        .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .select-box { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); background: #fff; font-family: 'Kanit'; color: var(--primary); outline: none; font-size: 0.85rem; font-weight: 300; }
+
+        /* 🏠 Property Grid & Cards */
+        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 15px 40px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--white); border-radius: 25px; overflow: hidden; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; padding: 5px 15px; border-radius: 50px; font-weight: 400; font-size: 0.7rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card-img { width: 100%; height: 220px; object-fit: cover; background: #eee; }
+        .card-body { padding: 20px; text-align: center; }
+        .price-text { font-size: 1.8rem; color: var(--primary); font-weight: 400; margin: 8px 0; letter-spacing: -1px; }
+        .btn-detail { display: block; width: 75%; margin: 15px auto 0; padding: 12px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 50px; font-weight: 400; font-size: 0.95rem; box-shadow: 0 5px 15px rgba(26,82,118,0.2); transition: 0.3s; }
+
+        /* 🛌 Modal System */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: flex-end; }
+        .modal-content { background: #fff; border-radius: 30px 30px 0 0; width: 100%; max-height: 80vh; padding: 25px 20px; overflow-y: auto; box-sizing: border-box; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+        .id-item { padding: 15px 10px; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: 0.2s; }
+        .id-item:active { background: #f0f7ff; }
+        .id-row { display: flex; justify-content: space-between; align-items: center; }
+        .status-tag { padding: 2px 12px; border-radius: 5px; font-size: 0.65rem; font-weight: 400; }
+        .available { background: #e8f5e9; color: var(--green); } .pending { background: #fff9e6; color: var(--gold); } .sold { background: #fdeaea; color: var(--red); }
     </style>
 </head>
 <body>
-    <header>🏛️ SMART HUA HIN PROPERTIES SYSTEM</header>
-    <div id="grid" class="grid">
-        <div style="grid-column:1/-1; text-align:center; padding:100px;">สถาปนาการเชื่อมต่อมหาอำนาจ...</div>
+
+<header>
+    <div class="header-left" onclick="toggleSidebar()">
+        <i class="fas fa-bars fa-lg" style="color:var(--primary);"></i>
+        <div class="brand-name" id="ui-brand">Smart System</div>
     </div>
+    <div class="flag-list">
+        <button class="flag-btn" onclick="setLanguage('th')"><img src="https://flagcdn.com/w40/th.png"></button>
+        <button class="flag-btn" onclick="setLanguage('en')"><img src="https://flagcdn.com/w40/us.png"></button>
+        <button class="flag-btn" onclick="setLanguage('cn')"><img src="https://flagcdn.com/w40/cn.png"></button>
+        <button class="flag-btn" onclick="setLanguage('ru')"><img src="https://flagcdn.com/w40/ru.png"></button>
+        <button class="flag-btn" onclick="setLanguage('de')"><img src="https://flagcdn.com/w40/de.png"></button>
+        <button class="flag-btn" onclick="setLanguage('fr')"><img src="https://flagcdn.com/w40/fr.png"></button>
+    </div>
+</header>
 
-    <script>
-        // 🎯 พิกัดมหาอำนาจใหม่ล่าสุดของมาสเตอร์
-        const api = "https://script.google.com/macros/s/AKfycbwUqp_vaFNgUdyARh5WG-S3iRm_x1C4EX0tL8aw12nhKpvYVn3I7SwWmi5s-doiYGYh/exec";
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+    <a href="#" class="sidebar-item" onclick="location.reload()"><i class="fas fa-house"></i> <span data-i18n="home">หน้าหลัก</span></a>
+    <a href="login.html" class="sidebar-item" style="margin-top:20px; border-top:1px solid #eee; color:var(--primary);"><i class="fas fa-user-shield"></i> <span data-i18n="admin">ระบบบริหารขุนพล</span></a>
+</div>
 
-        async function init() {
-            try {
-                const res = await fetch(api);
-                const data = await res.json();
-                // แสดงผลเฉพาะรายการที่มีข้อมูลจริง
-                const cleanData = data.filter(it => it.HP_ID);
-                document.getElementById('grid').innerHTML = cleanData.map(it => `
-                    <div class="card">
-                        <img src="${it.Thumbnail}" onerror="this.src='https://placehold.co/400x250?text=Property'">
-                        <h3>${it.ID}</h3>
-                        <p>${it.Project_Name}</p>
-                        <div style="font-size:1.4rem; color:var(--primary);">฿${Number(it.Price).toLocaleString()}</div>
-                        <a href="details.html?id=${it.HP_ID}" class="btn">ดูรายละเอียด</a>
-                    </div>
-                `).join('');
-            } catch (e) { document.getElementById('grid').innerHTML = "❌ ระบบฐานข้อมูลยังไม่ถูกสถาปนา"; }
-        }
-        init();
-    </script>
+<div class="filter-area">
+    <div class="id-selector-trigger" onclick="openIdModal()">
+        <span id="ui-selector-text" data-i18n="selector">เลือกแปลง / รหัสที่ต้องการ...</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="filter-row">
+        <select class="select-box" id="bedFilter" onchange="applyFilters()">
+            <option value="" data-i18n="bedAll">🛌 ห้องนอนทั้งหมด</option>
+            <option value="1">1 Bedroom</option><option value="2">2 Bedrooms</option><option value="3">3 Bedrooms</option><option value="4">4 Bedrooms</option><option value="5">5+ Bedrooms</option>
+        </select>
+        <select class="select-box" id="priceSort" onchange="applyFilters()">
+            <option value="" data-i18n="priceSort">💰 เรียงตามราคา</option>
+            <option value="low" data-i18n="priceLow">น้อยไปหามาก</option><option value="high" data-i18n="priceHigh">มากไปหาน้อย</option>
+        </select>
+    </div>
+</div>
+
+<div id="loading" style="text-align:center; padding:120px; color:var(--primary);"><i class="fas fa-sync fa-spin fa-2x"></i></div>
+<div class="property-grid" id="grid"></div>
+
+<div class="modal" id="idModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <b data-i18n="modalTitle">เลือกแปลงโครงการ</b>
+            <span onclick="clearIdFilter()" style="color:var(--red); cursor:pointer; font-weight:400;" data-i18n="clear">ล้างค่า</span>
+        </div>
+        <div id="idList"></div>
+    </div>
+</div>
+
+<script>
+    // 🎯 พิกัดมหาอำนาจตามบัญชามาสเตอร์
+    const api = "https://script.google.com/macros/s/AKfycbwUqp_vaFNgUdyARh5WG-S3iRm_x1C4EX0tL8aw12nhKpvYVn3I7SwWmi5s-doiYGYh/exec";
+    
+    let allData = [], selectedHPID = null, currentLang = localStorage.getItem('smartLang') || 'th';
+
+    const i18n = {
+        th: { home: "หน้าหลัก", admin: "ระบบบริหารขุนพล", selector: "เลือกแปลง / รหัสที่ต้องการ...", bedAll: "🛌 ห้องนอนทั้งหมด", priceSort: "💰 เรียงตามราคา", priceLow: "น้อยไปมาก", priceHigh: "มากไปน้อย", modalTitle: "เลือกแปลงโครงการ", clear: "ล้างค่า", view: "ดูรายละเอียด", Available: "ว่าง", Pending: "จองแล้ว", Sold: "ขายแล้ว" },
+        en: { home: "Home", admin: "Admin Access", selector: "Select Plot / ID...", bedAll: "🛌 All Bedrooms", priceSort: "💰 Sort Price", priceLow: "Low to High", priceHigh: "High to Low", modalTitle: "Project Plots", clear: "Clear", view: "View Details", Available: "Available", Pending: "Pending", Sold: "Sold" }
+    };
+
+    async function init() {
+        try {
+            const res = await fetch(api);
+            allData = await res.json();
+            // กรองเฉพาะรายการที่มี HP_ID จริงๆ
+            allData = allData.filter(it => it.HP_ID);
+            setLanguage(currentLang);
+        } catch (e) { document.getElementById('loading').innerHTML = "❌ ระบบฐานข้อมูลยังไม่ถูกสถาปนา"; }
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang; localStorage.setItem('smartLang', lang);
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (i18n[lang] && i18n[lang][key]) el.innerText = i18n[lang][key];
+        });
+        renderIdList(); applyFilters();
+    }
+
+    function renderIdList() {
+        const list = document.getElementById('idList'), t = i18n[currentLang] || i18n.en;
+        list.innerHTML = "";
+        allData.forEach(it => {
+            const item = document.createElement('div');
+            item.className = "id-item";
+            item.onclick = () => { selectedHPID = it.HP_ID; document.getElementById('ui-selector-text').innerText = "🔍 " + it.ID; closeIdModal(); applyFilters(); };
+            item.innerHTML = `
+                <div class="id-row">
+                    <div style="font-weight:400; color:var(--primary);">${it.ID}</div>
+                    <div style="font-weight:400;">฿${(Number(it.Price)/1000000).toFixed(1)}M</div>
+                </div>
+                <div style="font-size:0.7rem; color:#777; margin-top:3px;">
+                    <span class="status-tag ${it.Status.toLowerCase()}">${t[it.Status] || it.Status}</span> | 🛌 ${it.Bedrooms} | 📐 ${it['Living Area (sq.m)']} m²
+                </div>
+            `;
+            list.appendChild(item);
+        });
+    }
+
+    function clearIdFilter() { selectedHPID = null; document.getElementById('ui-selector-text').innerText = i18n[currentLang].selector; closeIdModal(); applyFilters(); }
+
+    function applyFilters() {
+        let data = [...allData];
+        const bed = document.getElementById('bedFilter').value, sort = document.getElementById('priceSort').value;
+        if (selectedHPID) data = data.filter(it => it.HP_ID === selectedHPID);
+        if (bed) data = data.filter(it => Number(it.Bedrooms) >= Number(bed));
+        if (sort === "low") data.sort((a,b) => a.Price - b.Price); else if (sort === "high") data.sort((a,b) => b.Price - a.Price);
+        renderGrid(data);
+    }
+
+    function renderGrid(items) {
+        const grid = document.getElementById('grid'), t = i18n[currentLang] || i18n.en;
+        document.getElementById('loading').style.display = 'none';
+        grid.innerHTML = items.length ? "" : `<div style="grid-column:1/-1; text-align:center; padding:50px;">ไม่พบข้อมูลที่ค้นหา</div>`;
+        items.forEach(it => {
+            const card = document.createElement('div'); card.className = 'card';
+            card.innerHTML = `
+                <div class="badge">${it.Badge || it.HP_ID}</div>
+                <img src="${it.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Property'">
+                <div class="card-body">
+                    <div style="font-size:0.8rem; color:#7f8c8d;">${it.ID} | 🛌 ${it.Bedrooms} | 🏠 ${it['Living Area (sq.m)']} m²</div>
+                    <div class="price-text">฿${Number(it.Price).toLocaleString()}</div>
+                    <a href="details.html?id=${it.HP_ID}" class="btn-detail">${t.view}</a>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
+    function openIdModal() { document.getElementById('idModal').style.display = 'flex'; }
+    function closeIdModal() { document.getElementById('idModal').style.display = 'none'; }
+    init();
+</script>
 </body>
 </html>
-
