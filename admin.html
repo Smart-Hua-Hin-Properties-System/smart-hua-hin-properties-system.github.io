@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign dual-Evidence Portal V4.9</title>
+    <title>Sovereign dual-Evidence Portal V5.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,31 +15,33 @@
         .tab-item { padding: 15px; color: #7f8c8d; text-decoration: none; font-size: 0.85rem; flex: 1; text-align: center; border-bottom: 3px solid transparent; cursor: pointer; transition: 0.3s; }
         .tab-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 400; }
 
-        .container { padding: 20px; max-width: 1150px; margin: 0 auto; }
+        .container { padding: 20px; max-width: 1200px; margin: 0 auto; }
         .card { background: #fff; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* 🕵️ dual-Evidence Table */
+        /* 🕵️ ตารางรายงานเช็คอินมหาอำนาจ V5.0 */
         .report-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         .report-table th { text-align: left; padding: 15px; border-bottom: 2px solid #f0f0f0; color: var(--primary); font-weight: 400; }
         .report-table td { padding: 15px; border-bottom: 1px solid #f9f9f9; vertical-align: middle; }
         
-        /* Status Badges */
-        .badge { padding: 5px 15px; border-radius: 50px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px; }
+        /* สถานะ Pending/Active */
+        .badge { padding: 5px 15px; border-radius: 50px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
         .badge-pending { background: #fff3cd; color: #856404; cursor: pointer; border: 1px solid #ffeeba; }
-        .badge-active { background: #d4edda; color: #155724; }
+        .badge-pending:hover { background: #ffeeba; transform: scale(1.05); }
+        .badge-active { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         
-        .btn-action { background: none; border: none; cursor: pointer; color: var(--primary); font-size: 1.1rem; padding: 8px; transition: 0.2s; }
+        .btn-action { background: none; border: none; cursor: pointer; color: var(--primary); font-size: 1.1rem; padding: 8px; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; }
         .btn-action:hover { transform: scale(1.2); color: var(--orange); }
         .approver-tag { font-size: 0.65rem; color: var(--green); display: block; margin-top: 5px; font-weight: 400; }
         
-        .img-stack { display: flex; gap: 8px; align-items: center; }
+        .img-stack { display: flex; gap: 10px; align-items: center; }
+        .no-data { text-align: center; padding: 60px; color: #999; }
     </style>
 </head>
 <body>
 
 <div class="admin-header">
     <div style="font-weight:400;">SMART SYSTEM <span id="projectLabel" style="font-size:0.75rem; opacity:0.8;"></span></div>
-    <button onclick="logout()" style="background:var(--red); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">LOGOUT</button>
+    <button onclick="logout()" style="background:var(--red); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-family:'Kanit';">LOGOUT</button>
 </div>
 
 <div class="nav-tabs">
@@ -51,7 +53,7 @@
 <div class="container">
     <div id="propertySection" class="tab-content">
         <button onclick="window.location.href='index.html'" style="background:var(--primary); color:white; border:none; padding:15px; width:100%; border-radius:15px; cursor:pointer; font-family:'Kanit'; margin-bottom:20px;">+ เพิ่มข้อมูลรายการบ้านใหม่</button>
-        <div id="propertyList"><div style="text-align:center; padding:50px;"><i class="fas fa-sync fa-spin"></i></div></div>
+        <div id="propertyList"></div>
     </div>
 
     <div id="reportSection" class="tab-content" style="display:none;">
@@ -66,8 +68,7 @@
                     </tr>
                 </thead>
                 <tbody id="reportLogs">
-                    <tr><td colspan="4" style="text-align:center; padding:50px;">ไม่พบข้อมูลการเช็คอิน</td></tr>
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
@@ -76,8 +77,7 @@
         <div class="card">
             <h3 id="infoProjectName" style="color:var(--primary); font-weight:400; margin-top:0;">ข้อมูลโครงการ</h3>
             <div style="background:#f0f7ff; padding:20px; border-radius:15px; border-left:5px solid var(--blue);">
-                <h4 style="margin-top:0; font-weight:400;">ระเบียบและข้อตกลงร่วมกัน</h4>
-                <p id="agreementText" style="line-height:1.8; color:#555;">กำลังดึงข้อมูล...</p>
+                <p id="agreementText" style="line-height:1.8; color:#555;">กำลังดึงข้อมูลระเบียบการทำงาน...</p>
             </div>
         </div>
     </div>
@@ -99,44 +99,58 @@
         if(t === 'property') loadProperties();
     }
 
-    // 📍 ระบบดึงรายงานพร้อมหลักฐาน 2 มุมมอง
+    // 🎯 แก้ไขจุดบกพร่อง: ดึงข้อมูลจาก Agent_Traffic_Logs มาแสดงผล
     async function loadReports() {
+        const body = document.getElementById('reportLogs');
+        body.innerHTML = '<tr><td colspan="4" class="no-data"><i class="fas fa-sync fa-spin fa-2x"></i><br><br>กำลังดึงข้อมูลรายงานเช็คอิน...</td></tr>';
+        
         try {
             const r = await fetch(`${api}?action=getVisitLogs&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`);
             const data = await r.json();
-            document.getElementById('reportLogs').innerHTML = data.map(v => `
+            
+            if (!data || data.length === 0) {
+                body.innerHTML = '<tr><td colspan="4" class="no-data">ยังไม่มีข้อมูลการเช็คอินในโครงการนี้</td></tr>';
+                return;
+            }
+
+            body.innerHTML = data.map(v => `
                 <tr>
                     <td>
-                        <b style="color:var(--primary); font-weight:400;">${v.Agent_Name}</b> (${v.Agency || 'อิสระ'})<br>
+                        <b style="color:var(--primary); font-weight:400;">${v.Agent_Name || 'ไม่ระบุชื่อ'}</b> (${v.Agency || 'อิสระ'})<br>
                         <small style="color:#999;"><i class="far fa-clock"></i> ${new Date(v.Timestamp).toLocaleString('th-TH')}</small>
                     </td>
-                    <td><span style="color:#555;">${v.Marketing_ID}</span></td>
+                    <td><span style="color:#555;">${v.Marketing_ID || '-'}</span></td>
                     <td>
                         ${v.Status === 'Waiting' ? 
                             `<span class="badge badge-pending" onclick="approve('${v.Log_ID}')"><i class="fas fa-hourglass-half"></i> Pending (Approve)</span>` : 
                             `<div>
                                 <span class="badge badge-active"><i class="fas fa-check-circle"></i> Active</span>
-                                <span class="approver-tag">by ${v.Approved_By}</span>
+                                <span class="approver-tag">by ${v.Approved_By || 'Admin'}</span>
                             </div>`
                         }
                     </td>
                     <td>
                         <div class="img-stack">
-                            <a href="${v.Evidence_URL_1}" target="_blank" class="btn-action" title="รูปที่ 1"><i class="fas fa-image"></i></a>
-                            <a href="${v.Evidence_URL_2}" target="_blank" class="btn-action" title="รูปที่ 2"><i class="fas fa-camera"></i></a>
-                            <a href="https://www.google.com/maps?q=${v.Lat},${v.Lng}" target="_blank" class="btn-action" title="Google Maps"><i class="fas fa-map-marker-alt" style="color:var(--orange);"></i></a>
+                            ${v.Evidence_URL_1 ? `<a href="${v.Evidence_URL_1}" target="_blank" class="btn-action" title="ภาพที่ 1"><i class="fas fa-image"></i></a>` : '<i class="fas fa-image" style="color:#eee" title="ไม่มีรูป"></i>'}
+                            ${v.Evidence_URL_2 ? `<a href="${v.Evidence_URL_2}" target="_blank" class="btn-action" title="ภาพที่ 2"><i class="fas fa-camera"></i></a>` : '<i class="fas fa-camera" style="color:#eee" title="ไม่มีรูป"></i>'}
+                            <a href="http://maps.google.com/?q=${v.Lat},${v.Lng}" target="_blank" class="btn-action" title="ดูแผนที่ GPS"><i class="fas fa-map-marker-alt" style="color:var(--orange);"></i></a>
                         </div>
                     </td>
                 </tr>
-            `).join('') || '<tr><td colspan="4" style="text-align:center;">ไม่พบข้อมูล</td></tr>';
-        } catch(e) { console.log(e); }
+            `).join('');
+        } catch(e) { 
+            body.innerHTML = '<tr><td colspan="4" class="no-data" style="color:var(--red)">❌ การดึงข้อมูลล้มเหลว โปรดลองใหม่อีกครั้ง</td></tr>';
+        }
     }
 
     async function approve(id) {
         const approver = user.role === "Master" ? "Master Admin" : user.projectName;
-        if(!confirm(`ยืนยันการอนุมัติในนาม ${approver}?`)) return;
-        await fetch(api, { method: 'POST', body: JSON.stringify({ action: 'approveVisit', logId: id, approvedBy: approver }) });
-        alert("✅ อนุมัติพิกัดจริงเรียบร้อย!"); loadReports();
+        if(!confirm(`ยืนยันการอนุมัติพิกัดจริงในนาม ${approver}?`)) return;
+        try {
+            await fetch(api, { method: 'POST', body: JSON.stringify({ action: 'approveVisit', logId: id, approvedBy: approver }) });
+            alert("✅ อนุมัติการเข้าชมเรียบร้อย!"); 
+            loadReports();
+        } catch(e) { alert("❌ อนุมัติขัดข้อง"); }
     }
 
     async function loadProjectInfo() {
@@ -147,14 +161,18 @@
     }
 
     async function loadProperties() {
-        const r = await fetch(`${api}?action=adminData&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`);
-        const d = await r.json();
-        document.getElementById('propertyList').innerHTML = d.map(it => `
-            <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                <div><b style="font-weight:400;">${it.HP_ID} - ${it.ID}</b><br><small>฿${Number(it.Price).toLocaleString()} | ${it.Status}</small></div>
-                <i class="fas fa-edit" style="color:var(--primary); cursor:pointer;"></i>
-            </div>
-        `).join('') || '<div style="text-align:center;">ยังไม่มีรายการบ้าน</div>';
+        const list = document.getElementById('propertyList');
+        list.innerHTML = '<div style="text-align:center; padding:50px;"><i class="fas fa-sync fa-spin"></i></div>';
+        try {
+            const r = await fetch(`${api}?action=adminData&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`);
+            const d = await r.json();
+            list.innerHTML = d.map(it => `
+                <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div><b style="font-weight:400;">${it.HP_ID} - ${it.ID}</b><br><small>฿${Number(it.Price).toLocaleString()} | ${it.Status}</small></div>
+                    <i class="fas fa-edit" style="color:var(--primary); cursor:pointer;"></i>
+                </div>
+            `).join('') || '<div style="text-align:center;">ยังไม่มีรายการบ้าน</div>';
+        } catch(e) { list.innerHTML = "❌ โหลดข้อมูลบ้านขัดข้อง"; }
     }
 
     function logout() { localStorage.removeItem('smartAdmin'); window.location.href = 'login.html'; }
