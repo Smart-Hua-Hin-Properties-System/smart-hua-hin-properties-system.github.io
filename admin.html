@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Control - Master Edition</title>
+    <title>Admin Control - Precision V2.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f8f9fa; --white: #ffffff; --green: #27ae60; --gold: #f1c40f; --locked: #f1f3f4; }
+        :root { --primary: #1a5276; --bg: #f8f9fa; --white: #ffffff; --green: #27ae60; --locked: #f1f3f4; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
         .admin-header { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
@@ -15,11 +15,14 @@
         .btn-add { background: var(--primary); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(26,82,118,0.2); }
         .property-list { background: #fff; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
         .property-item { padding: 18px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; overflow-y: auto; padding: 10px; }
-        .modal-content { background: #fff; border-radius: 30px; max-width: 900px; margin: 15px auto; padding: 25px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 2000; overflow-y: auto; padding: 10px; }
+        .modal-content { background: #fff; border-radius: 30px; max-width: 900px; margin: 10px auto; padding: 30px; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        input, select, textarea { padding: 12px; border: 1.5px solid #ddd; border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; width: 100%; }
-        input[readonly] { background: var(--locked); color: #7f8c8d; }
+        .form-section { border-bottom: 1px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 25px; }
+        label { font-size: 0.85rem; color: #7f8c8d; display: block; margin-bottom: 5px; font-weight: 500; }
+        input, select, textarea { padding: 12px; border: 1.5px solid #ddd; border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; width: 100%; outline: none; }
+        input[readonly] { background: var(--locked); color: #7f8c8d; border-color: #eee; }
+        .btn-save { background: var(--green); color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 20px; font-size: 1.2rem; }
     </style>
 </head>
 <body>
@@ -27,87 +30,108 @@
 <div class="admin-header">
     <div><b>Smart Control</b> <span id="roleBadge" style="font-size:0.7rem; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:10px;">Admin</span></div>
     <div id="adminName">Loading...</div>
-    <button onclick="logout()" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">ออกระบบ</button>
+    <button onclick="logout()" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:600;">ออกระบบ</button>
 </div>
 
 <div class="container">
     <div id="masterOnlySection">
-        <h4 style="color:#856404; margin-top:0;"><i class="fas fa-crown"></i> ส่วนบริหารสูงสุด</h4>
-        <button onclick="window.location.href='dashboard.html'" style="background:#856404; color:white; width:100%; padding:15px; border:none; border-radius:12px; font-weight:600; cursor:pointer;">
-            <i class="fas fa-chart-line"></i> เข้าสู่หน้าสรุปยอดบริหาร (Executive Dashboard)
-        </button>
+        <h4 style="color:#856404; margin-top:0;"><i class="fas fa-crown"></i> แผงควบคุมผู้บริหารสูงสุด</h4>
+        <button onclick="window.location.href='dashboard.html'" style="background:#856404; color:white; width:100%; padding:15px; border:none; border-radius:12px; font-weight:600; cursor:pointer;"><i class="fas fa-chart-line"></i> เข้าสู่หน้าสรุปยอดบริหาร (Executive Dashboard)</button>
     </div>
-
     <button class="btn-add" onclick="openAdd()"><i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่</button>
-    <div class="property-list" id="listBody"><div style="padding:60px; text-align:center;"><i class="fas fa-sync fa-spin fa-2x"></i><br><br>กำลังดึงข้อมูล...</div></div>
+    <div class="property-list" id="listBody"><div style="padding:60px; text-align:center;"><i class="fas fa-sync fa-spin fa-2x"></i><br><br>กำลังดึงข้อมูลมหาอำนาจ...</div></div>
 </div>
 
 <div class="modal" id="addModal">
     <div class="modal-content">
-        <h2 id="modalTitle" style="color:var(--primary); border-bottom:3px solid var(--primary); padding-bottom:10px;">ข้อมูลทรัพย์</h2>
+        <h2 id="modalTitle" style="color:var(--primary); margin-top:0; border-bottom:3px solid var(--primary); padding-bottom:10px;">ข้อมูลทรัพย์เชิงลึก</h2>
         <form id="propertyForm">
-            <div class="form-grid">
-                <div><label>HP_ID</label><input type="text" name="HP_ID" readonly></div>
-                <div><label>Project_Name</label><input type="text" name="Project_Name" readonly></div>
-                <div><label>ID</label><input type="text" name="ID" required></div>
-                <div><label>Plot</label><input type="text" name="Plot"></div>
-                <div><label>District</label><select name="District" id="dSelect" onchange="updSub()"><option value="Hua Hin">Hua Hin</option><option value="Cha-am">Cha-am</option><option value="Pranburi">Pranburi</option></select></div>
-                <div><label>SubDistrict</label><select name="SubDistrict" id="sSelect"></select></div>
-                <div><label>Status</label><select name="Status"><option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option></select></div>
-                <div><label>Price</label><input type="number" name="Price" required></div>
-                <div><label>Bedrooms</label><input type="number" name="Bedrooms"></div>
-                <div><label>Bathrooms</label><input type="number" name="Bathrooms"></div>
-                <div><label>Living Area (sq.m)</label><input type="number" name="Living Area (sq.m)"></div>
-                <div><label>Thumbnail URL</label><input type="text" name="Thumbnail"></div>
-                <div style="grid-column: 1/-1;"><label>Description</label><textarea name="Description" rows="3"></textarea></div>
+            <div class="form-section">
+                <div class="form-grid">
+                    <div><label>HP_ID (ล็อค)</label><input type="text" name="HP_ID" readonly></div>
+                    <div><label>Project_Name (ล็อค)</label><input type="text" name="Project_Name" readonly></div>
+                    <div><label>ID (รหัสการตลาด)</label><input type="text" name="ID" required></div>
+                    <div><label>Plot (เลขแปลง)</label><input type="text" name="Plot"></div>
+                    <div><label>อำเภอ (District)</label><select name="District" id="dSelect" onchange="updSub()" required><option value="">-- เลือกอำเภอ --</option><option value="Hua Hin">Hua Hin (หัวหิน)</option><option value="Cha-am">Cha-am (ชะอำ)</option><option value="Pranburi">Pranburi (ปราณบุรี)</option></select></div>
+                    <div><label>ตำบล (SubDistrict)</label><select name="SubDistrict" id="sSelect" required><option value="">-- โปรดเลือกอำเภอก่อน --</option></select></div>
+                    <div><label>สถานะ (Status)</label><select name="Status"><option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option></select></div>
+                    <div><label>ราคาขาย (Price)</label><input type="number" name="Price" required></div>
+                </div>
             </div>
-            <button type="button" onclick="saveData()" style="background:var(--green); color:white; width:100%; padding:18px; border:none; border-radius:12px; font-weight:600; margin-top:20px;">🚀 บันทึกข้อมูล</button>
-            <button type="button" onclick="closeModal()" style="width:100%; margin-top:10px; background:none; border:none; color:#999;">ยกเลิก</button>
+            <div class="form-section">
+                <div class="form-grid">
+                    <div><label>Bedrooms</label><input type="number" name="Bedrooms" value="3"></div>
+                    <div><label>Bathrooms</label><input type="number" name="Bathrooms" value="2"></div>
+                    <div><label>Living Area (sq.m)</label><input type="number" step="0.01" name="Living Area (sq.m)" required></div>
+                    <div><label>Commission (%)</label><input type="number" name="Commission (%)" value="3"></div>
+                    <div style="grid-column: 1/-1;"><label>Thumbnail URL</label><input type="text" name="Thumbnail"></div>
+                    <div style="grid-column: 1/-1;"><label>Description</label><textarea name="Description" rows="4"></textarea></div>
+                </div>
+            </div>
+            <button type="button" onclick="saveData()" id="saveBtn" class="btn-save">🚀 บันทึกข้อมูลมหาอำนาจ</button>
+            <button type="button" onclick="closeModal()" style="width:100%; margin-top:10px; border:none; background:none; color:#999; cursor:pointer;">ยกเลิก</button>
         </form>
     </div>
 </div>
 
 <script>
-    const api = "https://script.google.com/macros/s/AKfycbx0ICTtHVgCCIU48VQFb-6tO9yvKgD6_oOBIN31tBYB3oHQ3h2JTS_ZIU0JyGG2O-jc/exec";
+    const api = "https://script.google.com/macros/s/AKfycbza29YWiI0PkYfgQPhRmVNr2IH4S3lF_XmKgRUO2GRqa9BCfIUm3ynv4RH81RjEjilm/exec";
     const user = JSON.parse(localStorage.getItem('smartAdmin'));
     if(!user) window.location.href = 'login.html';
-    
     document.getElementById('adminName').innerText = user.projectName;
     document.getElementById('roleBadge').innerText = user.role;
     if(user.role === 'Master') document.getElementById('masterOnlySection').style.display = 'block';
 
-    const subs = { "Hua Hin": ["Nong Kae", "Hin Lek Fai", "Thap Tai"], "Cha-am": ["Cha-am", "Khao Yai"], "Pranburi": ["Pranburi", "Pak Nam Pran"] };
+    // 🗺️ ฐานข้อมูลตำบลครบถ้วน
+    const subs = { 
+        "Hua Hin": ["Hua Hin (หัวหิน)", "Nong Kae (หนองแก)", "Hin Lek Fai (หินเหล็กไฟ)", "Thap Tai (ทับใต้)", "Huai Sat Yai (ห้วยสัตว์ใหญ่)", "Bueng Nakhon (บึงนคร)", "Nong Plap (หนองพลับ)"], 
+        "Cha-am": ["Cha-am (ชะอำ)", "Na Yang (นายาง)", "Khao Yai (เขาใหญ่)", "Nong Sala (หนองศาลา)", "Huai Sai Nuea (ห้วยทรายเหนือ)", "Rai Mai Phatthana (ไร่ใหม่พัฒนา)"], 
+        "Pranburi": ["Pranburi (ปราณบุรี)", "Khao Chao (เขาจ้าว)", "Nong Ta Taem (หนองตาแต้ม)", "Wang Phong (วังก์พง)", "Pak Nam Pran (ปากน้ำปราณ)", "Khuean Pran (เขื่อนปราณ)"] 
+    };
+
     function updSub(v="") {
         const d = document.getElementById('dSelect').value; const s = document.getElementById('sSelect');
-        s.innerHTML = subs[d].map(x => `<option value="${x}" ${x==v?'selected':''}>${x}</option>`).join('');
+        s.innerHTML = '<option value="">-- เลือกตำบล --</option>';
+        if(subs[d]) s.innerHTML += subs[d].map(x => `<option value="${x}" ${x==v?'selected':''}>${x}</option>`).join('');
     }
 
     let all = [];
     async function loadData() {
+        const body = document.getElementById('listBody');
         try {
             const r = await fetch(`${api}?action=adminData&projectName=${encodeURIComponent(user.projectName)}&role=${user.role}`);
             all = await r.json();
-            document.getElementById('listBody').innerHTML = all.map((it, i) => `
+            body.innerHTML = all.map((it, i) => `
                 <div class="property-item">
                     <div><b>${it.HP_ID} - ${it.ID}</b><br><small>฿${Number(it.Price).toLocaleString()} | ${it.Status}</small></div>
                     <button onclick="openEdit(${i})" style="background:none; border:none; color:var(--primary); cursor:pointer;"><i class="fas fa-edit fa-lg"></i></button>
                 </div>`).join('') || '<div style="padding:40px; text-align:center;">ยังไม่มีข้อมูล</div>';
-        } catch(e) { document.getElementById('listBody').innerHTML = "❌ โหลดข้อมูลล้มเหลว"; }
+        } catch(e) { body.innerHTML = "❌ โหลดข้อมูลล้มเหลว"; }
     }
 
-    function openModal() { document.getElementById('addModal').style.display = 'block'; }
-    function closeModal() { document.getElementById('addModal').style.display = 'none'; }
+    function openModal() { document.getElementById('addModal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
+    function closeModal() { document.getElementById('addModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
     function openAdd() { document.getElementById('propertyForm').reset(); document.querySelector('input[name="Project_Name"]').value = user.projectName; updSub(); openModal(); }
+    
     function openEdit(i) {
         const it = all[i]; const f = document.getElementById('propertyForm');
         Object.keys(it).forEach(k => { if(f[k]) f[k].value = it[k]; });
         updSub(it.SubDistrict); openModal();
     }
+
     async function saveData() {
-        const d = Object.fromEntries(new FormData(document.getElementById('propertyForm')).entries());
-        d["Project_Name"] = user.projectName;
-        await fetch(`${api}?action=saveProperty&data=${encodeURIComponent(JSON.stringify(d))}`);
-        alert("สำเร็จ!"); closeModal(); loadData();
+        const btn = document.getElementById('saveBtn'); btn.innerText = "正在บันทึกข้อมูล..."; btn.disabled = true;
+        try {
+            const fData = new FormData(document.getElementById('propertyForm'));
+            const data = Object.fromEntries(fData.entries());
+            data["Project_Name"] = user.projectName;
+            
+            const res = await fetch(`${api}?action=saveProperty&data=${encodeURIComponent(JSON.stringify(data))}`);
+            const result = await res.json();
+            if(result.success) { alert("✅ บันทึกสำเร็จ!"); closeModal(); loadData(); }
+            else { alert("❌ ผิดพลาด: " + result.error); }
+        } catch(e) { alert("❌ ระบบขัดข้อง"); }
+        btn.innerText = "🚀 บันทึกข้อมูลมหาอำนาจ"; btn.disabled = false;
     }
     function logout() { localStorage.removeItem('smartAdmin'); window.location.href = 'login.html'; }
     loadData();
