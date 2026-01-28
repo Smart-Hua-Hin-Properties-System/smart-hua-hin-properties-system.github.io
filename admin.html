@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Admin Dashboard - SMART SYSTEM V27.0</title>
+    <title>Admin System - SMART SYSTEM V28.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -21,33 +21,34 @@
         header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-left { display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .brand-name { font-weight: 500; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; border-left: 1.5px solid #eee; padding-left: 10px; }
-        .logout-btn { color: var(--red); font-size: 0.8rem; font-weight: 600; cursor: pointer; text-transform: uppercase; }
+        .logout-btn { color: var(--red); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
 
         /* 🔐 Login Box */
         .login-container { display: flex; align-items: center; justify-content: center; padding: 40px 20px; min-height: 80vh; }
         .login-card { background: #fff; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 35px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); text-align: center; }
-        .login-icon { width: 70px; height: 70px; background: var(--bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; color: var(--primary); font-size: 1.8rem; }
         .input-field { width: 100%; padding: 15px; border-radius: 50px; border: 1.5px solid var(--border); box-sizing: border-box; font-family: 'Kanit'; text-align: center; margin-bottom: 20px; outline: none; }
-        .btn-primary { width: 100%; padding: 15px; border-radius: 50px; border: none; background: var(--primary); color: white; font-family: 'Kanit'; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(26,82,118,0.2); }
+        .btn-primary { width: 100%; padding: 15px; border-radius: 50px; border: none; background: var(--primary); color: white; font-family: 'Kanit'; font-weight: 600; cursor: pointer; box-shadow: 0 8px 20px rgba(26,82,118,0.2); }
 
-        /* 📊 Dashboard Content (Step 2) */
+        /* 📊 Dashboard */
         #dashboard-section { display: none; padding: 20px 15px 100px; max-width: 800px; margin: 0 auto; }
-        .welcome-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 0 10px; }
-        .agent-name { font-weight: 600; color: var(--primary); font-size: 1.2rem; }
-        
-        .add-new-btn { background: var(--green); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(39,174,96,0.2); }
-
         .property-item { background: #fff; border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #f0f0f0; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .prop-info { display: flex; flex-direction: column; gap: 4px; }
-        .prop-id { font-weight: 700; color: var(--primary); font-size: 1rem; }
-        .prop-project { font-size: 0.85rem; color: #777; }
-        .prop-price { font-size: 0.9rem; color: var(--text); font-weight: 500; }
-        
-        .edit-btn { background: var(--bg); color: var(--primary); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-        .edit-btn:hover { background: var(--primary); color: #fff; }
-
         .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
         .available { background: var(--green); } .pending { background: var(--gold); } .sold { background: var(--red); }
+        .add-new-btn { background: var(--green); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; cursor: pointer; }
+
+        /* 📝 Form Section (Step 3) */
+        #form-section { display: none; padding: 20px 15px 120px; max-width: 600px; margin: 0 auto; }
+        .form-card { background: #fff; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 15px; }
+        .label { font-size: 0.75rem; color: #888; margin-bottom: 5px; display: block; font-weight: 600; text-transform: uppercase; }
+        .form-input { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1.5px solid #eee; box-sizing: border-box; font-family: 'Kanit'; outline: none; font-size: 0.95rem; }
+        .form-input:focus { border-color: var(--primary); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        /* Footer Action */
+        .footer-action { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 15px 20px 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); display: flex; gap: 10px; z-index: 2000; border-radius: 25px 25px 0 0; max-width: 600px; margin: 0 auto; }
+        .btn-save { flex: 2; background: var(--green); color: white; padding: 15px; border-radius: 15px; border: none; font-family: 'Kanit'; font-weight: 600; cursor: pointer; }
+        .btn-cancel { flex: 1; background: #eee; color: #666; padding: 15px; border-radius: 15px; border: none; font-family: 'Kanit'; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -58,140 +59,190 @@
 </div>
 
 <header>
-    <div class="header-left" onclick="location.href='index.html'">
+    <div class="header-left" onclick="goHome()">
         <i class="fas fa-chevron-left" style="color:var(--primary);"></i>
         <div class="brand-name">ADMIN PORTAL</div>
     </div>
-    <div id="header-logout" class="logout-btn" style="display:none;" onclick="logout()">Logout <i class="fas fa-sign-out-alt"></i></div>
+    <div id="header-logout" class="logout-btn" style="display:none;" onclick="logout()">LOGOUT</div>
 </header>
 
 <div id="login-section" class="login-container">
     <div class="login-card">
-        <div class="login-icon"><i class="fas fa-user-shield"></i></div>
+        <div style="font-size:3rem; color:var(--primary); margin-bottom:20px;"><i class="fas fa-user-lock"></i></div>
         <h2>Agent Login</h2>
-        <p>เข้าสู่ระบบเพื่อจัดการข้อมูลทรัพย์</p>
-        <input type="password" id="accessKey" class="input-field" placeholder="Access Key" maxlength="20">
-        <button id="loginBtn" class="btn-primary" onclick="handleLogin()">ENTER DASHBOARD</button>
-        <div id="error-msg" style="color:red; font-size:0.8rem; margin-top:15px; display:none;">❌ รหัสผ่านไม่ถูกต้อง</div>
+        <input type="password" id="accessKey" class="input-field" placeholder="Access Key">
+        <button id="loginBtn" class="btn-primary" onclick="handleLogin()">ENTER SYSTEM</button>
     </div>
 </div>
 
 <div id="dashboard-section">
-    <div class="welcome-bar">
-        <div>
-            <div style="font-size:0.75rem; color:#aaa; text-transform:uppercase;">Welcome back,</div>
-            <div id="display-agent-name" class="agent-name">Agent Name</div>
-        </div>
-        <div style="text-align:right;">
-            <div id="prop-count" style="font-size:1.1rem; font-weight:700; color:var(--primary);">0</div>
-            <div style="font-size:0.65rem; color:#aaa;">Properties</div>
+    <div style="margin-bottom:20px;">
+        <h2 id="agent-welcome" style="margin:0;">ยินดีต้อนรับ</h2>
+        <p style="font-size:0.8rem; color:#aaa;">Manage your properties efficiently.</p>
+    </div>
+    <div class="add-new-btn" onclick="openEditor(null)">
+        <i class="fas fa-plus"></i> ADD NEW PROPERTY
+    </div>
+    <div id="property-list"></div>
+</div>
+
+<div id="form-section">
+    <div class="form-card">
+        <h2 id="form-title" style="margin-top:0; color:var(--primary);">Property Editor</h2>
+        <div id="edit-form">
+            <div class="form-group">
+                <label class="label">HP_ID (รหัสหลัก)</label>
+                <input type="text" id="HP_ID" class="form-input" placeholder="เช่น HP-0001" readonly style="background:#f9f9f9;">
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label class="label">Plot/ID (รหัสแปลง)</label><input type="text" id="ID" class="form-input" placeholder="M16"></div>
+                <div class="form-group">
+                    <label class="label">สถานะ</label>
+                    <select id="Status" class="form-input">
+                        <option value="Available">Available (ว่าง)</option>
+                        <option value="Pending">Pending (จองแล้ว)</option>
+                        <option value="Sold">Sold (ขายแล้ว)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group"><label class="label">ชื่อโครงการ / หัวข้อ</label><input type="text" id="Project_Name" class="form-input"></div>
+            <div class="form-row">
+                <div class="form-group"><label class="label">ราคาขาย (฿)</label><input type="number" id="Price" class="form-input"></div>
+                <div class="form-group"><label class="label">ค่าคอมมิชชัน (%)</label><input type="number" id="Commission_Pct" class="form-input" placeholder="เช่น 3"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label class="label">ห้องนอน</label><input type="number" id="Bedrooms" class="form-input"></div>
+                <div class="form-group"><label class="label">ห้องน้ำ</label><input type="number" id="Bathrooms" class="form-input"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label class="label">พื้นที่ใช้สอย (ตร.ม.)</label><input type="number" id="LivingArea" class="form-input"></div>
+                <div class="form-group"><label class="label">พื้นที่ดิน (ตร.ม.)</label><input type="number" id="LandArea" class="form-input"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label class="label">อำเภอ</label><input type="text" id="District" class="form-input"></div>
+                <div class="form-group"><label class="label">ตำบล</label><input type="text" id="SubDistrict" class="form-input"></div>
+            </div>
+            <div class="form-group"><label class="label">URL รูปภาพหน้าปก</label><input type="text" id="Thumbnail" class="form-input" placeholder="https://..."></div>
+            <div class="form-group"><label class="label">รายละเอียดเพิ่มเติม</label><textarea id="Description" class="form-input" rows="4"></textarea></div>
         </div>
     </div>
-
-    <div onclick="alert('ฟังก์ชันเพิ่มทรัพย์ใหม่ (ขั้นตอนที่ 3) กำลังเตรียมการ')" class="add-new-btn">
-        <i class="fas fa-plus-circle"></i> ADD NEW PROPERTY
-    </div>
-
-    <div id="property-list-container">
-        <div style="text-align:center; padding:50px; color:#ccc;"><i class="fas fa-sync fa-spin"></i> Loading Data...</div>
+    <div class="footer-action">
+        <button class="btn-cancel" onclick="showDashboard()">ยกเลิก</button>
+        <button id="saveBtn" class="btn-save" onclick="processSave()">บันทึกข้อมูล</button>
     </div>
 </div>
 
 <script>
     const api = "https://script.google.com/macros/s/AKfycbwUqp_vaFNgUdyARh5WG-S3iRm_x1C4EX0tL8aw12nhKpvYVn3I7SwWmi5s-doiYGYh/exec";
-    
+    let allData = [];
+
     window.onload = () => {
-        const savedToken = localStorage.getItem('admin_token');
-        const savedName = localStorage.getItem('agent_name');
-        
-        if (savedToken && savedName) {
-            showDashboard(savedName);
-        }
-        
-        setTimeout(() => {
-            const loader = document.getElementById('loader-container');
-            loader.style.opacity = '0';
-            setTimeout(() => loader.style.display = 'none', 500);
-        }, 800);
+        const token = localStorage.getItem('admin_token');
+        const name = localStorage.getItem('agent_name');
+        if (token && name) { showDashboard(name); }
+        setTimeout(() => { document.getElementById('loader-container').style.display = 'none'; }, 800);
     };
 
     async function handleLogin() {
         const key = document.getElementById('accessKey').value;
-        const btn = document.getElementById('loginBtn');
-        if (!key) return;
-
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> Authenticating...';
-
-        try {
-            const response = await fetch(`${api}?action=universalLogin&key=${key}`);
-            const result = await response.json();
-
-            if (result.success) {
-                localStorage.setItem('admin_token', key);
-                localStorage.setItem('agent_name', result.name);
-                showDashboard(result.name);
-            } else {
-                document.getElementById('error-msg').style.display = 'block';
-                btn.disabled = false;
-                btn.innerText = 'ENTER DASHBOARD';
-            }
-        } catch (e) {
-            alert("Connection Error");
-            btn.disabled = false;
-            btn.innerText = 'ENTER DASHBOARD';
-        }
+        const result = await fetch(`${api}?action=universalLogin&key=${key}`).then(r => r.json());
+        if (result.success) {
+            localStorage.setItem('admin_token', key);
+            localStorage.setItem('agent_name', result.name);
+            showDashboard(result.name);
+        } else { alert("รหัสผ่านไม่ถูกต้อง"); }
     }
 
-    function showDashboard(name) {
+    async function showDashboard(name) {
+        if (!name) name = localStorage.getItem('agent_name');
         document.getElementById('login-section').style.display = 'none';
+        document.getElementById('form-section').style.display = 'none';
         document.getElementById('dashboard-section').style.display = 'block';
         document.getElementById('header-logout').style.display = 'block';
-        document.getElementById('display-agent-name').innerText = name;
-        fetchProperties();
-    }
-
-    async function fetchProperties() {
-        const container = document.getElementById('property-list-container');
+        document.getElementById('agent-welcome').innerText = `คุณ ${name}`;
+        
+        const list = document.getElementById('property-list');
+        list.innerHTML = "<p style='text-align:center;'>กำลังโหลดข้อมูล...</p>";
+        
         try {
-            const response = await fetch(api);
-            const data = await response.json();
-            const properties = data.filter(it => it.HP_ID || it.hp_id);
-
-            container.innerHTML = "";
-            document.getElementById('prop-count').innerText = properties.length;
-
-            properties.forEach(it => {
-                const hid = it.HP_ID || it.hp_id;
-                const statusClass = it.Status ? it.Status.toLowerCase() : 'available';
-                
+            allData = await fetch(api).then(r => r.json());
+            list.innerHTML = "";
+            allData.filter(it => it.HP_ID).forEach(it => {
+                const hid = it.HP_ID;
                 const div = document.createElement('div');
                 div.className = 'property-item';
-                div.innerHTML = `
-                    <div class="prop-info">
-                        <div class="prop-id">${hid} | ${it.ID || '-'}</div>
-                        <div class="prop-project">${it.Project_Name || 'No Project Name'}</div>
-                        <div class="prop-price">
-                            <span class="status-dot ${statusClass}"></span>
-                            ฿${Number(it.Price || 0).toLocaleString()}
-                        </div>
-                    </div>
-                    <div class="edit-btn" onclick="alert('ระบบกำลังเตรียมหน้าแก้ไขข้อมูล (ขั้นตอนที่ 3) สำหรับรหัส ${hid}')">
-                        <i class="fas fa-pen-nib"></i>
-                    </div>
-                `;
-                container.appendChild(div);
+                div.innerHTML = `<div><div class='prop-id'>${hid} | ${it.ID}</div><div style='font-size:0.8rem;'>${it.Project_Name}</div></div>
+                                 <div class='edit-btn' onclick='openEditor("${hid}")'><i class='fas fa-edit'></i></div>`;
+                list.appendChild(div);
             });
-        } catch (e) {
-            container.innerHTML = "<div style='text-align:center;color:red;'>❌ ไม่สามารถโหลดข้อมูลได้</div>";
-        }
+        } catch(e) { list.innerHTML = "โหลดข้อมูลไม่สำเร็จ"; }
     }
 
-    function logout() {
-        localStorage.removeItem('admin_token');
-        localStorage.removeItem('agent_name');
-        location.reload();
+    function openEditor(hpId) {
+        document.getElementById('dashboard-section').style.display = 'none';
+        document.getElementById('form-section').style.display = 'block';
+        
+        const item = hpId ? allData.find(x => x.HP_ID === hpId) : null;
+        document.getElementById('form-title').innerText = item ? `แก้ไขรหัส ${hpId}` : "เพิ่มทรัพย์ใหม่";
+        
+        // เติมข้อมูลลงฟอร์ม
+        document.getElementById('HP_ID').value = item ? item.HP_ID : `HP-${Date.now().toString().slice(-4)}`;
+        document.getElementById('ID').value = item ? item.ID : "";
+        document.getElementById('Project_Name').value = item ? item.Project_Name : "";
+        document.getElementById('Price').value = item ? item.Price : "";
+        document.getElementById('Bedrooms').value = item ? item.Bedrooms : "";
+        document.getElementById('Bathrooms').value = item ? item.Bathrooms : "";
+        document.getElementById('LivingArea').value = item ? item['Living Area (sq.m)'] : "";
+        document.getElementById('LandArea').value = item ? item['Land Area (sq.m)'] : "";
+        document.getElementById('District').value = item ? item.District : "";
+        document.getElementById('SubDistrict').value = item ? item.SubDistrict : "";
+        document.getElementById('Status').value = item ? item.Status : "Available";
+        document.getElementById('Thumbnail').value = item ? item.Thumbnail : "";
+        document.getElementById('Description').value = item ? item.Description : "";
+        document.getElementById('Commission_Pct').value = item ? item['Commission (%)'] : 3;
     }
+
+    async function processSave() {
+        const btn = document.getElementById('saveBtn');
+        btn.disabled = true; btn.innerText = "กำลังบันทึก...";
+        
+        const payload = {
+            HP_ID: document.getElementById('HP_ID').value,
+            ID: document.getElementById('ID').value,
+            Project_Name: document.getElementById('Project_Name').value,
+            Price: document.getElementById('Price').value,
+            "Commission (%)": document.getElementById('Commission_Pct').value,
+            Bedrooms: document.getElementById('Bedrooms').value,
+            Bathrooms: document.getElementById('Bathrooms').value,
+            "Living Area (sq.m)": document.getElementById('LivingArea').value,
+            "Land Area (sq.m)": document.getElementById('LandArea').value,
+            District: document.getElementById('District').value,
+            SubDistrict: document.getElementById('SubDistrict').value,
+            Status: document.getElementById('Status').value,
+            Thumbnail: document.getElementById('Thumbnail').value,
+            Description: document.getElementById('Description').value
+        };
+
+        try {
+            // ส่งข้อมูลไปยัง Google Apps Script (doPost)
+            const res = await fetch(api, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            }).then(r => r.json());
+
+            if (res.success) {
+                alert("บันทึกข้อมูลเรียบร้อยแล้ว! ระบบ Financial IQ ได้คำนวณข้อมูลอัตโนมัติ");
+                showDashboard();
+            }
+        } catch(e) { alert("เกิดข้อผิดพลาดในการบันทึก"); }
+        btn.disabled = false; btn.innerText = "บันทึกข้อมูล";
+    }
+
+    function goHome() { 
+        if (document.getElementById('form-section').style.display === 'block') { showDashboard(); } 
+        else { location.href = 'index.html'; }
+    }
+    function logout() { localStorage.clear(); location.reload(); }
 </script>
 </body>
 </html>
