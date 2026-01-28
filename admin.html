@@ -22,20 +22,20 @@
         .container { max-width: 950px; margin: 40px auto; padding: 0 20px; }
         h2 { color: var(--navy); font-weight: 500; font-size: 1.8rem; margin-bottom: 35px; }
 
-        /* Executive Gold Section */
+        /* แถบสีทอง: เฉพาะผู้บริหารสูงสุด */
         .exec-card { background: var(--gold-bg); border: 1.5px solid var(--gold-border); border-radius: 15px; padding: 25px; margin-bottom: 25px; }
-        .exec-label { color: #856404; font-weight: 600; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
+        .exec-label { color: #856404; font-weight: 600; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.1rem; }
         .btn-gold { background: var(--gold-btn); color: white; width: 100%; padding: 18px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.1rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 10px rgba(133,100,4,0.3); text-decoration: none; }
 
-        /* Add Property Button */
-        .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 20px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.2rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px; box-shadow: 0 8px 15px rgba(26,82,118,0.2); }
+        /* ปุ่มเพิ่มบ้าน */
+        .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 20px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.2rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px; box-shadow: 0 8px 15px rgba(26,82,118,0.2); }
 
-        /* 🔍 Search Bar (เพิ่มใหม่ตามคำขอ) */
+        /* ช่องค้นหาทรัพย์ */
         .search-container { background: white; border-radius: 15px; padding: 15px; margin-bottom: 25px; display: flex; align-items: center; border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .search-container i { color: #999; margin-right: 15px; font-size: 1.2rem; }
         .search-container input { border: none; outline: none; width: 100%; font-family: 'Kanit'; font-size: 1.1rem; color: #333; }
 
-        /* Main Data Box */
+        /* กล่องขาวแสดงผลข้อมูล */
         .main-white-box { background: white; border-radius: 25px; padding: 40px; border: 1px solid #eee; box-shadow: 0 5px 25px rgba(0,0,0,0.03); min-height: 200px; }
         .sync-icon { font-size: 3rem; color: var(--navy); margin-bottom: 25px; }
         .loading-msg { font-size: 1.15rem; color: #333; font-weight: 500; }
@@ -43,12 +43,13 @@
         .hidden { display: none !important; }
         #login-ui { position: fixed; inset: 0; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
         
-        /* Property Item Styling */
-        .property-item { text-align: left; padding: 20px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        /* สไตล์รายการบ้านในกล่องขาว */
+        .property-item { text-align: left; padding: 25px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
         .property-item:hover { background: #f9fbff; }
         .property-item:last-child { border: none; }
-        .edit-btn { color: var(--blue-btn); cursor: pointer; transition: 0.2s; }
-        .edit-btn:hover { color: #000; transform: scale(1.1); }
+        .item-title { font-weight: 600; color: var(--navy); font-size: 1.2rem; margin-bottom: 5px; }
+        .item-sub { font-size: 0.9rem; color: #666; }
+        .edit-btn { color: var(--blue-btn); cursor: pointer; transition: 0.2s; font-size: 1.8rem; }
     </style>
 </head>
 <body>
@@ -102,6 +103,7 @@
 </div>
 
 <script>
+    // 🔗 URL Apps Script ของคุณครับ
     const webAppUrl = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
     let allProperties = [];
     let currentUser = null;
@@ -127,6 +129,7 @@
         document.getElementById('dashboard-ui').classList.remove('hidden');
         document.getElementById('user-display').innerText = currentUser.name;
 
+        // แสดงแถบสีทองเฉพาะ Super Admin เท่านั้น
         if (currentUser.role === 'SUPER_ADMIN') {
             document.getElementById('exec-section').classList.remove('hidden');
         }
@@ -136,7 +139,6 @@
 
     async function loadProperties() {
         try {
-            // ดึงข้อมูลผ่าน API โดยใช้พารามิเตอร์ Role เพื่อความรวดเร็ว
             const response = await fetch(`${webAppUrl}?role=${currentUser.role}&project=${currentUser.project}`);
             allProperties = await response.json();
             
@@ -155,11 +157,11 @@
         listDiv.innerHTML = data.map(item => `
             <div class="property-item">
                 <div>
-                    <div style="font-weight:600; color:var(--navy); font-size:1.1rem;">${item.HP_ID} | ${item.ID}</div>
-                    <div style="font-size:0.85rem; color:#666;">${item.District} | ${item.Status} | ฿${Number(item.Price).toLocaleString()}</div>
+                    <div class="item-title">${item.HP_ID} | ${item.ID}</div>
+                    <div class="item-sub">${item.District} | ${item.Status} | ฿${Number(item.Price).toLocaleString()}</div>
                 </div>
                 <div class="edit-btn" onclick="alert('แก้ไขทรัพย์: ${item.HP_ID}')">
-                    <i class="fas fa-edit-square fa-2x"></i>
+                    <i class="fas fa-edit"></i>
                 </div>
             </div>
         `).join('');
