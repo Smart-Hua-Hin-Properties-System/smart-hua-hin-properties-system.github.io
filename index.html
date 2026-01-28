@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Catalog - Imperial Centered V16.2</title>
+    <title>Smart Catalog - Imperial Full-Scale V16.3</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,7 +19,7 @@
         .flag-btn { border: none; background: none; padding: 0; cursor: pointer; transition: 0.2s; }
         .flag-btn img { width: 22px; height: 14px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
 
-        /* 🍔 Sidebar */
+        /* 🍔 Universal Sidebar */
         .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #fff; z-index: 2500; transition: 0.4s; padding-top: 60px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); }
         .sidebar.active { left: 0; }
         .sidebar-item { padding: 18px 25px; border-bottom: 1px solid #f5f5f5; display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text); }
@@ -39,52 +39,34 @@
         .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 15px 40px; max-width: 1200px; margin: 0 auto; }
         .card { background: var(--white); border-radius: 25px; overflow: hidden; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid rgba(0,0,0,0.02); }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; padding: 5px 15px; border-radius: 50px; font-weight: 400; font-size: 0.7rem; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .card-img { width: 100%; height: 220px; object-fit: cover; background: #eee; }
         .card-body { padding: 20px; text-align: center; }
         .price-text { font-size: 1.8rem; color: var(--primary); font-weight: 400; margin: 8px 0; letter-spacing: -1px; }
-        .btn-detail { display: block; width: 75%; margin: 15px auto 0; padding: 11px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 50px; font-size: 0.95rem; }
+        .btn-detail { display: block; width: 75%; margin: 15px auto 0; padding: 11px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 50px; font-size: 0.95rem; transition: 0.3s; }
 
-        /* 🛌 Centered Modal Header */
+        /* 🛌 Modal UI */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: flex-end; }
-        .modal-content { background: #fff; border-radius: 30px 30px 0 0; width: 100%; max-height: 80vh; padding: 25px 20px; overflow-y: auto; box-sizing: border-box; }
+        .modal-content { background: #fff; border-radius: 30px 30px 0 0; width: 100%; max-height: 85vh; padding: 25px 20px; overflow-y: auto; box-sizing: border-box; }
         
-        /* 🎯 การสถาปนาตำแหน่งปุ่ม "CLOSE" ไว้กึ่งกลางด้านบน */
-        .modal-header { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            position: relative; 
-            padding-bottom: 20px; 
-            border-bottom: 2px solid #f0f0f0; 
-            margin-bottom: 15px;
-        }
-        .modal-header b { 
-            position: absolute; 
-            left: 0; 
-            font-weight: 500; 
-            color: var(--text);
-            font-size: 1.1rem;
-        }
-        .centered-close-btn { 
-            background: var(--red); 
-            color: white; 
-            padding: 8px 35px; 
-            border-radius: 50px; 
-            font-size: 0.85rem; 
-            font-weight: 600; 
-            cursor: pointer; 
-            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .centered-close-btn:hover { transform: scale(1.05); background: #c0392b; }
+        .modal-header { display: flex; justify-content: center; align-items: center; position: relative; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0; margin-bottom: 15px; }
+        .modal-header b { position: absolute; left: 0; font-weight: 500; color: var(--text); font-size: 1.1rem; }
+        .centered-close-btn { background: var(--red); color: white; padding: 8px 35px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* ID Items */
-        .id-item { padding: 15px 10px; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: 0.2s; }
-        .id-row { display: flex; justify-content: space-between; align-items: center; }
-        .status-tag { padding: 2px 12px; border-radius: 5px; font-size: 0.65rem; font-weight: 400; }
-        .available { background: #e8f5e9; color: var(--green); } .pending { background: #fff9e6; color: var(--gold); } .sold { background: #fdeaea; color: var(--red); }
+        /* 📊 ID List Item */
+        .id-item { padding: 18px 10px; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: 0.2s; }
+        .id-item:active { background: #f0f7ff; }
+        .id-row-main { display: flex; justify-content: space-between; align-items: flex-start; }
+        .id-name { font-weight: 500; color: var(--primary); font-size: 1.2rem; }
+        .id-price-full { font-weight: 500; color: var(--text); font-size: 1.1rem; letter-spacing: -0.5px; }
+        
+        /* 🎯 Sub-Data Line */
+        .id-row-sub { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #666; margin-top: 6px; flex-wrap: wrap; }
+        .spec-item { display: flex; align-items: center; gap: 4px; }
+        .status-tag { padding: 3px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 400; margin-left: 5px; }
+        .available { background: #e8f5e9; color: var(--green); } 
+        .pending { background: #fff9e6; color: var(--gold); } 
+        .sold { background: #fdeaea; color: var(--red); }
     </style>
 </head>
 <body>
@@ -135,27 +117,28 @@
         <div class="modal-header">
             <b data-i18n="modalTitle">เลือกแปลงโครงการ</b>
             <div onclick="clearIdFilter()" class="centered-close-btn" data-i18n="closeBtn">CLOSE</div>
-            <span></span> </div>
+            <span></span>
+        </div>
         <div id="idList"></div>
     </div>
 </div>
 
 <script>
-    // 🎯 พิกัดมหาอำนาจล่าสุดของมาสเตอร์
+    // 🎯 พิกัดมหาอำนาจตามบัญชามาสเตอร์
     const api = "https://script.google.com/macros/s/AKfycbwUqp_vaFNgUdyARh5WG-S3iRm_x1C4EX0tL8aw12nhKpvYVn3I7SwWmi5s-doiYGYh/exec";
     
     let allData = [], selectedHPID = null, currentLang = localStorage.getItem('smartLang') || 'th';
 
     const i18n = {
-        th: { home: "หน้าหลัก", admin: "เข้าระบบแอดมิน", selector: "เลือกแปลง / รหัส...", bedAll: "🛌 ห้องนอนทั้งหมด", priceSort: "💰 เรียงตามราคา", priceLow: "น้อยไปมาก", priceHigh: "มากไปน้อย", modalTitle: "เลือกแปลง", closeBtn: "CLOSE", view: "ดูรายละเอียด", bed: "นอน", Available: "ว่าง", Pending: "จองแล้ว", Sold: "ขายแล้ว" },
-        en: { home: "Home", admin: "Admin Access", selector: "Select Plot / ID...", bedAll: "🛌 All Bedrooms", priceSort: "💰 Sort Price", priceLow: "Low to High", priceHigh: "High to Low", modalTitle: "Project Plots", closeBtn: "CLOSE", view: "View Details", bed: "Bed", Available: "Available", Pending: "Pending", Sold: "Sold" }
+        th: { home: "หน้าหลัก", admin: "เข้าระบบแอดมิน", selector: "เลือกแปลง / รหัส...", bedAll: "🛌 ห้องนอนทั้งหมด", priceSort: "💰 เรียงตามราคา", priceLow: "น้อยไปมาก", priceHigh: "มากไปน้อย", modalTitle: "เลือกแปลง", closeBtn: "CLOSE", view: "ดูรายละเอียด", bed: "นอน", bath: "น้ำ", Available: "ว่าง", Pending: "จองแล้ว", Sold: "ขายแล้ว" },
+        en: { home: "Home", admin: "Admin Access", selector: "Select Plot / ID...", bedAll: "🛌 All Bedrooms", priceSort: "💰 Sort Price", priceLow: "Low to High", priceHigh: "High to Low", modalTitle: "Project Plots", closeBtn: "CLOSE", view: "View Details", bed: "Bed", bath: "Bath", Available: "Available", Pending: "Pending", Sold: "Sold" }
     };
 
     async function init() {
         try {
             const res = await fetch(api);
             allData = await res.json();
-            allData = allData.filter(it => it.HP_ID); // กรองเฉพาะข้อมูลจริง
+            allData = allData.filter(it => it.HP_ID);
             setLanguage(currentLang);
         } catch (e) { document.getElementById('loading').innerHTML = "❌ Connection Error"; }
     }
@@ -164,11 +147,12 @@
         currentLang = lang; localStorage.setItem('smartLang', lang);
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (i18n[lang][key]) el.innerText = i18n[lang][key];
+            if (i18n[lang] && i18n[lang][key]) el.innerText = i18n[lang][key];
         });
         renderIdList(); applyFilters();
     }
 
+    // 🛌 🎯 สถาปนาการแสดงผลใน Modal ตามบัญชา
     function renderIdList() {
         const list = document.getElementById('idList'), t = i18n[currentLang] || i18n.en;
         list.innerHTML = "";
@@ -176,13 +160,19 @@
             const item = document.createElement('div');
             item.className = "id-item";
             item.onclick = () => { selectedHPID = it.HP_ID; document.getElementById('ui-selector-text').innerText = "🔍 " + it.ID; closeIdModal(); applyFilters(); };
+            
+            // 🎯 การแมปราคาเต็ม และ ข้อมูล 4 ช่องมหาอำนาจ
             item.innerHTML = `
-                <div class="id-row">
-                    <div style="font-weight:400; color:var(--primary); font-size:1.1rem;">${it.ID}</div>
-                    <div style="font-weight:400;">฿${(Number(it.Price)/1000000).toFixed(1)}M</div>
+                <div class="id-row-main">
+                    <div class="id-name">${it.ID}</div>
+                    <div class="id-price-full">฿${Number(it.Price).toLocaleString()}</div>
                 </div>
-                <div style="font-size:0.75rem; color:#777; margin-top:5px;">
-                    <span class="status-tag ${it.Status.toLowerCase()}">${t[it.Status] || it.Status}</span> | 🛌 ${it.Bedrooms} ${t.bed} | 🏠 ${it['Living Area (sq.m)']} m²
+                <div class="id-row-sub">
+                    <div class="spec-item"><i class="fas fa-bed"></i> ${it.Bedrooms} ${t.bed}</div>
+                    <div class="spec-item"><i class="fas fa-bath"></i> ${it.Bathrooms || 0} ${t.bath}</div>
+                    <div class="spec-item"><i class="fas fa-vector-square"></i> ${it['Living Area (sq.m)']} m²</div>
+                    <div class="spec-item"><i class="fas fa-maximize"></i> ${it['Land Area (sq.w)'] || 0} ตร.ว.</div>
+                    <span class="status-tag ${it.Status.toLowerCase()}">${t[it.Status] || it.Status}</span>
                 </div>
             `;
             list.appendChild(item);
@@ -208,7 +198,7 @@
             const card = document.createElement('div'); card.className = 'card';
             card.innerHTML = `
                 <div class="badge">${it.HP_ID} - ${it.ID}</div>
-                <img src="${it.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Sovereign+Asset'">
+                <img src="${it.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Imperial+Asset'">
                 <div class="card-body">
                     <div style="font-size:0.85rem; color:#7f8c8d;">🛌 ${it.Bedrooms} ${t.bed} | 🏠 ${it['Living Area (sq.m)']} m²</div>
                     <div class="price-text">฿${Number(it.Price).toLocaleString()}</div>
