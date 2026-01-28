@@ -3,37 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART PROPERTY SYSTEM | CATALOG</title>
+    <title>SMART PROPERTY CATALOG | INDEX</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --secondary: #2c3e50; --bg: #f4f7f6; --white: #ffffff; --gold: #d4af37; }
+        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
-        
-        /* Navbar & Languages */
         .navbar { background: var(--white); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
         .lang-flags { display: flex; gap: 8px; }
         .flag-btn { cursor: pointer; font-size: 1.5rem; transition: 0.3s; filter: grayscale(0.5); }
         .flag-btn.active { filter: grayscale(0); transform: scale(1.2); }
-
-        /* Filter Section */
-        .filter-container { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 1200px; margin: 0 auto; }
-        select, input { padding: 12px; border-radius: 12px; border: 1px solid #ddd; font-family: 'Kanit'; font-size: 0.9rem; outline: none; }
-
-        /* Property Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         .card { background: var(--white); border-radius: 25px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.4s; position: relative; border: 1px solid #eee; cursor: pointer; }
         .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .card-img { width: 100%; height: 230px; object-fit: cover; }
         .card-content { padding: 20px; }
         .card-price { color: var(--primary); font-size: 1.5rem; font-weight: 600; margin-bottom: 5px; }
-        .card-title { font-size: 1.1rem; font-weight: 500; color: var(--secondary); margin-bottom: 10px; }
-        .card-info { font-size: 0.85rem; color: #777; display: flex; align-items: center; gap: 5px; }
-        
         .status-tag { position: absolute; top: 15px; left: 15px; padding: 5px 15px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
         .status-available { background: #e8f5e9; color: #2e7d32; }
         .status-sold { background: #ffebee; color: #c62828; }
-
         .no-results { grid-column: 1/-1; text-align: center; padding: 100px; color: #999; }
     </style>
 </head>
@@ -45,81 +33,50 @@
         <span class="flag-btn" onclick="setLang('th')">🇹🇭</span>
         <span class="flag-btn" onclick="setLang('en')">🇺🇸</span>
         <span class="flag-btn" onclick="setLang('cn')">🇨🇳</span>
-        <span class="flag-btn" onclick="setLang('ru')">🇷🇺</span>
-        <span class="flag-btn" onclick="setLang('de')">🇩🇪</span>
-        <span class="flag-btn" onclick="setLang('fr')">🇫🇷</span>
     </div>
 </div>
 
-<div class="filter-container">
-    <select id="district-filter" onchange="applyFilters()"><option value="">📍 ทุกอำเภอ</option></select>
-    <select id="type-filter" onchange="applyFilters()"><option value="">🏡 ทุกประเภท</option></select>
-    <input type="text" id="search-box" placeholder="🔍 ค้นหารหัส หรือชื่อบ้าน..." onkeyup="applyFilters()" style="grid-column: 1 / -1;">
-</div>
-
 <div id="property-list" class="grid">
-    <div class="no-results">กำลังดึงข้อมูลโครงการอสังหาฯ...</div>
+    <div class="no-results">กำลังโหลดข้อมูล...</div>
 </div>
 
 <script>
     const webAppUrl = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
-    let allData = [];
 
-    async function init() {
+    async function fetchProperties() {
         const params = new URLSearchParams(window.location.search);
         const pid = params.get('project') || params.get('pid');
 
         try {
-            // ดึงข้อมูลผ่านเครื่องยนต์ตัวใหม่ (V41.0)
             const response = await fetch(`${webAppUrl}?project=${pid || ''}`);
-            allData = await response.json();
-            
-            setupFilterOptions();
-            renderCards(allData);
-        } catch (err) {
-            document.getElementById('property-list').innerHTML = "<div class='no-results'>ขออภัย เชื่อมต่อข้อมูลไม่ได้</div>";
+            const data = await response.json();
+            displayProperties(data);
+        } catch (error) {
+            document.getElementById('property-list').innerHTML = "<div class='no-results'>ขออภัย เชื่อมต่อฐานข้อมูลไม่ได้</div>";
         }
     }
 
-    function renderCards(data) {
+    function displayProperties(data) {
         const list = document.getElementById('property-list');
         if (!data || data.length === 0) {
-            list.innerHTML = "<div class='no-results'>ไม่พบข้อมูลบ้านที่ตรงตามเงื่อนไข</div>";
+            list.innerHTML = "<div class='no-results'>ไม่พบข้อมูลบ้าน</div>";
             return;
         }
 
         list.innerHTML = data.map(item => `
-            <div class="card" onclick="location.href='detail.html?id=${item.HP_ID}'">
+            <div class="card" onclick="window.location.href='detail.html?id=${item.HP_ID}'">
                 <span class="status-tag ${item.Status === 'Available' ? 'status-available' : 'status-sold'}">${item.Status}</span>
                 <img src="${item.Thumbnail || 'https://placehold.co/600x400?text=No+Image'}" class="card-img">
                 <div class="card-content">
                     <div class="card-price">฿${Number(item.Price).toLocaleString()}</div>
-                    <div class="card-title">${item.ID} | ${item.HP_ID}</div>
-                    <div class="card-info"><i class="fas fa-map-marker-alt"></i> ${item.District}, ${item.Sub_District}</div>
+                    <div style="font-weight:500;">${item.ID} | ${item.HP_ID}</div>
+                    <div style="font-size:0.85rem; color:#777;"><i class="fas fa-map-marker-alt"></i> ${item.District}</div>
                 </div>
             </div>
         `).join('');
     }
 
-    function setupFilterOptions() {
-        const districts = [...new Set(allData.map(i => i.District))].filter(Boolean);
-        const dSelect = document.getElementById('district-filter');
-        districts.forEach(d => dSelect.innerHTML += `<option value="${d}">${d}</option>`);
-    }
-
-    function applyFilters() {
-        const d = document.getElementById('district-filter').value;
-        const s = document.getElementById('search-box').value.toLowerCase();
-        const filtered = allData.filter(i => {
-            return (!d || i.District === d) && 
-                   (!s || i.HP_ID.toLowerCase().includes(s) || i.ID.toLowerCase().includes(s));
-        });
-        renderCards(filtered);
-    }
-
-    function setLang(l) { alert('ระบบสลับภาษาเป็น: ' + l + ' (กำลังอัปเดตไฟล์แปลภาษา)'); }
-
-    window.onload = init;
+    window.onload = fetchProperties;
 </script>
 </body>
 </html>
