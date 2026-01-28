@@ -3,47 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SMART SYSTEM - Imperial V18.5</title>
+    <title>SMART SYSTEM - Lightning V18.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --gold: #f1c40f; --red: #e74c3c; --border: #ddd; }
+        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --border: #ddd; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); font-weight: 300; -webkit-tap-highlight-color: transparent; }
 
-        /* 🐚 🎯 Sovereign Index Loader V18.5 */
+        /* 🐚 🎯 Sovereign Index Loader */
         #smart-loader {
             position: fixed; inset: 0; background: #eef7ff; 
             display: flex; flex-direction: column; justify-content: center;
-            align-items: center; z-index: 10000; transition: opacity 0.6s ease;
+            align-items: center; z-index: 10000; transition: opacity 0.4s ease;
         }
         .duk-dik-group { display: flex; gap: 25px; font-size: 60px; }
         .duk-dik-group span { animation: bounce-sync 0.8s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); }
         .brand-load-text { margin-top: 35px; font-size: 1.4rem; color: var(--primary); font-weight: 600; }
         @keyframes bounce-sync { from { transform: translateY(0); } to { transform: translateY(-30px); } }
 
-        /* 📱 Header & 6 Flags */
+        /* 📱 🏛️ Typography & Layout Reform */
         header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .header-left { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .menu-text { font-size: 0.85rem; font-weight: 500; color: var(--primary); text-transform: uppercase; }
-        .brand-name { font-weight: 500; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; border-left: 1.5px solid #eee; padding-left: 10px; }
-        .flag-list { display: flex; gap: 4px; }
-        .flag-btn { border: none; background: none; padding: 0; cursor: pointer; transition: 0.2s; }
-        .flag-btn img { width: 22px; height: 14px; border-radius: 2px; }
+        .brand-name { font-weight: 600; font-size: 0.9rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1.5px; border-left: 2px solid #eee; padding-left: 12px; margin-left: 10px; }
+        .flag-list { display: flex; gap: 6px; }
+        .flag-btn img { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
 
-        /* Sidebar & Filters */
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #fff; z-index: 2500; transition: 0.4s; padding-top: 60px; }
-        .sidebar.active { left: 0; }
-        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; }
-        .sidebar-overlay.active { display: block; }
-        .filter-area { padding: 15px; max-width: 100%; margin: 0 auto; box-sizing: border-box; }
-        .id-selector-trigger { width: 100%; padding: 14px 15px; background: #fff; border: 1.5px solid var(--border); border-radius: 15px; color: var(--primary); display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 10px; box-sizing: border-box; }
-
-        /* Property Grid & Cards */
-        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 15px 40px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
-        .card { background: var(--white); border-radius: 25px; overflow: hidden; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; }
-        .badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; padding: 6px 16px; border-radius: 50px; font-weight: 400; font-size: 0.72rem; z-index: 10; }
-        .price-text { font-size: 2.1rem; color: var(--primary); font-weight: 400; margin: 5px 0 18px; letter-spacing: -1px; }
-        .btn-detail { display: block; width: 75%; margin: 0 auto; padding: 12px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 50px; font-size: 0.95rem; }
+        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; padding: 20px 15px 50px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--white); border-radius: 30px; overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; border: 1px solid rgba(0,0,0,0.03); }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(26,82,118,0.15); }
+        
+        .badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: white; padding: 7px 18px; border-radius: 50px; font-weight: 500; font-size: 0.75rem; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .card-img { width: 100%; height: 250px; object-fit: cover; background: #f0f0f0; }
+        
+        .card-body { padding: 25px; text-align: center; }
+        .price-text { font-size: 2.3rem; color: var(--primary); font-weight: 500; margin: 10px 0 20px; letter-spacing: -1.5px; }
+        .unified-info-row { font-size: 0.85rem; color: #5d6d7e; margin-bottom: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-detail { display: inline-block; width: 80%; padding: 14px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 50px; font-size: 1rem; font-weight: 500; transition: 0.3s; }
     </style>
 </head>
 <body>
@@ -54,58 +48,58 @@
 </div>
 
 <header>
-    <div class="header-left" onclick="toggleSidebar()"><i class="fas fa-bars fa-lg" style="color:var(--primary);"></i><span class="menu-text" data-i18n="menu">เมนู</span><div class="brand-name">SMART SYSTEM</div></div>
+    <div class="header-left" onclick="location.reload()">
+        <i class="fas fa-bars fa-lg" style="color:var(--primary);"></i>
+        <div class="brand-name">SMART SYSTEM</div>
+    </div>
     <div class="flag-list">
-        <button class="flag-btn" onclick="setLanguage('th')"><img src="https://flagcdn.com/w40/th.png"></button>
-        <button class="flag-btn" onclick="setLanguage('en')"><img src="https://flagcdn.com/w40/us.png"></button>
-        <button class="flag-btn" onclick="setLanguage('cn')"><img src="https://flagcdn.com/w40/cn.png"></button>
-        <button class="flag-btn" onclick="setLanguage('ru')"><img src="https://flagcdn.com/w40/ru.png"></button>
-        <button class="flag-btn" onclick="setLanguage('de')"><img src="https://flagcdn.com/w40/de.png"></button>
-        <button class="flag-btn" onclick="setLanguage('fr')"><img src="https://flagcdn.com/w40/fr.png"></button>
+        <button class="flag-btn" onclick="setLang('th')"><img src="https://flagcdn.com/w40/th.png"></button>
+        <button class="flag-btn" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png"></button>
+        <button class="flag-btn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png"></button>
+        <button class="flag-btn" onclick="setLang('ru')"><img src="https://flagcdn.com/w40/ru.png"></button>
+        <button class="flag-btn" onclick="setLang('de')"><img src="https://flagcdn.com/w40/de.png"></button>
+        <button class="flag-btn" onclick="setLang('fr')"><img src="https://flagcdn.com/w40/fr.png"></button>
     </div>
 </header>
-
-<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="sidebar" id="sidebar">
-    <a href="index.html" style="display:block; padding:20px; text-decoration:none; color:var(--text); border-bottom:1px solid #eee;">🏠 หน้าหลัก (Home)</a>
-</div>
-
-<div class="filter-area">
-    <div class="id-selector-trigger" onclick="/* Open Modal Logic */"><span id="ui-sel">Select Plot / ID...</span><i class="fas fa-chevron-down"></i></div>
-</div>
 
 <div id="grid" class="property-grid"></div>
 
 <script>
     const api = "https://script.google.com/macros/s/AKfycbwUqp_vaFNgUdyARh5WG-S3iRm_x1C4EX0tL8aw12nhKpvYVn3I7SwWmi5s-doiYGYh/exec";
-    let allData = [], currentLang = localStorage.getItem('smartLang') || 'th';
-
+    
     async function init() {
         try {
             const res = await fetch(api);
-            allData = (await res.json()).filter(it => it.HP_ID);
-            renderGrid(allData);
+            const data = (await res.json()).filter(it => it.HP_ID);
+            // 🎯 Lightning Engine: เก็บข้อมูลลง Cache ทันที
+            sessionStorage.setItem('smartData', JSON.stringify(data));
+            renderGrid(data);
             hideLoader();
-        } catch (e) { hideLoader(); }
+        } catch (e) { console.error(e); }
+    }
+
+    function renderGrid(items) {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = items.map(it => `
+            <div class="card" onclick="window.location.href='details.html?id=${it.HP_ID}'">
+                <div class="badge">${it.HP_ID} - ${it.ID}</div>
+                <img src="${it.Thumbnail}" class="card-img" loading="lazy">
+                <div class="card-body">
+                    <div class="unified-info-row">
+                        <i class="fas fa-city"></i> ${it.District} | 
+                        <i class="fas fa-map-pin"></i> ${it.SubDistrict}
+                    </div>
+                    <div class="price-text">฿${Number(it.Price).toLocaleString()}</div>
+                    <div class="btn-detail">VIEW DETAILS</div>
+                </div>
+            </div>`).join('');
     }
 
     function hideLoader() {
         const loader = document.getElementById('smart-loader');
-        if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 600); }
+        if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.remove(), 400); }
     }
 
-    function renderGrid(items) {
-        const grid = document.getElementById('grid'); grid.innerHTML = "";
-        items.forEach(it => {
-            const card = document.createElement('div'); card.className = 'card';
-            card.onclick = () => window.location.href = `details.html?id=${it.HP_ID}`;
-            card.innerHTML = `<div class="badge">${it.HP_ID} - ${it.ID}</div><img src="${it.Thumbnail}" style="width:100%; height:230px; object-fit:cover;"><div style="padding:20px; text-align:center;"><div class="price-text">฿${Number(it.Price).toLocaleString()}</div><div class="btn-detail">ดูรายละเอียด</div></div>`;
-            grid.appendChild(card);
-        });
-    }
-
-    function setLanguage(lang) { currentLang = lang; localStorage.setItem('smartLang', lang); /* Translation Logic */ }
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
     init();
 </script>
 </body>
