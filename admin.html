@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Admin System - SMART SYSTEM V29.0</title>
+    <title>Admin Management - SMART SYSTEM V31.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -40,9 +40,14 @@
         .form-group { margin-bottom: 15px; }
         .label { font-size: 0.75rem; color: #888; margin-bottom: 5px; display: block; font-weight: 600; text-transform: uppercase; }
         .form-input { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1.5px solid #eee; box-sizing: border-box; font-family: 'Kanit'; outline: none; font-size: 0.95rem; background: #fff; color: var(--text); }
-        .form-input:focus { border-color: var(--primary); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        
+
+        /* 📸 Image Upload Styling */
+        .image-preview-box { width: 100%; height: 200px; background: #f8f9fa; border: 2px dashed #ddd; border-radius: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 10px; position: relative; }
+        .image-preview-box img { width: 100%; height: 100%; object-fit: cover; }
+        .upload-trigger { background: var(--primary); color: white; padding: 10px 20px; border-radius: 50px; font-size: 0.8rem; cursor: pointer; display: inline-block; margin-top: 5px; }
+        #imageFile { display: none; }
+
         .footer-action { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 15px 20px 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); display: flex; gap: 10px; z-index: 2000; border-radius: 25px 25px 0 0; max-width: 600px; margin: 0 auto; }
         .btn-save { flex: 2; background: var(--green); color: white; padding: 15px; border-radius: 15px; border: none; font-family: 'Kanit'; font-weight: 600; cursor: pointer; }
         .btn-cancel { flex: 1; background: #eee; color: #666; padding: 15px; border-radius: 15px; border: none; font-family: 'Kanit'; font-weight: 600; cursor: pointer; }
@@ -73,68 +78,66 @@
 </div>
 
 <div id="dashboard-section">
-    <div style="margin-bottom:20px;">
-        <h2 id="agent-welcome" style="margin:0;">ยินดีต้อนรับ</h2>
-    </div>
-    <div class="add-new-btn" onclick="openEditor(null)">
-        <i class="fas fa-plus"></i> ADD NEW PROPERTY
-    </div>
+    <div style="margin-bottom:20px;"><h2 id="agent-welcome" style="margin:0;">คุณ Agent</h2></div>
+    <div class="add-new-btn" onclick="openEditor(null)"><i class="fas fa-plus"></i> ADD NEW PROPERTY</div>
     <div id="property-list"></div>
 </div>
 
 <div id="form-section">
     <div class="form-card">
         <h2 id="form-title" style="margin-top:0; color:var(--primary);">Property Editor</h2>
-        <div id="edit-form">
-            <div class="form-group">
-                <label class="label">HP_ID (รหัสหลัก)</label>
-                <input type="text" id="HP_ID" class="form-input" readonly style="background:#f9f9f9;">
+        
+        <div class="form-group">
+            <label class="label">Thumbnail Image (รูปหน้าปก)</label>
+            <div class="image-preview-box" id="preview-container">
+                <span id="preview-text" style="color:#aaa; font-size:0.8rem;">ยังไม่ได้เลือกรูปภาพ</span>
+                <img id="imagePreview" style="display:none;">
             </div>
-            <div class="form-row">
-                <div class="form-group"><label class="label">Plot/ID (รหัสแปลง)</label><input type="text" id="ID" class="form-input"></div>
-                <div class="form-group">
-                    <label class="label">สถานะ</label>
-                    <select id="Status" class="form-input">
-                        <option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group"><label class="label">ชื่อโครงการ / หัวข้อ</label><input type="text" id="Project_Name" class="form-input"></div>
-            <div class="form-row">
-                <div class="form-group"><label class="label">ราคาขาย (฿)</label><input type="number" id="Price" class="form-input"></div>
-                <div class="form-group"><label class="label">ค่าคอม (%)</label><input type="number" id="Commission_Pct" class="form-input"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label class="label">ห้องนอน</label><input type="number" id="Bedrooms" class="form-input"></div>
-                <div class="form-group"><label class="label">ห้องน้ำ</label><input type="number" id="Bathrooms" class="form-input"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label class="label">พื้นที่ใช้สอย (ตร.ม.)</label><input type="number" id="LivingArea" class="form-input"></div>
-                <div class="form-group"><label class="label">พื้นที่ดิน (ตร.ม.)</label><input type="number" id="LandArea" class="form-input"></div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="label">อำเภอ</label>
-                    <select id="District" class="form-input" onchange="updateSubDistricts()">
-                        <option value="">-- เลือกอำเภอ --</option>
-                        <option value="หัวหิน">หัวหิน</option>
-                        <option value="ปราณบุรี">ปราณบุรี</option>
-                        <option value="ชะอำ">ชะอำ</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="label">ตำบล</label>
-                    <select id="SubDistrict" class="form-input">
-                        <option value="">-- เลือกตำบล --</option>
-                    </select>
-                </div>
-            </div>
+            <label for="imageFile" class="upload-trigger"><i class="fas fa-camera"></i> เลือกรูปภาพใหม่</label>
+            <input type="file" id="imageFile" accept="image/*" onchange="previewFile()">
+            <input type="hidden" id="Thumbnail"> </div>
 
-            <div class="form-group"><label class="label">URL รูปภาพ</label><input type="text" id="Thumbnail" class="form-input"></div>
-            <div class="form-group"><label class="label">รายละเอียด</label><textarea id="Description" class="form-input" rows="3"></textarea></div>
+        <div class="form-row">
+            <div class="form-group"><label class="label">HP_ID</label><input type="text" id="HP_ID" class="form-input" readonly style="background:#f9f9f9;"></div>
+            <div class="form-group"><label class="label">Plot/ID</label><input type="text" id="ID" class="form-input"></div>
         </div>
+        
+        <div class="form-group">
+            <label class="label">สถานะ</label>
+            <select id="Status" class="form-input">
+                <option value="Available">Available</option><option value="Pending">Pending</option><option value="Sold">Sold</option>
+            </select>
+        </div>
+
+        <div class="form-group"><label class="label">ชื่อโครงการ / หัวข้อ</label><input type="text" id="Project_Name" class="form-input"></div>
+        
+        <div class="form-row">
+            <div class="form-group"><label class="label">ราคาขาย (฿)</label><input type="number" id="Price" class="form-input"></div>
+            <div class="form-group"><label class="label">ค่าคอม (%)</label><input type="number" id="Commission_Pct" class="form-input"></div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label class="label">อำเภอ</label>
+                <select id="District" class="form-input" onchange="updateSubDistricts()">
+                    <option value="">-- เลือกอำเภอ --</option>
+                    <option value="หัวหิน">หัวหิน</option><option value="ปราณบุรี">ปราณบุรี</option><option value="ชะอำ">ชะอำ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="label">ตำบล</label>
+                <select id="SubDistrict" class="form-input"><option value="">-- เลือกตำบล --</option></select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group"><label class="label">ห้องนอน</label><input type="number" id="Bedrooms" class="form-input"></div>
+            <div class="form-group"><label class="label">ห้องน้ำ</label><input type="number" id="Bathrooms" class="form-input"></div>
+        </div>
+
+        <div class="form-group"><label class="label">รายละเอียด</label><textarea id="Description" class="form-input" rows="3"></textarea></div>
     </div>
+    
     <div class="footer-action">
         <button class="btn-cancel" onclick="showDashboard()">ยกเลิก</button>
         <button id="saveBtn" class="btn-save" onclick="processSave()">บันทึกข้อมูล</button>
@@ -143,15 +146,8 @@
 
 <script>
     const api = "https://script.google.com/macros/s/AKfycbwUqp_vaFNgUdyARh5WG-S3iRm_x1C4EX0tL8aw12nhKpvYVn3I7SwWmi5s-doiYGYh/exec";
-    
-    // ข้อมูลตำบลสำหรับ 3 อำเภอ
-    const locationData = {
-        "หัวหิน": ["หัวหิน", "หนองแก", "หินเหล็กไฟ", "ทับใต้", "ห้วยสัตว์ใหญ่", "บึงนคร", "หนองพลับ"],
-        "ปราณบุรี": ["ปราณบุรี", "เขาน้อย", "ปากน้ำปราณ", "หนองตาแต้ม", "วังก์พง", "เขาจ้าว"],
-        "ชะอำ": ["ชะอำ", "เขาใหญ่", "ดอนขุนห้วย", "นายาง", "บางเก่า", "ไร่ใหม่พัฒนา"]
-    };
-
-    let allData = [];
+    const locationData = { "หัวหิน": ["หัวหิน", "หนองแก", "หินเหล็กไฟ", "ทับใต้", "ห้วยสัตว์ใหญ่", "บึงนคร", "หนองพลับ"], "ปราณบุรี": ["ปราณบุรี", "เขาน้อย", "ปากน้ำปราณ", "หนองตาแต้ม", "วังก์พง", "เขาจ้าว"], "ชะอำ": ["ชะอำ", "เขาใหญ่", "ดอนขุนห้วย", "นายาง", "บางเก่า", "ไร่ใหม่พัฒนา"] };
+    let allData = [], imageRawData = null;
 
     window.onload = () => {
         const token = localStorage.getItem('admin_token');
@@ -159,20 +155,21 @@
         setTimeout(() => { document.getElementById('loader-container').style.display = 'none'; }, 800);
     };
 
-    // ฟังก์ชันอัปเดตตำบลตามอำเภอที่เลือก
-    function updateSubDistricts(selectedSub = "") {
-        const dist = document.getElementById('District').value;
-        const subSelect = document.getElementById('SubDistrict');
-        subSelect.innerHTML = '<option value="">-- เลือกตำบล --</option>';
-        
-        if (locationData[dist]) {
-            locationData[dist].forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s; opt.innerText = s;
-                if (s === selectedSub) opt.selected = true;
-                subSelect.appendChild(opt);
-            });
+    // ฟังก์ชันดูตัวอย่างรูปภาพ
+    function previewFile() {
+        const preview = document.getElementById('imagePreview');
+        const text = document.getElementById('preview-text');
+        const file = document.getElementById('imageFile').files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function() {
+            preview.src = reader.result;
+            preview.style.display = "block";
+            text.style.display = "none";
+            imageRawData = reader.result; // เก็บข้อมูล Base64 ไว้ส่งหลังบ้าน
         }
+
+        if (file) { reader.readAsDataURL(file); }
     }
 
     async function handleLogin() {
@@ -193,7 +190,7 @@
         document.getElementById('agent-welcome').innerText = `คุณ ${name}`;
         
         const list = document.getElementById('property-list');
-        list.innerHTML = "<p style='text-align:center;'>กำลังโหลด...</p>";
+        list.innerHTML = "<p style='text-align:center;'>Loading Properties...</p>";
         
         try {
             allData = await fetch(api).then(r => r.json());
@@ -211,6 +208,7 @@
     function openEditor(hpId) {
         document.getElementById('dashboard-section').style.display = 'none';
         document.getElementById('form-section').style.display = 'block';
+        imageRawData = null; // ล้างข้อมูลรูปเก่า
         
         const item = hpId ? allData.find(x => x.HP_ID === hpId) : null;
         document.getElementById('form-title').innerText = item ? `แก้ไข ${hpId}` : "เพิ่มทรัพย์ใหม่";
@@ -219,29 +217,46 @@
         document.getElementById('ID').value = item ? item.ID : "";
         document.getElementById('Project_Name').value = item ? item.Project_Name : "";
         document.getElementById('Price').value = item ? item.Price : "";
-        document.getElementById('Commission_Pct').value = item ? item['Commission (%)'] : 3;
-        document.getElementById('Bedrooms').value = item ? item.Bedrooms : "";
-        document.getElementById('Bathrooms').value = item ? item.Bathrooms : "";
-        document.getElementById('LivingArea').value = item ? item['Living Area (sq.m)'] : "";
-        document.getElementById('LandArea').value = item ? item['Land Area (sq.m)'] : "";
         document.getElementById('Status').value = item ? item.Status : "Available";
         document.getElementById('Thumbnail').value = item ? item.Thumbnail : "";
         document.getElementById('Description').value = item ? item.Description : "";
+        document.getElementById('Commission_Pct').value = item ? item['Commission (%)'] : 3;
 
-        // จัดการอำเภอและตำบล
-        const districtSelect = document.getElementById('District');
-        if (item && item.District) {
-            districtSelect.value = item.District;
-            updateSubDistricts(item.SubDistrict);
+        // จัดการรูปภาพ Preview
+        const preview = document.getElementById('imagePreview');
+        const text = document.getElementById('preview-text');
+        if (item && item.Thumbnail) {
+            preview.src = item.Thumbnail;
+            preview.style.display = "block";
+            text.style.display = "none";
         } else {
-            districtSelect.value = "";
-            updateSubDistricts();
+            preview.style.display = "none";
+            text.style.display = "block";
+        }
+
+        // อัปเดตอำเภอ/ตำบล
+        const distSelect = document.getElementById('District');
+        distSelect.value = item ? item.District : "";
+        updateSubDistricts(item ? item.SubDistrict : "");
+    }
+
+    function updateSubDistricts(selectedSub = "") {
+        const dist = document.getElementById('District').value;
+        const subSelect = document.getElementById('SubDistrict');
+        subSelect.innerHTML = '<option value="">-- เลือกตำบล --</option>';
+        if (locationData[dist]) {
+            locationData[dist].forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s; opt.innerText = s;
+                if (s === selectedSub) opt.selected = true;
+                subSelect.appendChild(opt);
+            });
         }
     }
 
     async function processSave() {
         const btn = document.getElementById('saveBtn');
-        btn.disabled = true; btn.innerText = "กำลังบันทึก...";
+        btn.disabled = true; btn.innerText = "กำลังอัปโหลดและบันทึก...";
         
         const payload = {
             HP_ID: document.getElementById('HP_ID').value,
@@ -249,15 +264,14 @@
             Project_Name: document.getElementById('Project_Name').value,
             Price: document.getElementById('Price').value,
             "Commission (%)": document.getElementById('Commission_Pct').value,
-            Bedrooms: document.getElementById('Bedrooms').value,
-            Bathrooms: document.getElementById('Bathrooms').value,
-            "Living Area (sq.m)": document.getElementById('LivingArea').value,
-            "Land Area (sq.m)": document.getElementById('LandArea').value,
             District: document.getElementById('District').value,
             SubDistrict: document.getElementById('SubDistrict').value,
+            Bedrooms: document.getElementById('Bedrooms').value,
+            Bathrooms: document.getElementById('Bathrooms').value,
             Status: document.getElementById('Status').value,
-            Thumbnail: document.getElementById('Thumbnail').value,
-            Description: document.getElementById('Description').value
+            Description: document.getElementById('Description').value,
+            Thumbnail: document.getElementById('Thumbnail').value, // ลิงก์เดิม
+            imageRaw: imageRawData // ข้อมูลรูปใหม่แบบ Base64
         };
 
         try {
