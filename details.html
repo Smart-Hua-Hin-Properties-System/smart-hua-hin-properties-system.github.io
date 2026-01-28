@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Property Details - SMART SYSTEM V18.4</title>
+    <title>Details - SMART SYSTEM V18.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #f4f7f6; --text: #2c3e50; --white: #ffffff; --green: #27ae60; --gold: #f1c40f; --red: #e74c3c; --border: #ddd; }
-        body { font-family: 'Kanit', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); line-height: 1.6; font-weight: 300; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); line-height: 1.6; }
 
-        /* ✨ 🎯 Sovereign Details Loader */
+        /* 🏠 🎯 Sovereign Details Loader V18.5 */
         #smart-loader {
             position: fixed; inset: 0; background: #eef7ff; 
             display: flex; flex-direction: column; justify-content: center;
@@ -18,41 +18,39 @@
         }
         .duk-dik-group { display: flex; gap: 25px; font-size: 60px; }
         .duk-dik-group span { animation: wave-bounce 1s infinite ease-in-out; }
-        .duk-dik-group span:nth-child(2) { animation-delay: 0.2s; }
-        .duk-dik-group span:nth-child(3) { animation-delay: 0.4s; }
         .brand-load-text { margin-top: 35px; font-size: 1.4rem; color: var(--primary); font-weight: 600; }
         @keyframes wave-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-35px); } }
 
+        /* Header & Flags */
         header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-left { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .menu-text { font-size: 0.85rem; font-weight: 500; color: var(--primary); text-transform: uppercase; }
-        .brand-name { font-weight: 500; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; border-left: 1.5px solid #eee; padding-left: 10px; }
         .flag-list { display: flex; gap: 4px; }
         .flag-btn { border: none; background: none; padding: 0; cursor: pointer; }
         .flag-btn img { width: 22px; height: 14px; border-radius: 2px; }
 
         .hero-box { position: relative; width: 100%; height: 420px; background: #ddd; overflow: hidden; }
         .main-img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: white; padding: 6px 18px; border-radius: 50px; font-weight: 400; font-size: 0.75rem; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .hero-badge { position: absolute; top: 15px; left: 15px; background: var(--green); color: white; padding: 6px 18px; border-radius: 50px; font-weight: 400; font-size: 0.75rem; z-index: 10; }
 
         .main-container { max-width: 650px; margin: 0 auto; position: relative; z-index: 20; padding-bottom: 150px; }
         .content-card { background: #fff; padding: 30px; border-radius: 35px 35px 0 0; margin: -60px 15px 0 15px; box-shadow: 0 -15px 40px rgba(0,0,0,0.1); }
+        
+        /* 💰 Price & Status Badge */
         .price-box { font-size: 2.2rem; color: var(--primary); margin: 10px 0 25px 0; font-weight: 400; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .price-inline-badge { padding: 4px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: 500; text-transform: uppercase; }
-        .available { background: #e8f5e9; color: var(--green); } .pending { background: #fff9e6; color: var(--gold); } .sold { background: #fdeaea; color: var(--red); }
+        .available { background: #e8f5e9; color: var(--green); } 
 
+        /* 📊 🎯 Imperial Full Data Grid (16+ Fields) */
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .info-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 18px; border: 1px solid #f0f0f0; }
         .info-item i { font-size: 1.1rem; color: var(--primary); width: 24px; text-align: center; }
         .info-label { color: #7f8c8d; font-size: 0.7rem; display: block; }
-        .info-value { font-weight: 400; font-size: 0.95rem; }
+        .info-value { font-weight: 400; font-size: 0.95rem; color: var(--text); }
+        .full-width { grid-column: 1 / -1; }
 
-        .related-title { font-weight: 500; color: var(--primary); margin: 40px 15px 15px; font-size: 1.2rem; }
         .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px; margin-bottom: 50px; }
-        .mini-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); cursor: pointer; border: 1.5px solid #eee; transition: 0.3s; }
-        .mini-card:hover { transform: scale(1.02); }
-        .mini-img { width: 100%; height: 135px; object-fit: cover; }
-        .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 650px; background: #fff; padding: 15px 20px 25px; left: 50%; transform: translateX(-50%); border-radius: 30px 30px 0 0; z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
+        .mini-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); cursor: pointer; border: 1.5px solid #eee; }
+        .footer-action { position: fixed; bottom: 0; width: 100%; max-width: 650px; background: #fff; padding: 15px 20px 25px; left: 50%; transform: translateX(-50%); border-radius: 30px 30px 0 0; z-index: 1000; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); }
         .btn-line { display: flex; align-items: center; justify-content: center; gap: 10px; background: #00b900; color: #fff; padding: 18px; border-radius: 20px; text-decoration: none; font-weight: 400; font-size: 1.1rem; }
     </style>
 </head>
@@ -64,10 +62,14 @@
 </div>
 
 <header>
-    <div class="header-left" onclick="location.href='index.html'"><i class="fas fa-bars fa-lg" style="color:var(--primary);"></i><span class="menu-text">เมนู</span><div class="brand-name">SMART SYSTEM</div></div>
+    <div class="header-left" onclick="location.href='index.html'"><i class="fas fa-bars fa-lg" style="color:var(--primary);"></i><span style="font-size:0.85rem; font-weight:500; color:var(--primary); text-transform:uppercase; margin-left:8px;">เมนู</span><div style="font-weight:500; font-size:0.85rem; color:var(--primary); border-left:1.5px solid #eee; padding-left:10px; margin-left:10px;">SMART SYSTEM</div></div>
     <div class="flag-list">
         <button class="flag-btn" onclick="setLanguage('th')"><img src="https://flagcdn.com/w40/th.png"></button>
         <button class="flag-btn" onclick="setLanguage('en')"><img src="https://flagcdn.com/w40/us.png"></button>
+        <button class="flag-btn" onclick="setLanguage('cn')"><img src="https://flagcdn.com/w40/cn.png"></button>
+        <button class="flag-btn" onclick="setLanguage('ru')"><img src="https://flagcdn.com/w40/ru.png"></button>
+        <button class="flag-btn" onclick="setLanguage('de')"><img src="https://flagcdn.com/w40/de.png"></button>
+        <button class="flag-btn" onclick="setLanguage('fr')"><img src="https://flagcdn.com/w40/fr.png"></button>
     </div>
 </header>
 
@@ -76,13 +78,14 @@
 <script>
     const api = "https://script.google.com/macros/s/AKfycbwUqp_vaFNgUdyARh5WG-S3iRm_x1C4EX0tL8aw12nhKpvYVn3I7SwWmi5s-doiYGYh/exec";
     const pId = new URLSearchParams(window.location.search).get('id');
-    let prop = null, allData = [], currentLang = localStorage.getItem('smartLang') || 'th';
+    let prop = null, allData = [];
 
     async function load() {
         try {
             const r = await fetch(api); const d = await r.json();
             allData = d.filter(it => it.HP_ID);
-            prop = allData.find(x => x.HP_ID === pId);
+            const currentId = new URLSearchParams(window.location.search).get('id');
+            prop = allData.find(x => x.HP_ID === currentId);
             if (prop) render(prop);
             hideLoader();
         } catch(e) { hideLoader(); }
@@ -96,33 +99,46 @@
     function render(it) {
         const related = allData.filter(x => x.HP_ID !== it.HP_ID).slice(0, 10);
         document.getElementById('mainContent').innerHTML = `
-            <div class="hero-box"><div class="hero-badge">${it.HP_ID} - ${it.ID}</div><img src="${it.Thumbnail}" class="main-img"></div>
+            <div class="hero-box"><div class="hero-badge">${it.HP_ID} - ${it.ID}</div><img src="${it.Thumbnail}" class="main-img" onerror="this.src='https://placehold.co/800x600?text=Asset'"></div>
             <div class="main-container">
                 <div class="content-card">
                     <h1 style="margin:0; font-size:1.6rem; color:var(--primary);">${it.Project_Name}</h1>
                     <div class="price-box">฿${Number(it.Price).toLocaleString()} <span class="price-inline-badge ${it.Status.toLowerCase()}">${it.Status}</span></div>
+                    
                     <div class="info-grid">
                         <div class="info-item"><i class="fas fa-home"></i><div><span class="info-label">ประเภท</span><span class="info-value">${it.Type || '-'}</span></div></div>
                         <div class="info-item"><i class="fas fa-bed"></i><div><span class="info-label">ห้องนอน</span><span class="info-value">${it.Bedrooms}</span></div></div>
-                        <div class="info-item" style="grid-column:1/-1;"><i class="fas fa-map-marker-alt"></i><div><span class="info-label">ทำเล</span><span class="info-value">${it.SubDistrict}, ${it.District}</span></div></div>
+                        <div class="info-item"><i class="fas fa-shower"></i><div><span class="info-label">ห้องน้ำ</span><span class="info-value">${it.Bathrooms || 0}</span></div></div>
+                        <div class="info-item"><i class="fas fa-vector-square"></i><div><span class="info-label">พื้นที่ใช้สอย</span><span class="info-value">${it['Living Area (sq.m)']} m²</span></div></div>
+                        <div class="info-item"><i class="fas fa-expand-arrows-alt"></i><div><span class="info-label">ที่ดิน (ตร.ม.)</span><span class="info-value">${it['Land Area (sq.m)'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-th-large"></i><div><span class="info-label">ที่ดิน (ตร.ว.)</span><span class="info-value">${it['Land Area (sq.w)'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-swimming-pool"></i><div><span class="info-label">ขนาดสระ</span><span class="info-value">${it['Pool Size'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-water"></i><div><span class="info-label">ความลึกสระ</span><span class="info-value">${it['Pool Depth'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-couch"></i><div><span class="info-label">เฟอร์นิเจอร์</span><span class="info-value">${it.Furnishing || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-car"></i><div><span class="info-label">ที่จอดรถ</span><span class="info-value">${it.Parking || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-bolt"></i><div><span class="info-label">ระบบไฟฟ้า</span><span class="info-value">${it.Electricity || '-'}</span></div></div>
+                        <div class="info-item full-width"><i class="fas fa-map-marker-alt"></i><div><span class="info-label">ทำเล</span><span class="info-value">${it.SubDistrict}, ${it.District}</span></div></div>
                     </div>
+                    <div style="margin-top:30px;"><h3 style="margin-bottom:10px;"><i class="fas fa-file-alt"></i> Description</h3><p style="color:#555; font-size:1rem; line-height:1.8;">${it.Description || '-'}</p></div>
                 </div>
-                <div class="related-title"><i class="fas fa-th-large"></i> ป้านแต่ละหลัง (Other Units)</div>
+
+                <div style="font-weight:500; color:var(--primary); margin:40px 15px 15px;">🏠 ป้านแต่ละหลัง (Other Units)</div>
                 <div class="related-grid">${related.map(r => `
                     <div class="mini-card" onclick="goToNewProp('${r.HP_ID}')">
-                        <img src="${r.Thumbnail}" class="mini-img" onerror="this.src='https://placehold.co/400x300?text=Asset'">
-                        <div style="padding:12px; text-align:center;"><b>${r.ID}</b><div style="color:var(--primary); font-weight:600;">฿${Number(r.Price).toLocaleString()}</div></div>
+                        <img src="${r.Thumbnail}" style="width:100%; height:135px; object-fit:cover;">
+                        <div style="padding:12px; text-align:center;"><b>${r.ID}</b><div style="color:var(--primary); font-size:0.9rem;">฿${Number(r.Price).toLocaleString()}</div></div>
                     </div>`).join('')}
                 </div>
             </div>
-            <div class="footer-action"><a href="https://line.me/R/msg/text/?สนใจรหัส: ${it.HP_ID}" class="btn-line"><i class="fab fa-line"></i> ติดต่อทาง LINE</a></div>`;
+            <div class="footer-action"><a href="https://line.me/R/msg/text/?สนใจรหัส: ${it.HP_ID}" class="btn-line"><i class="fab fa-line"></i> สอบถามข้อมูลทาง LINE</a></div>`;
     }
 
     function goToNewProp(id) {
         window.history.pushState({}, '', `?id=${id}`);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // 🎯 🎯 เปลี่ยนข้อมูลทรัพย์ทันที
         load();
     }
+    function setLanguage(l) { localStorage.setItem('smartLang', l); /* Logic */ }
     load();
 </script>
 </body>
