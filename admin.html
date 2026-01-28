@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART ADMIN ENTERPRISE</title>
+    <title>SMART PROJECT ISOLATION ADMIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,35 +11,36 @@
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; }
         header { background: #fff; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
         .hidden { display: none !important; }
-        .card { background: #fff; border-radius: 15px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
-        .badge { font-size: 0.65rem; padding: 3px 10px; border-radius: 50px; color: #fff; font-weight: 600; text-transform: uppercase; }
+        .card { background: #fff; border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
+        .badge { font-size: 0.65rem; padding: 4px 12px; border-radius: 50px; color: #fff; font-weight: 600; }
         .role-SUPER_ADMIN { background: #000; } .role-PROJECT_ADMIN { background: var(--primary); }
         .role-OWNER { background: #8e44ad; } .role-FINANCE { background: var(--gold); } .role-AGENT { background: var(--green); }
-        .btn-main { background: var(--primary); color: #fff; padding: 15px; border-radius: 50px; border: none; width: 100%; font-weight: 600; cursor: pointer; }
+        .btn-main { background: var(--primary); color: #fff; padding: 16px; border-radius: 50px; border: none; width: 100%; font-weight: 600; cursor: pointer; font-family: 'Kanit'; }
+        #login-box { padding: 50px 20px; text-align:center; max-width: 400px; margin: 0 auto; }
     </style>
 </head>
 <body>
 
 <header>
-    <div onclick="location.href='index.html'"><i class="fas fa-home"></i> HOME</div>
+    <div onclick="location.href='index.html'" style="cursor:pointer;"><i class="fas fa-chevron-left"></i> BACK</div>
     <div id="user-display"></div>
-    <div id="logout-btn" class="hidden" onclick="logout()" style="color:var(--red); font-weight:600;">LOGOUT</div>
+    <div id="logout-btn" class="hidden" onclick="logout()" style="color:var(--red); font-weight:600; cursor:pointer;">LOGOUT</div>
 </header>
 
-<div id="login-box" style="padding:40px 20px; text-align:center;">
-    <i class="fas fa-user-shield fa-3x" style="color:var(--primary); margin-bottom:20px;"></i>
-    <h2>Portal Login</h2>
-    <input type="password" id="pinInput" placeholder="Enter Access PIN" style="width:100%; max-width:300px; padding:15px; border-radius:50px; border:1px solid #ddd; text-align:center; font-size:1.2rem; outline:none; margin-bottom:20px;">
-    <button class="btn-main" style="max-width:300px;" onclick="handleLogin()">ACCESS DASHBOARD</button>
+<div id="login-box">
+    <div style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"><i class="fas fa-user-lock"></i></div>
+    <h2 id="project-label">PROJECT PORTAL</h2>
+    <input type="password" id="pinInput" placeholder="ENTER ACCESS PIN" style="width:100%; padding:18px; border-radius:50px; border:1.5px solid #ddd; text-align:center; font-size:1.3rem; outline:none; margin-bottom:25px; box-sizing:border-box;">
+    <button class="btn-main" onclick="handleLogin()">LOGIN TO DASHBOARD</button>
 </div>
 
 <div id="main-dashboard" class="hidden" style="padding:20px;">
-    <div id="finance-summary" class="hidden" style="background:var(--primary); color:#fff; padding:20px; border-radius:20px; margin-bottom:20px;">
-        <small>รายงานภาพรวมรายได้ (Finance View)</small>
-        <h2 id="total-revenue">฿ 0.00</h2>
+    <div id="finance-summary" class="hidden" style="background:var(--primary); color:#fff; padding:25px; border-radius:25px; margin-bottom:20px; box-shadow: 0 10px 30px rgba(26,82,118,0.2);">
+        <small style="opacity:0.8;">ยอดสรุปรายได้ค่าธรรมเนียมระบบ (Fee $1.5\%$)</small>
+        <h1 id="total-revenue" style="margin:5px 0 0 0;">฿ 0.00</h1>
     </div>
 
-    <button id="addBtn" class="btn-main hidden" onclick="openEditor(null)" style="margin-bottom:20px; background:var(--green);">+ ADD NEW PROPERTY</button>
+    <button id="addBtn" class="btn-main hidden" onclick="openEditor(null)" style="margin-bottom:20px; background:var(--green);"><i class="fas fa-plus"></i> ADD NEW PROPERTY</button>
     <div id="list-container"></div>
 </div>
 
@@ -47,14 +48,22 @@
     const api = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
     let user = null;
 
+    // 🎯 ฟังก์ชันดึงรหัสโครงการจากลิงก์
+    function getPID() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('pid') || ''; 
+    }
+
     async function handleLogin() {
         const pin = document.getElementById('pinInput').value;
-        const res = await fetch(`${api}?action=universalLogin&key=${pin}`).then(r => r.json());
-        if (res.success) {
-            user = res;
-            localStorage.setItem('smart_user', JSON.stringify(res));
-            renderUI();
-        } else { alert("Invalid PIN"); }
+        try {
+            const res = await fetch(`${api}?action=universalLogin&key=${pin}`).then(r => r.json());
+            if (res.success) {
+                user = res;
+                localStorage.setItem('smart_user', JSON.stringify(res));
+                renderUI();
+            } else { alert("รหัสผ่านไม่ถูกต้อง"); }
+        } catch(e) { alert("เชื่อมต่อฐานข้อมูลไม่ได้"); }
     }
 
     function renderUI() {
@@ -66,22 +75,19 @@
         document.getElementById('logout-btn').classList.remove('hidden');
         document.getElementById('user-display').innerHTML = `${user.name} <span class="badge role-${user.role}">${user.role}</span>`;
 
-        // 🛡️ กฎการมองเห็นปุ่ม (UI Permissions)
-        if (['SUPER_ADMIN', 'PROJECT_ADMIN', 'AGENT'].includes(user.role)) {
-            document.getElementById('addBtn').classList.remove('hidden');
-        }
-        if (['SUPER_ADMIN', 'FINANCE'].includes(user.role)) {
-            document.getElementById('finance-summary').classList.remove('hidden');
-        }
+        if (['SUPER_ADMIN', 'PROJECT_ADMIN', 'AGENT'].includes(user.role)) document.getElementById('addBtn').classList.remove('hidden');
+        if (['SUPER_ADMIN', 'FINANCE'].includes(user.role)) document.getElementById('finance-summary').classList.remove('hidden');
 
         fetchData();
     }
 
     async function fetchData() {
         const container = document.getElementById('list-container');
-        container.innerHTML = "Loading properties...";
-        // ส่ง Role และ Project ไปกรองที่ฝั่ง Server
-        const data = await fetch(`${api}?role=${user.role}&project=${user.project}`).then(r => r.json());
+        container.innerHTML = "กำลังโหลดข้อมูล...";
+        
+        const pid = getPID(); // ดึง pid จาก URL เช่น ?pid=COCO
+        const url = `${api}?role=${user.role}&project=${user.project}&pid=${pid}`;
+        const data = await fetch(url).then(r => r.json());
         
         container.innerHTML = "";
         let totalVal = 0;
@@ -90,21 +96,24 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `<div>
-                                <div style="font-weight:600; color:var(--primary);">${item.HP_ID} | ${item.ID}</div>
-                                <div style="font-size:0.8rem; color:#888;">${item.Project_Name || 'No Project Name'}</div>
+                                <div style="font-weight:600; color:var(--primary); font-size:1.1rem;">${item.HP_ID} | ${item.ID}</div>
+                                <div style="font-size:0.85rem; color:#888;">${item.Project_Name || 'General Listing'}</div>
                               </div>
-                              <div onclick="alert('Viewing: ${item.HP_ID}')"><i class="fas fa-chevron-right"></i></div>`;
+                              <div style="color:var(--primary);"><i class="fas fa-chevron-right fa-lg"></i></div>`;
             container.appendChild(card);
         });
         
-        // คำนวณยอด 1.5% สำหรับฝ่ายบัญชี
         if (user.role === 'FINANCE' || user.role === 'SUPER_ADMIN') {
-            document.getElementById('total-revenue').innerText = `฿ ${(totalVal * 0.015).toLocaleString()} (Fee 1.5%)`;
+            document.getElementById('total-revenue').innerText = `฿ ${(totalVal * 0.015).toLocaleString()}`;
         }
     }
 
     function logout() { localStorage.clear(); location.reload(); }
-    window.onload = () => { if(localStorage.getItem('smart_user')) renderUI(); };
+    window.onload = () => { 
+        const pid = getPID();
+        if(pid) document.getElementById('project-label').innerText = `PROJECT: ${pid}`;
+        if(localStorage.getItem('smart_user')) renderUI(); 
+    };
 </script>
 </body>
 </html>
