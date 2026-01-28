@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SMART PROPERTIES SYSTEM - Pro V19.5</title>
+    <title>SMART PROPERTIES SYSTEM - V20.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --border: #ddd; --loader-bg: #9CBCE3; }
+        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --gold: #f1c40f; --red: #e74c3c; --border: #ddd; --loader-bg: #9CBCE3; }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); font-weight: 300; -webkit-tap-highlight-color: transparent; }
         
-        /* 🎨 โหลดดุ๊กดิ๊ก */
-        #loader-container {
-            position: fixed; inset: 0; background: var(--loader-bg);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; transition: opacity 0.5s ease;
-        }
+        /* 🎨 ส่วนตัวดุ๊กดิ๊ก */
+        #loader-container { position: fixed; inset: 0; background: var(--loader-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s ease; }
         .emoji-group { display: flex; gap: 15px; margin-bottom: 25px; font-size: 60px; }
         .bounce { animation: bounce 0.6s infinite alternate; }
         .bounce:nth-child(2) { animation-delay: 0.2s; }
@@ -23,41 +19,50 @@
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
         .loader-text { color: white; font-weight: 900; font-size: 1.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
 
-        /* Header */
+        /* 🚩 Header & 6 Flags */
         header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-left { display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .brand-name { font-weight: 500; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; border-left: 1.5px solid #eee; padding-left: 10px; }
         .flag-list { display: flex; gap: 4px; }
-        .flag-btn { border: none; background: none; padding: 0; cursor: pointer; }
-        .flag-btn img { width: 22px; height: 14px; border-radius: 2px; }
+        .flag-btn { border: none; background: none; padding: 0; cursor: pointer; transition: 0.2s; }
+        .flag-btn img { width: 22px; height: 14px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .flag-btn:hover { transform: scale(1.1); }
 
-        /* 🔍 Filter Area - ปรับเป็น 4 ช่องสมจริง */
+        /* 🔍 Filter Area 4 ช่อง */
         .filter-area { padding: 15px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
         .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         @media (min-width: 768px) { .filter-grid { grid-template-columns: repeat(4, 1fr); } }
         
-        .select-box { 
+        .select-box, .id-trigger { 
             width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); 
             background: #fff; font-family: 'Kanit'; color: var(--primary); outline: none; font-size: 0.82rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02); appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a5276' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 10px center; background-size: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; box-sizing: border-box;
         }
 
-        /* Property Grid & Card */
+        /* 🏠 Property Grid */
         .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 15px 40px; max-width: 1200px; margin: 0 auto; }
         .card { background: var(--white); border-radius: 25px; overflow: hidden; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
         .badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; padding: 6px 16px; border-radius: 50px; font-weight: 400; font-size: 0.72rem; z-index: 10; }
         .card-img { width: 100%; height: 230px; object-fit: cover; background: #eee; }
         .card-body { padding: 20px; text-align: center; }
-        
-        /* แถวข้อมูล: อำเภอ ตำบล และห้องนอน ในบรรทัดเดียวกัน */
         .card-info-row { font-size: 0.82rem; color: #666; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
         .card-info-row i { color: var(--primary); font-size: 0.85rem; }
-        .divider { color: #ccc; }
-
         .price-text { font-size: 2.1rem; color: var(--primary); font-weight: 400; margin: 0 0 18px; letter-spacing: -1px; }
-        .btn-detail { display: block; width: 85%; margin: 0 auto; padding: 12px; background: #1a5276; color: white; text-align: center; border-radius: 50px; font-size: 0.95rem; text-decoration: none; }
+        .btn-detail { display: block; width: 85%; margin: 0 auto; padding: 12px; background: var(--primary); color: white; text-align: center; border-radius: 50px; font-size: 0.95rem; text-decoration: none; }
+
+        /* 🛌 Modal List (รายการแปลงละเอียด) */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; align-items: flex-end; }
+        .modal-content { background: #fff; border-radius: 30px 30px 0 0; width: 100%; max-height: 85vh; padding: 20px; overflow-y: auto; box-sizing: border-box; }
+        .id-item { padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: 0.2s; }
+        .id-item:active { background: #f9f9f9; }
+        .id-row-1 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .id-text { font-weight: 600; color: var(--primary); font-size: 1.1rem; }
+        .id-price { font-weight: 600; color: var(--text); font-size: 1rem; }
+        .id-row-2 { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #777; }
+        .status-tag { padding: 3px 10px; border-radius: 5px; font-weight: 500; font-size: 0.7rem; text-transform: uppercase; }
+        .available { background: #e8f5e9; color: var(--green); } .pending { background: #fff9e6; color: var(--gold); } .sold { background: #fdeaea; color: var(--red); }
+        .centered-close-btn { display: block; background: var(--red); color: white; padding: 10px; border-radius: 50px; text-align: center; margin-bottom: 15px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -66,136 +71,169 @@
     <div class="emoji-group">
         <span class="bounce">🐚</span><span class="bounce">🌊</span><span class="bounce">🌴</span>
     </div>
-    <div class="loader-text">SMART PROPERTIES SYSTEM</div>
+    <div class="loader-text" id="loader-msg">SMART PROPERTIES SYSTEM</div>
 </div>
 
 <header>
     <div class="header-left" onclick="location.reload()">
         <i class="fas fa-bars fa-lg" style="color:var(--primary);"></i>
-        <span style="font-size: 0.85rem; color: var(--primary); font-weight: 500; margin-left: 5px;">เมนู</span>
+        <span id="txt-menu" style="font-size: 0.85rem; color: var(--primary); font-weight: 500; margin-left: 5px;">เมนู</span>
         <div class="brand-name">SMART SYSTEM</div>
     </div>
     <div class="flag-list">
-        <img src="https://flagcdn.com/w40/th.png"><img src="https://flagcdn.com/w40/us.png"><img src="https://flagcdn.com/w40/cn.png"><img src="https://flagcdn.com/w40/ru.png"><img src="https://flagcdn.com/w40/de.png"><img src="https://flagcdn.com/w40/fr.png">
+        <button class="flag-btn" onclick="setLanguage('th')"><img src="https://flagcdn.com/w40/th.png"></button>
+        <button class="flag-btn" onclick="setLanguage('en')"><img src="https://flagcdn.com/w40/us.png"></button>
+        <button class="flag-btn" onclick="setLanguage('cn')"><img src="https://flagcdn.com/w40/cn.png"></button>
+        <button class="flag-btn" onclick="setLanguage('ru')"><img src="https://flagcdn.com/w40/ru.png"></button>
+        <button class="flag-btn" onclick="setLanguage('de')"><img src="https://flagcdn.com/w40/de.png"></button>
+        <button class="flag-btn" onclick="setLanguage('fr')"><img src="https://flagcdn.com/w40/fr.png"></button>
     </div>
 </header>
 
 <div class="filter-area">
     <div class="filter-grid">
         <select class="select-box" id="districtFilter" onchange="applyFilters()">
-            <option value="">📍 อำเภอทั้งหมด</option>
+            <option value="" data-lang="optDist">📍 อำเภอทั้งหมด</option>
         </select>
-        
         <select class="select-box" id="bedFilter" onchange="applyFilters()">
-            <option value="">🛌 ห้องนอนทั้งหมด</option>
-            <option value="1">1 Bedroom</option><option value="2">2 Bedrooms</option><option value="3">3 Bedrooms</option><option value="4">4+ Bedrooms</option>
+            <option value="" data-lang="optBed">🛌 ห้องนอนทั้งหมด</option>
+            <option value="1">1 Bed</option><option value="2">2 Beds</option><option value="3">3 Beds</option><option value="4">4+ Beds</option>
         </select>
-
         <select class="select-box" id="priceSort" onchange="applyFilters()">
-            <option value="">💰 เรียงตามราคา</option>
-            <option value="low">น้อยไปมาก</option><option value="high">มากไปน้อย</option>
+            <option value="" data-lang="optPrice">💰 เรียงตามราคา</option>
+            <option value="low" data-lang="priceLow">น้อยไปมาก</option>
+            <option value="high" data-lang="priceHigh">มากไปน้อย</option>
         </select>
-
-        <select class="select-box" id="plotFilter" onchange="applyFilters()">
-            <option value="">🔍 เลือกแปลง / รหัส...</option>
-        </select>
+        <div class="id-trigger" onclick="openIdModal()">
+            <span id="ui-selector-text" data-lang="optPlot">🔍 เลือก รหัส / แปลง</span>
+            <i class="fas fa-chevron-down" style="font-size:0.7rem;"></i>
+        </div>
     </div>
 </div>
 
 <div class="property-grid" id="grid"></div>
 
+<div class="modal" id="idModal">
+    <div class="modal-content">
+        <div class="centered-close-btn" onclick="clearIdFilter()" data-lang="btnClose">CLOSE / RESET</div>
+        <div id="idList"></div>
+    </div>
+</div>
+
 <script>
     const api = "https://script.google.com/macros/s/AKfycbwUqp_vaFNgUdyARh5WG-S3iRm_x1C4EX0tL8aw12nhKpvYVn3I7SwWmi5s-doiYGYh/exec";
-    let allData = [];
+    let allData = [], selectedHPID = null, currentLang = localStorage.getItem('smartLang') || 'th';
+
+    const i18n = {
+        th: { menu: "เมนู", optDist: "📍 อำเภอทั้งหมด", optBed: "🛌 ห้องนอนทั้งหมด", optPrice: "💰 เรียงตามราคา", priceLow: "น้อยไปมาก", priceHigh: "มากไปน้อย", optPlot: "🔍 เลือก รหัส / แปลง", btnClose: "ปิด / ล้างค่า", view: "ดูรายละเอียด" },
+        en: { menu: "MENU", optDist: "📍 All Districts", optBed: "🛌 All Bedrooms", optPrice: "💰 Sort Price", priceLow: "Low to High", priceHigh: "High to Low", optPlot: "🔍 Select Plot / ID", btnClose: "CLOSE / RESET", view: "View Details" },
+        cn: { menu: "菜单", optDist: "📍 所有地区", optBed: "🛌 所有卧室", optPrice: "💰 价格排序", priceLow: "从低到高", priceHigh: "从高到低", optPlot: "🔍 选择地块", btnClose: "关闭", view: "查看详情" },
+        ru: { menu: "МЕНЮ", optDist: "📍 Все районы", optBed: "🛌 Все спальни", optPrice: "💰 Сортировка", priceLow: "Дешевле", priceHigh: "Дороже", optPlot: "🔍 Выбрать ID", btnClose: "ЗАКРЫТЬ", view: "Подробнее" },
+        de: { menu: "MENÜ", optDist: "📍 Alle Bezirke", optBed: "🛌 Alle Zimmer", optPrice: "💰 Preis", priceLow: "Günstig", priceHigh: "Teuer", optPlot: "🔍 ID Wählen", btnClose: "SCHLIESSEN", view: "Details" },
+        fr: { menu: "MENU", optDist: "📍 Districts", optBed: "🛌 Chambres", optPrice: "💰 Prix", priceLow: "Bas", priceHigh: "Haut", optPlot: "🔍 Choisir ID", btnClose: "FERMER", view: "Détails" }
+    };
 
     async function init() {
         try {
             const res = await fetch(api);
             const data = await res.json();
             allData = Array.isArray(data) ? data.filter(it => it.HP_ID || it.hp_id) : [];
-            
+            setLanguage(currentLang);
             populateDistricts();
-            populatePlots();
-            renderGrid(allData);
             hideLoader();
         } catch (e) {
-            document.getElementById('grid').innerHTML = `<div style="text-align:center; padding:50px;">❌ การเชื่อมต่อล้มเหลว</div>`;
+            document.getElementById('grid').innerHTML = "<div style='text-align:center;padding:50px;'>❌ Connection Error</div>";
             hideLoader();
         }
     }
 
-    function hideLoader() {
-        const loader = document.getElementById('loader-container');
-        loader.style.opacity = '0';
-        setTimeout(() => loader.style.display = 'none', 500);
+    function setLanguage(lang) {
+        currentLang = lang; localStorage.setItem('smartLang', lang);
+        const t = i18n[lang] || i18n.en;
+        document.getElementById('txt-menu').innerText = t.menu;
+        document.getElementById('loader-msg').innerText = lang === 'th' ? "สมาร์ท พร็อพเพอร์ตี้ ซิสเต็มส์" : "SMART PROPERTIES SYSTEM";
+        
+        document.querySelectorAll('[data-lang]').forEach(el => {
+            const key = el.getAttribute('data-lang');
+            if (t[key]) {
+                if (el.tagName === 'OPTION' || el.tagName === 'SPAN' || el.tagName === 'DIV') el.innerText = t[key];
+            }
+        });
+        renderIdList(); applyFilters();
     }
 
     function populateDistricts() {
-        const districtSelect = document.getElementById('districtFilter');
+        const select = document.getElementById('districtFilter');
         const districts = [...new Set(allData.map(it => it.District))].filter(Boolean).sort();
         districts.forEach(d => {
             const opt = document.createElement('option');
             opt.value = d; opt.innerText = d;
-            districtSelect.appendChild(opt);
+            select.appendChild(opt);
         });
     }
 
-    function populatePlots() {
-        const plotSelect = document.getElementById('plotFilter');
+    function renderIdList() {
+        const list = document.getElementById('idList');
+        list.innerHTML = "";
         allData.forEach(it => {
-            const opt = document.createElement('option');
-            opt.value = it.HP_ID || it.hp_id;
-            opt.innerText = it.ID || (it.HP_ID || it.hp_id);
-            plotSelect.appendChild(opt);
+            const hid = it.HP_ID || it.hp_id;
+            const item = document.createElement('div');
+            item.className = "id-item";
+            item.onclick = () => { selectedHPID = hid; document.getElementById('ui-selector-text').innerText = it.ID || hid; closeIdModal(); applyFilters(); };
+            item.innerHTML = `
+                <div class="id-row-1">
+                    <div class="id-text">${hid} | ${it.ID || '-'}</div>
+                    <div class="id-price">฿${Number(it.Price).toLocaleString()}</div>
+                </div>
+                <div class="id-row-2">
+                    <div>🛌 ${it.Bedrooms || 0} | 🏠 ${it['Living Area (sq.m)'] || 0}m² | 📐 ${it['Land Area (sq.m)'] || it['Land Area (sq.w)'] || 0}m²</div>
+                    <div class="status-tag ${it.Status?.toLowerCase()}">${it.Status || '-'}</div>
+                </div>
+            `;
+            list.appendChild(item);
         });
     }
 
     function renderGrid(items) {
         const grid = document.getElementById('grid');
-        grid.innerHTML = "";
-        
+        grid.innerHTML = items.length ? "" : "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#999;'>No results found.</div>";
         items.forEach(it => {
             const hid = it.HP_ID || it.hp_id;
-            const badgeText = it.ID ? `${hid} | ${it.ID}` : hid;
-            
-            grid.innerHTML += `
-                <div class="card">
-                    <div class="badge">${badgeText}</div>
-                    <img src="${it.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Sovereign'">
-                    <div class="card-body">
-                        <div class="card-info-row">
-                            <span><i class="fas fa-map-marker-alt"></i> ${it.District || ''}</span>
-                            <span class="divider">|</span>
-                            <span>${it.SubDistrict || ''}</span>
-                            <span class="divider">|</span>
-                            <span><i class="fas fa-bed"></i> ${it.Bedrooms || '0'} Bed</span>
-                        </div>
-                        
-                        <div class="price-text">฿${Number(it.Price || 0).toLocaleString()}</div>
-                        <a href="details.html?id=${hid}" class="btn-detail">ดูรายละเอียด</a>
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="badge">${hid} | ${it.ID || ''}</div>
+                <img src="${it.Thumbnail}" class="card-img" onerror="this.src='https://placehold.co/600x400?text=Sovereign'">
+                <div class="card-body">
+                    <div class="card-info-row">
+                        <span><i class="fas fa-map-marker-alt"></i> ${it.District || ''} | ${it.SubDistrict || ''}</span>
+                        <span><i class="fas fa-bed"></i> ${it.Bedrooms || 0} Bed</span>
                     </div>
-                </div>`;
+                    <div class="price-text">฿${Number(it.Price).toLocaleString()}</div>
+                    <a href="details.html?id=${hid}" class="btn-detail">${i18n[currentLang].view}</a>
+                </div>
+            `;
+            grid.appendChild(card);
         });
     }
 
     function applyFilters() {
+        let data = [...allData];
         const dist = document.getElementById('districtFilter').value;
         const bed = document.getElementById('bedFilter').value;
         const sort = document.getElementById('priceSort').value;
-        const plot = document.getElementById('plotFilter').value;
-
-        let filtered = [...allData];
-
-        if (dist) filtered = filtered.filter(it => it.District === dist);
-        if (plot) filtered = filtered.filter(it => (it.HP_ID || it.hp_id) === plot);
-        if (bed) filtered = filtered.filter(it => Number(it.Bedrooms) >= Number(bed));
-        
-        if (sort === "low") filtered.sort((a,b) => a.Price - b.Price);
-        else if (sort === "high") filtered.sort((a,b) => b.Price - a.Price);
-
-        renderGrid(filtered);
+        if (selectedHPID) data = data.filter(it => (it.HP_ID || it.hp_id) === selectedHPID);
+        if (dist) data = data.filter(it => it.District === dist);
+        if (bed) data = data.filter(it => Number(it.Bedrooms) >= Number(bed));
+        if (sort === "low") data.sort((a,b) => a.Price - b.Price);
+        else if (sort === "high") data.sort((a,b) => b.Price - a.Price);
+        renderGrid(data);
     }
 
+    function hideLoader() { const l = document.getElementById('loader-container'); l.style.opacity = '0'; setTimeout(() => l.style.display = 'none', 500); }
+    function openIdModal() { document.getElementById('idModal').style.display = 'flex'; }
+    function closeIdModal() { document.getElementById('idModal').style.display = 'none'; }
+    function clearIdFilter() { selectedHPID = null; document.getElementById('ui-selector-text').innerText = i18n[currentLang].optPlot; closeIdModal(); applyFilters(); }
     init();
 </script>
 </body>
