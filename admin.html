@@ -3,53 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART CONTROL | V69.0 MASTER FINAL</title>
+    <title>SMART CONTROL | V79.0 MASTER EMPIRE</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --navy: #1a4361; --blue-btn: #1a5276; --gold-bg: #fff3cd; --gold-btn: #856404; --green: #27ae60; --red: #e74c3c; --orange: #f39c12; }
         body { font-family: 'Kanit', sans-serif; background: #f4f7f6; margin: 0; }
-        header { background: var(--navy); padding: 12px 15px; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        header { background: var(--navy); padding: 12px 15px; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
 
-        /* 🏆 แถบทอง Dashboard สำหรับ Super Admin */
-        .gold-section { background: var(--gold-bg); border: 1.5px solid #ffeeba; border-radius: 18px; padding: 18px; margin-bottom: 20px; text-align: center; }
-        .btn-gold { background: var(--gold-btn); color: white; padding: 14px; border-radius: 12px; text-decoration: none; display: block; font-weight: 500; font-size: 1rem; }
-        
-        .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 16px; border-radius: 15px; border: none; font-family: 'Kanit'; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px; font-size: 1.1rem; }
+        .gold-section { background: var(--gold-bg); border: 1.5px solid #ffeeba; border-radius: 18px; padding: 18px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .btn-gold { background: var(--gold-btn); color: white; padding: 14px; border-radius: 12px; text-decoration: none; display: block; font-weight: 500; }
+        .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 16px; border-radius: 15px; border: none; font-family: 'Kanit'; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(26, 82, 118, 0.2); }
 
-        .search-box { background: white; border-radius: 15px; padding: 12px 18px; display: flex; align-items: center; margin-bottom: 25px; border: 1px solid #eee; }
+        /* 🔍 คอนโทรลบาร์ (ลบไอคอนรายการตรงจุดสีแดงออก) */
+        .search-box { background: white; border-radius: 15px; padding: 12px 18px; display: flex; align-items: center; flex: 1; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.02); margin-bottom: 20px; }
         .search-box input { border: none; outline: none; width: 100%; font-family: 'Kanit'; font-size: 1rem; margin-left: 10px; }
 
-        /* 📄 รายการทรัพย์: ย้าย Edit ไปขวาสุดตามสั่ง (จุดสีเขียว) */
-        .property-row { background: white; padding: 18px; border-radius: 22px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        /* 📄 รายการทรัพย์ (จัดกลุ่มใหม่: Edit อยู่ขวาสุดจุดสีเขียว) */
+        .property-row { background: white; padding: 15px; border-radius: 22px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #f9f9f9; }
         .item-left { display: flex; align-items: center; gap: 15px; }
-        .item-img { width: 75px; height: 75px; border-radius: 15px; object-fit: cover; background: #eee; border: 1px solid #eee; }
+        .item-img { width: 75px; height: 75px; border-radius: 15px; object-fit: cover; background: #f0f0f0; border: 1px solid #f0f0f0; }
+        
         .item-text { display: flex; flex-direction: column; }
-        .main-id-text { font-weight: 600; font-size: 1.35rem; color: var(--navy); line-height: 1.1; } /* ID ใหญ่พิเศษ */
-        .sub-plot-text { font-size: 0.85rem; color: #666; margin-top: 5px; }
-        .hp-id-tag { font-size: 0.65rem; color: #ccc; font-weight: 300; margin-top: 3px; }
+        .main-id-text { font-weight: 600; font-size: 1.35rem; color: var(--navy); line-height: 1.1; }
+        .sub-plot-text { font-size: 0.85rem; color: #666; margin-top: 4px; }
+        .hp-id-tag { font-size: 0.65rem; color: #ccc; font-weight: 300; margin-top: 2px; }
 
-        /* 🟢 ขวาสุด: สถานะสี และไอคอนแก้ไขที่ถูกต้อง */
+        /* 🟢 ขวาสุด: สถานะสี และไอคอนแก้ไข */
         .item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
         .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; }
         .st-available { background: #e8f5e9; color: var(--green); }
         .st-sold { background: #ffebee; color: var(--red); }
         .st-pending { background: #fff3e0; color: var(--orange); }
         
-        .edit-action-btn { 
-            width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; 
-            border: 1px solid #f0f0f0; border-radius: 12px; background: #fafafa; 
-            cursor: pointer; color: var(--blue-btn); font-size: 1.5rem; transition: 0.2s; 
-        }
-        .edit-action-btn:hover { transform: scale(1.1); background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .edit-action-btn { color: var(--blue-btn); cursor: pointer; font-size: 1.9rem; transition: 0.2s; padding: 5px; }
+        .edit-action-btn:hover { transform: scale(1.15); color: #000; }
 
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: flex-end; justify-content: center; z-index: 2000; visibility: hidden; opacity: 0; transition: 0.3s; }
         .modal.active { visibility: visible; opacity: 1; }
         .modal-content { background: white; width: 100%; max-width: 650px; border-radius: 30px 30px 0 0; padding: 30px; max-height: 94vh; overflow-y: auto; transform: translateY(100%); transition: 0.4s; }
         .modal.active .modal-content { transform: translateY(0); }
-        .form-group label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 5px; font-weight: 500; }
-        .form-group input, .form-group select { width: 100%; padding: 13px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Kanit'; box-sizing: border-box; outline: none; margin-bottom: 15px; }
         
         .hidden { display: none !important; }
         .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 4000; display: none; }
@@ -57,15 +51,12 @@
 </head>
 <body>
 
-<div id="loading-screen" class="loading-overlay">
-    <i class="fas fa-sync fa-spin fa-3x" style="color:var(--navy); margin-bottom:15px;"></i>
-    <div>กำลังประมวลผล...</div>
-</div>
+<div id="loading-screen" class="loading-overlay"><i class="fas fa-sync fa-spin fa-3x" style="color:var(--navy); margin-bottom:15px;"></i><div>กำลังปฏิรูประบบมหาอำนาจ...</div></div>
 
 <div id="login-ui">
     <div style="text-align:center; padding:50px; background:white; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
         <h2 style="color:var(--navy); margin-bottom:20px;">Smart Admin Login</h2>
-        <input type="password" id="pinInput" placeholder="รหัส PIN 4 หลัก" style="width:250px; padding:18px; border-radius:15px; border:1px solid #eee; text-align:center; font-size:1.6rem; margin-bottom:20px; outline:none;">
+        <input type="password" id="pinInput" placeholder="รหัส PIN" style="width:250px; padding:18px; border-radius:15px; border:1px solid #eee; text-align:center; font-size:1.6rem; margin-bottom:20px; outline:none;">
         <button onclick="handleLogin()" class="btn-blue" style="width:250px;">เข้าสู่ระบบ</button>
     </div>
 </div>
@@ -83,11 +74,11 @@
             <div class="gold-section"><a href="dashboard.html" class="btn-gold"><i class="fas fa-chart-line"></i> เข้าสู่หน้าวิเคราะห์ยอดขายและบริหารโครงการ</a></div>
         </div>
 
-        <button class="btn-blue" onclick="openForm('add')"><i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านหลังใหม่</button>
+        <button id="btn-add-property" class="btn-blue" onclick="openForm('add')"><i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านหลังใหม่</button>
         
         <div class="search-box">
             <i class="fas fa-search" style="color:#bbb;"></i>
-            <input type="text" id="searchInput" placeholder="ค้นชื่อเรียกบ้าน หรือเลขที่บ้าน..." onkeyup="filterData()">
+            <input type="text" id="searchInput" placeholder="ค้นชื่อเรียก หรือเลขที่บ้าน..." onkeyup="filterData()">
         </div>
 
         <div id="list-container"></div>
@@ -103,19 +94,19 @@
         
         <form id="propertyForm" onsubmit="submitData(event)">
             <div style="background:#f9f9f9; padding:20px; border-radius:20px; margin-bottom:20px; border:1px solid #eee; text-align:center;">
-                <div onclick="document.getElementById('f_file').click()" style="cursor:pointer;">
+                <div onclick="if(admin.role !== 'FINANCE') document.getElementById('f_file').click()" style="cursor:pointer;">
                     <i class="fas fa-camera fa-2x" style="color:#ddd;"></i>
                     <p style="margin:8px 0; color:#888; font-size:0.8rem;">อัปโหลดรูปหน้าปกใหม่</p>
                     <input type="file" id="f_file" hidden accept="image/*" onchange="previewImage(this)">
-                    <img id="preview-img" style="width:100%; max-height:220px; object-fit:cover; border-radius:15px; margin-top:10px; display:none; border:3px solid white;">
+                    <img id="preview-img" style="width:100%; max-height:220px; object-fit:cover; border-radius:15px; margin-top:10px; display:none; border:3.5px solid white;">
                 </div>
             </div>
 
             <div style="background:#f0f7ff; padding:20px; border-radius:20px; margin-bottom:15px;">
-                <label style="font-size:0.8rem;">รหัสประจำบ้าน (Auto-ID)</label><input type="text" id="f_HP_ID" readonly style="background:#f5f5f5; font-weight:600;">
+                <label style="font-size:0.8rem;">รหัสประจำบ้าน</label><input type="text" id="f_HP_ID" readonly style="background:#f5f5f5;">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                    <div><label style="font-size:0.8rem;">ชื่อเรียก (ID) *</label><input type="text" id="f_ID" required placeholder="เช่น M16, C7"></div>
-                    <div><label style="font-size:0.8rem;">บ้านเลขที่ (Plot)</label><input type="text" id="f_Plot" placeholder="25/16"></div>
+                    <div><label style="font-size:0.8rem;">ชื่อเรียก (ID)</label><input type="text" id="f_ID" required></div>
+                    <div><label style="font-size:0.8rem;">บ้านเลขที่ (Plot)</label><input type="text" id="f_Plot"></div>
                 </div>
                 <label style="font-size:0.8rem;">ชื่อโครงการ</label><input type="text" id="f_Project_Name" required>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
@@ -124,13 +115,12 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn-blue"><i class="fas fa-save"></i> บันทึกข้อมูลและอัปโหลด</button>
+            <button id="btn-save-form" type="submit" class="btn-blue"><i class="fas fa-save"></i> บันทึกข้อมูลและอัปโหลด</button>
         </form>
     </div>
 </div>
 
 <script>
-    // 🔗 API URL ตัวล่าสุดที่คุณส่งมา
     const api = "https://script.google.com/macros/s/AKfycbyiZLsaVo7utGF9dA5tACnqf_6PSbcOOj-znaW60CL2FD9NYVP_44r_kV4Y_pAh0eSu/exec";
     let properties = []; let admin = null; let currentBase64 = ""; let currentOldThumb = "";
 
@@ -145,8 +135,12 @@
         admin = admin || JSON.parse(localStorage.getItem('session'));
         if (!admin) return;
         document.getElementById('login-ui').classList.add('hidden'); document.getElementById('main-ui').classList.remove('hidden');
-        document.getElementById('admin-display-name').innerText = admin.name + (admin.project !== 'ALL' ? ` (${admin.project})` : '');
+        document.getElementById('admin-display-name').innerText = admin.name + ` (${admin.role})`;
         if (admin.role.includes('SUPER')) document.getElementById('gold-banners').classList.remove('hidden');
+        if (admin.role === 'FINANCE') {
+            document.getElementById('btn-add-property').classList.add('hidden');
+            document.getElementById('btn-save-form').classList.add('hidden');
+        }
         fetchData();
     }
 
@@ -155,28 +149,27 @@
         properties = res; renderList(properties);
     }
 
-    // 📄 แสดงรายการ: ปุ่มแก้ไขขวาสุด (ไอคอน Pen-to-Square ตามหลัก Designer) [cite: 2026-01-27]
+    // 📄 แสดงรายการ: รูปโชว์ 100% ด้วย Direct Link และปุ่ม Edit อยู่ขวาสุด [cite: 2026-01-27]
     function renderList(data) {
         document.getElementById('list-container').innerHTML = data.map(i => {
             const stClass = "st-" + (i.Status || "Available").toLowerCase();
+            const iconClass = admin.role === 'FINANCE' ? 'fa-eye' : 'fa-pen-to-square';
             return `
             <div class="property-row">
                 <div class="item-left">
                     <img src="${i.Thumbnail || 'https://via.placeholder.com/75'}" class="item-img" onerror="this.src='https://via.placeholder.com/75'">
                     <div class="item-text">
                         <div class="main-id-text">${i.ID || 'N/A'}</div>
-                        <div class="sub-plot-text">เลขที่: ${i.Plot || '-'} | โครงการ: ${i.Project_Name}</div>
-                        <div class="hp-id-tag">ระบบ: ${i.HP_ID}</div>
+                        <div class="sub-plot-text">เลขที่: ${i.Plot || '-'} | ${i.Project_Name}</div>
                     </div>
                 </div>
                 <div class="item-right">
                     <span class="status-badge ${stClass}">${i.Status}</span>
                     <button class="edit-action-btn" type="button" onclick="openForm('edit', '${i.HP_ID}')">
-                        <i class="fa-solid fa-pen-to-square"></i>
+                        <i class="fa-solid ${iconClass}"></i>
                     </button>
                 </div>
-            </div>
-            `;
+            </div>`;
         }).join('');
     }
 
@@ -189,10 +182,10 @@
     }
 
     async function openForm(mode, id) {
-        const form = document.getElementById('propertyForm');
-        form.reset(); currentBase64 = ""; document.getElementById('preview-img').style.display = 'none';
+        const form = document.getElementById('propertyForm'); form.reset(); currentBase64 = ""; document.getElementById('preview-img').style.display = 'none';
+        const isReadonly = admin.role === 'FINANCE';
         if (mode === 'edit') {
-            document.getElementById('formTitle').innerText = "แก้ไขข้อมูลบ้าน: " + id;
+            document.getElementById('formTitle').innerText = isReadonly ? "รายละเอียดข้อมูลทรัพย์" : "แก้ไขข้อมูลบ้าน: " + id;
             const item = properties.find(p => p.HP_ID === id);
             if (item) {
                 document.getElementById('f_HP_ID').value = item.HP_ID;
@@ -201,27 +194,26 @@
                 document.getElementById('f_Project_Name').value = item.Project_Name || "";
                 document.getElementById('f_Price').value = item.Price || "";
                 document.getElementById('f_Status').value = item.Status || "Available";
+                Array.from(form.elements).forEach(el => el.disabled = isReadonly);
                 currentOldThumb = item.Thumbnail || "";
-                if (currentOldThumb) { const img = document.getElementById('preview-img'); img.src = currentOldThumb; img.style.display = 'block'; }
+                if (currentOldThumb) { document.getElementById('preview-img').src = currentOldThumb; document.getElementById('preview-img').style.display = 'block'; }
             }
-        } else {
-            const res = await fetch(`${api}?action=getNextID`).then(r => r.json());
-            document.getElementById('f_HP_ID').value = res.nextID;
-            document.getElementById('formTitle').innerText = "เพิ่มรายการใหม่: " + res.nextID;
         }
         document.getElementById('formModal').classList.add('active');
     }
 
     async function submitData(e) {
-        e.preventDefault(); document.getElementById('loading-screen').style.display = 'flex';
+        e.preventDefault(); if(admin.role === 'FINANCE') return;
+        document.getElementById('loading-screen').style.display = 'flex';
         const payload = { HP_ID: document.getElementById('f_HP_ID').value, ID: document.getElementById('f_ID').value, Plot: document.getElementById('f_Plot').value, Project_Name: document.getElementById('f_Project_Name').value, Price: document.getElementById('f_Price').value, Status: document.getElementById('f_Status').value, Updated_By: admin.name, imageRaw: currentBase64, oldThumbnailUrl: currentOldThumb };
-        try { const res = await fetch(api, { method: 'POST', body: JSON.stringify(payload) }).then(r => r.json()); if (res.success) { closeForm(); fetchData(); } } catch(e) { alert("เกิดข้อผิดพลาด"); }
+        const res = await fetch(api, { method: 'POST', body: JSON.stringify(payload) }).then(r => r.json());
+        if (res.success) { closeForm(); fetchData(); }
         document.getElementById('loading-screen').style.display = 'none';
     }
 
     function filterData() {
         const val = document.getElementById('searchInput').value.toLowerCase();
-        renderList(properties.filter(p => (p.ID && p.ID.toLowerCase().includes(val)) || (p.Plot && p.Plot.toLowerCase().includes(val)) || (p.Project_Name && p.Project_Name.toLowerCase().includes(val))));
+        renderList(properties.filter(p => (p.ID && p.ID.toLowerCase().includes(val)) || (p.Plot && p.Plot.toLowerCase().includes(val))));
     }
 
     function closeForm() { document.getElementById('formModal').classList.remove('active'); }
