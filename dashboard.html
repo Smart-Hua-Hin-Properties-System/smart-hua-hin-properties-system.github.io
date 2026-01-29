@@ -3,66 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXECUTIVE SALES DASHBOARD</title>
+    <title>EXECUTIVE SALES DASHBOARD | SMART SYSTEM</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --navy: #1a4361; --bg: #f8fafb; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; }
-        .hero { background: var(--navy); color: white; padding: 50px 20px; text-align: center; border-radius: 0 0 50px 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .container { max-width: 1100px; margin: -30px auto 50px; padding: 0 20px; }
-        .back-btn { background: white; padding: 12px 25px; border-radius: 50px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: #333; font-weight: 500; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 25px; transition: 0.3s; border: none; font-family: 'Kanit'; }
-        .back-btn:hover { transform: translateX(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: white; border-radius: 25px; padding: 35px 25px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
-        .stat-card i { font-size: 2.5rem; margin-bottom: 20px; }
-        .stat-val { font-size: 2rem; font-weight: 600; margin-top: 10px; color: var(--navy); }
+        :root { 
+            --header-bg: #1a4361; --body-bg: #f8fafb;
+            --blue: #1a5276; --orange: #d35400; --green: #27ae60; --purple: #8e44ad; --gold: #f1c40f;
+        }
+        body { font-family: 'Kanit', sans-serif; background: var(--body-bg); margin: 0; padding-bottom: 50px; color: #333; }
+        
+        /* 🔵 Header Section */
+        .dash-header { background: var(--header-bg); color: white; padding: 45px 20px; text-align: center; }
+        .dash-header h1 { margin: 0; font-size: 1.8rem; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
+        .dash-header p { margin: 10px 0 0; opacity: 0.8; font-weight: 300; font-size: 0.95rem; }
+
+        .container { max-width: 1200px; margin: -25px auto 0; padding: 0 15px; }
+
+        /* 🔙 Back Button Pill */
+        .back-nav { 
+            display: inline-flex; align-items: center; gap: 10px; 
+            background: white; padding: 12px 25px; border-radius: 50px; 
+            text-decoration: none; color: #1a5276; font-weight: 600; font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 25px; transition: 0.3s;
+        }
+        .back-nav:hover { transform: translateX(-5px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+
+        /* 📍 Location Grid (4 Cards) */
+        .location-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .loc-card { 
+            background: white; padding: 25px 20px; border-radius: 15px; 
+            display: flex; align-items: center; gap: 18px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); border-left: 6px solid;
+        }
+        .loc-card i { font-size: 2.2rem; }
+        .loc-info .loc-name { font-size: 0.85rem; color: #888; font-weight: 500; margin-bottom: 2px; }
+        .loc-info .loc-value { font-size: 1.5rem; font-weight: 600; color: #1a4361; }
+
+        /* 💰 KPI Grid (3 Cards) */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .kpi-card { 
+            background: white; border-radius: 25px; padding: 45px 20px; text-align: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); transition: 0.3s;
+        }
+        .kpi-card i { font-size: 2.8rem; margin-bottom: 20px; display: block; }
+        .kpi-label { font-size: 0.95rem; color: #777; margin-bottom: 15px; font-weight: 400; }
+        .kpi-val { font-size: 2.2rem; font-weight: 600; }
+
+        /* 📑 Summary List Section */
+        .summary-box { 
+            background: white; border-radius: 30px; padding: 35px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03); text-align: center;
+        }
+        .summary-title { 
+            display: flex; align-items: center; gap: 12px; 
+            font-size: 1.25rem; font-weight: 600; color: #333; margin-bottom: 30px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
+        }
+
+        /* Loading Spinner */
+        .sync-spinner { font-size: 3rem; color: #ddd; margin: 40px 0; }
+
+        @media (max-width: 768px) {
+            .dash-header h1 { font-size: 1.4rem; }
+            .kpi-val { font-size: 1.8rem; }
+            .loc-card { padding: 20px 15px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="hero">
-    <h1 style="margin:0; letter-spacing:1.5px;">EXECUTIVE SALES DASHBOARD</h1>
-    <p style="opacity: 0.7; font-weight:300; margin-top:10px;">วิเคราะห์ภาพรวมอาณาจักร Smart-Hua Hin Properties</p>
+<div class="dash-header">
+    <h1>EXECUTIVE SALES DASHBOARD</h1>
+    <p>ระบบวิเคราะห์ข้อมูลอาณาจักร Smart-Hua Hin Properties</p>
 </div>
 
 <div class="container">
-    <button onclick="history.back()" class="back-btn"><i class="fas fa-arrow-left"></i> กลับไปหน้าจัดการ</button>
+    <a href="admin.html" class="back-nav">
+        <i class="fas fa-arrow-left"></i> กลับไปแผงควบคุมหลัก
+    </a>
 
-    <div class="stat-grid">
-        <div class="stat-card">
-            <i class="fas fa-coins" style="color: #1a5276;"></i>
-            <div style="color:#777;">มูลค่าทรัพย์สินทั้งหมด</div>
-            <div class="stat-val" id="total-val">฿0</div>
+    <div class="location-grid">
+        <div class="loc-card" style="border-left-color: var(--blue);">
+            <i class="fas fa-city" style="color: var(--blue);"></i>
+            <div class="loc-info">
+                <div class="loc-name">หัวหิน (Hua Hin)</div>
+                <div class="loc-value" id="count-huahin">0 หลัง</div>
+            </div>
         </div>
-        <div class="stat-card">
-            <i class="fas fa-handshake" style="color: #27ae60;"></i>
-            <div style="color:#777;">ยอดขายที่ปิดได้ (SOLD)</div>
-            <div class="stat-val" id="sold-val" style="color: #27ae60;">฿0</div>
+        <div class="loc-card" style="border-left-color: var(--orange);">
+            <i class="fas fa-umbrella-beach" style="color: var(--orange);"></i>
+            <div class="loc-info">
+                <div class="loc-name">ชะอำ (Cha-am)</div>
+                <div class="loc-value" id="count-chaam">0 หลัง</div>
+            </div>
         </div>
-        <div class="stat-card">
-            <i class="fas fa-piggy-bank" style="color: #f39c12;"></i>
-            <div style="color:#777;">ค่าธรรมเนียมระบบสะสม (1.5%)</div>
-            <div class="stat-val" id="fee-val" style="color: #f39c12;">฿0</div>
+        <div class="loc-card" style="border-left-color: var(--green);">
+            <i class="fas fa-mountain" style="color: var(--green);"></i>
+            <div class="loc-info">
+                <div class="loc-name">ปราณบุรี (Pranburi)</div>
+                <div class="loc-value" id="count-pranburi">0 หลัง</div>
+            </div>
         </div>
+        <div class="loc-card" style="border-left-color: var(--purple);">
+            <i class="fas fa-globe" style="color: var(--purple);"></i>
+            <div class="loc-info">
+                <div class="loc-name">อื่นๆ / รวม</div>
+                <div class="loc-value" id="count-total">0 หลัง</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <i class="fas fa-coins" style="color: var(--blue);"></i>
+            <div class="kpi-label">มูลค่าทรัพย์รวมในอาณาจักร</div>
+            <div class="kpi-val" id="total-assets" style="color: var(--blue);">฿0</div>
+        </div>
+        <div class="kpi-card">
+            <i class="fas fa-handshake" style="color: var(--green);"></i>
+            <div class="kpi-label">ยอดขายที่ปิดได้ (SOLD)</div>
+            <div class="kpi-val" id="total-sold" style="color: var(--green);">฿0</div>
+        </div>
+        <div class="kpi-card">
+            <i class="fas fa-piggy-bank" style="color: var(--gold);"></i>
+            <div class="kpi-label">ค่าคอมมิชชันรอรับรวม</div>
+            <div class="kpi-val" id="total-commission" style="color: var(--gold);">฿0</div>
+        </div>
+    </div>
+
+    <div class="summary-box">
+        <div class="summary-title">
+            <i class="fas fa-list-ul"></i> สรุปผลงานแยกรายโครงการ
+        </div>
+        <div id="loading-spinner">
+            <i class="fas fa-sync fa-spin sync-spinner"></i>
+            <p style="color:#999; font-weight:300;">กำลังรวบรวมข้อมูลดิบจากฐานข้อมูล...</p>
+        </div>
+        <div id="project-list-summary" style="text-align: left;"></div>
     </div>
 </div>
 
 <script>
-    const api = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
-    async function loadStats() {
-        const res = await fetch(api).then(r => r.json());
-        let total = 0, sold = 0;
-        res.forEach(item => {
-            const p = Number(item.Price) || 0;
-            total += p;
-            if(item.Status === 'Sold') sold += p;
-        });
-        document.getElementById('total-val').innerText = '฿' + total.toLocaleString();
-        document.getElementById('sold-val').innerText = '฿' + sold.toLocaleString();
-        document.getElementById('fee-val').innerText = '฿' + (total * 0.015).toLocaleString();
+    // 🔗 เชื่อมโยงข้อมูล Apps Script ของคุณ
+    const apiURL = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
+
+    async function loadExecutiveStats() {
+        try {
+            const response = await fetch(apiURL);
+            const data = await response.json();
+            
+            let stats = {
+                hh: 0, ca: 0, pb: 0, total: 0,
+                assetVal: 0, soldVal: 0
+            };
+
+            data.forEach(item => {
+                const price = Number(item.Price) || 0;
+                stats.total++;
+                stats.assetVal += price;
+
+                if (item.Status === 'Sold') {
+                    stats.soldVal += price;
+                }
+
+                // นับแยกรายพื้นที่
+                const district = String(item.District || "").toLowerCase();
+                if (district.includes("hua hin")) stats.hh++;
+                else if (district.includes("cha-am") || district.includes("cha am")) stats.ca++;
+                else if (district.includes("pranburi")) stats.pb++;
+            });
+
+            // อัปเดตตัวเลขลงหน้าจอ [cite: 2026-01-27]
+            document.getElementById('count-huahin').innerText = stats.hh + ' หลัง';
+            document.getElementById('count-chaam').innerText = stats.ca + ' หลัง';
+            document.getElementById('count-pranburi').innerText = stats.pb + ' หลัง';
+            document.getElementById('count-total').innerText = stats.total + ' หลัง';
+
+            document.getElementById('total-assets').innerText = '฿' + stats.assetVal.toLocaleString();
+            document.getElementById('total-sold').innerText = '฿' + stats.soldVal.toLocaleString();
+            // คำนวณค่าคอมฯ 1.5% จากมูลค่าทรัพย์รวม (หรือตามสูตรธุรกิจของคุณ)
+            document.getElementById('total-commission').innerText = '฿' + (stats.assetVal * 0.015).toLocaleString();
+
+            document.getElementById('loading-spinner').style.display = 'none';
+
+        } catch (error) {
+            console.error("Error loading stats:", error);
+            document.getElementById('loading-spinner').innerHTML = "<p style='color:red;'>⚠️ ไม่สามารถดึงข้อมูลได้ โปรดเช็คการเชื่อมต่อ</p>";
+        }
     }
-    window.onload = loadStats;
+
+    window.onload = loadExecutiveStats;
 </script>
 </body>
 </html>
