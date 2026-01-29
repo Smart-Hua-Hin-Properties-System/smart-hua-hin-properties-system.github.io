@@ -3,96 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART CONTROL | MASTER ADMIN V46.0</title>
+    <title>SMART CONTROL | MASTER ADMIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { 
-            --navy: #1a4361; --gold-bg: #fff3cd; --gold-border: #ffeeba;
-            --gold-btn: #856404; --blue-btn: #1a5276; --red-btn: #e74c3c;
+            --navy-header: #1a4361; --pill-gray: #5d7a8c; --red-logout: #e74c3c;
+            --gold-bg: #fff3cd; --gold-border: #ffeeba; --gold-btn: #856404;
+            --action-blue: #1a5276; --white: #ffffff;
         }
-        body { font-family: 'Kanit', sans-serif; background: #f4f7f6; margin: 0; overflow-x: hidden; }
+        body { font-family: 'Kanit', sans-serif; background: #f4f7f6; margin: 0; }
         
-        /* Navbar */
-        header { background: var(--navy); padding: 12px 20px; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .master-badge { background: #5d7a8c; color: white; padding: 2px 12px; border-radius: 50px; font-size: 0.75rem; }
-        .logout-btn { background: var(--red-btn); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: 'Kanit'; font-weight: 500; }
+        /* 🔵 Header Section */
+        header { background: var(--navy-header); height: 65px; padding: 0 25px; display: flex; justify-content: space-between; align-items: center; color: white; position: sticky; top: 0; z-index: 1000; }
+        .h-left { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1.15rem; }
+        .master-badge { background: var(--pill-gray); padding: 2px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 400; }
+        .logout-btn { background: var(--red-logout); border: none; color: white; padding: 8px 18px; border-radius: 6px; font-family: 'Kanit'; font-weight: 500; cursor: pointer; }
 
-        .container { max-width: 100%; width: 900px; margin: 25px auto; padding: 0 15px; box-sizing: border-box; }
-        h2 { color: var(--navy); font-weight: 500; font-size: 1.7rem; margin-bottom: 25px; }
+        .container { max-width: 950px; margin: 45px auto; padding: 0 20px; }
+        h2 { color: var(--navy-header); font-weight: 500; font-size: 1.9rem; margin-bottom: 35px; }
 
-        /* 👑 แท็บสีทอง: ปรับขนาดให้พอดีหน้าจอมือถือ ไม่ล้นขอบ */
-        .gold-section { 
-            background: var(--gold-bg); 
-            border: 1.5px solid var(--gold-border); 
-            border-radius: 15px; 
-            padding: 25px 15px; 
-            margin-bottom: 25px; 
-            text-align: center;
-            width: 100%;
-            box-sizing: border-box; /* สำคัญ: ป้องกันการล้นขอบขวา */
-        }
-        .gold-label { 
-            color: #856404; 
-            font-weight: 600; 
-            font-size: 1.1rem; 
-            margin-bottom: 15px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px; 
-        }
-        .btn-gold { 
-            background: var(--gold-btn); 
-            color: white; 
-            width: 100%; 
-            padding: 18px 10px; 
-            border-radius: 12px; 
-            border: none; 
-            font-family: 'Kanit'; 
-            font-size: 1rem; /* ขนาดตัวอักษรที่เหมาะสมสำหรับมือถือ */
-            font-weight: 500;
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px; 
-            text-decoration: none; 
-            box-shadow: 0 4px 10px rgba(133,100,4,0.3);
-            box-sizing: border-box; 
-        }
+        /* 👑 ตำแหน่งที่ 2: แถบสีทองเชื่อมไป Dashboard */
+        .gold-section { background: var(--gold-bg); border: 1.5px solid var(--gold-border); border-radius: 15px; padding: 25px; margin-bottom: 30px; text-align: center; }
+        .gold-label { color: #856404; font-weight: 600; font-size: 1.15rem; text-align: center; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--gold-btn); color: white; width: 100%; max-width: 600px; margin: 0 auto; padding: 18px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; text-decoration: none; box-shadow: 0 4px 10px rgba(133,100,4,0.3); }
 
-        .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 22px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.25rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px; box-shadow: 0 6px 15px rgba(26, 82, 118, 0.2); box-sizing: border-box; }
+        /* ปุ่มเพิ่มรายการบ้าน */
+        .btn-add { background: var(--action-blue); color: white; width: 100%; padding: 22px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.25rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(26, 82, 118, 0.25); }
 
-        .search-box { background: white; border-radius: 15px; padding: 15px 20px; margin-bottom: 25px; border: 1px solid #ddd; display: flex; align-items: center; gap: 12px; box-sizing: border-box; }
-        .search-box input { border: none; outline: none; width: 100%; font-family: 'Kanit'; font-size: 1rem; }
+        /* ช่องค้นหาทรัพย์ */
+        .search-box { background: white; border-radius: 15px; padding: 18px 25px; margin-bottom: 25px; border: 1px solid #ddd; display: flex; align-items: center; gap: 15px; }
+        .search-box input { border: none; outline: none; width: 100%; font-family: 'Kanit'; font-size: 1.1rem; }
 
-        /* ⚪ ข้อมูลบ้านพร้อมไอคอนแก้ไข */
-        .data-card { background: white; border-radius: 25px; padding: 10px; border: 1px solid #eee; box-shadow: 0 5px 20px rgba(0,0,0,0.03); box-sizing: border-box; }
-        .row-item { padding: 18px 20px; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; align-items: center; }
-        .row-item:last-child { border: none; }
+        /* ⚪ กล่องขาวแสดงผลข้อมูล */
+        .data-white-box { background: white; border-radius: 30px; padding: 40px; border: 1px solid #f0f0f0; box-shadow: 0 10px 40px rgba(0,0,0,0.04); min-height: 250px; text-align: center; }
+        .property-list { text-align: left; }
         
-        .edit-icon { color: var(--blue-btn); cursor: pointer; font-size: 1.8rem; transition: 0.2s; }
-        .edit-icon:hover { transform: scale(1.15); color: #000; }
+        /* 📝 ตำแหน่งที่ 1: แถวข้อมูลพร้อมปุ่ม Edit */
+        .property-row { padding: 20px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center; }
+        .property-row:last-child { border: none; }
+        .edit-icon { color: var(--action-blue); cursor: pointer; font-size: 1.6rem; transition: 0.2s; }
+        .edit-icon:hover { color: #000; transform: scale(1.1); }
 
         .hidden { display: none !important; }
-        #login-scr { position: fixed; inset: 0; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        #login-ui { position: fixed; inset: 0; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-<div id="login-scr">
-    <div style="text-align:center; max-width:350px; width:100%;">
-        <h2 style="margin-bottom:30px; color:var(--navy);">Smart Admin Login</h2>
-        <input type="password" id="pinInput" placeholder="ENTER ACCESS PIN" style="width:100%; padding:20px; border-radius:15px; border:1px solid #ddd; text-align:center; font-size:1.6rem; outline:none; margin-bottom:25px; box-sizing:border-box;">
-        <button onclick="handleLogin()" style="width:100%; padding:18px; border-radius:15px; background:var(--navy); color:white; border:none; font-weight:600; cursor:pointer;">ACCESS SYSTEM</button>
+<div id="login-ui">
+    <div style="text-align:center; max-width:360px; width:100%; padding:25px;">
+        <h2 style="margin-bottom:35px; color:var(--navy-header);">Smart Admin Login</h2>
+        <input type="password" id="pinInput" placeholder="ENTER ACCESS PIN" style="width:100%; padding:20px; border-radius:15px; border:1.5px solid #eee; text-align:center; font-size:1.6rem; outline:none; margin-bottom:25px; box-sizing:border-box;">
+        <button onclick="handleLogin()" style="width:100%; padding:18px; border-radius:15px; background:var(--navy-header); color:white; border:none; font-weight:600; cursor:pointer; font-size:1.2rem;">ACCESS DASHBOARD</button>
     </div>
 </div>
 
-<div id="admin-ui" class="hidden">
+<div id="main-ui" class="hidden">
     <header>
-        <div style="display:flex; align-items:center; gap:8px; font-weight:600;">Smart Control <span class="master-badge">Master</span></div>
-        <div id="user-info" style="font-size: 0.9rem; font-weight:400;">ADMIN</div>
+        <div class="h-left">Smart Control <span class="master-badge">Master</span></div>
+        <div id="admin-name" style="font-weight: 400; font-size: 0.95rem;">MASTER_ADMIN</div>
         <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
     </header>
 
@@ -106,85 +76,87 @@
             </a>
         </div>
 
-        <button class="btn-blue" onclick="alert('ระบบเพิ่มบ้านใหม่...')">
+        <button class="btn-add" onclick="alert('เปิดฟอร์มเพิ่มบ้านใหม่...')">
             <i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่เข้าสู่ระบบ
         </button>
 
         <div class="search-box">
             <i class="fas fa-search" style="color:#aaa;"></i>
-            <input type="text" id="findInput" placeholder="ค้นหารหัสทรัพย์ หรือ โครงการ..." onkeyup="doSearch()">
+            <input type="text" id="searchInput" placeholder="ค้นหารหัสบ้าน หรือ ชื่อโครงการ..." onkeyup="filterData()">
         </div>
 
-        <div class="data-card">
-            <div id="load-box" style="text-align:center; padding:50px;">
-                <i class="fas fa-sync fa-spin fa-3x" style="color:var(--navy); margin-bottom:25px;"></i>
-                <div style="font-weight:500;">กำลังดึงข้อมูลมหาอำนาจ...</div>
+        <div class="data-white-box">
+            <div id="loading-box">
+                <i class="fas fa-sync fa-spin fa-3x" style="color:var(--navy-header); margin-bottom:25px;"></i>
+                <div style="font-size:1.2rem; font-weight:500;">กำลังดึงข้อมูลมหาอำนาจ...</div>
             </div>
-            <div id="list-box" class="hidden"></div>
+            <div id="list-container" class="property-list hidden"></div>
         </div>
     </div>
 </div>
 
 <script>
-    const gas_url = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
-    let house_data = [];
+    const api = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
+    let properties = [];
+    let admin = null;
 
     async function handleLogin() {
         const pin = document.getElementById('pinInput').value;
-        try {
-            const res = await fetch(`${gas_url}?action=universalLogin&key=${pin}`).then(r => r.json());
-            if (res.success) {
-                localStorage.setItem('auth', JSON.stringify(res));
-                start();
-            } else { alert("รหัส PIN ไม่ถูกต้อง"); }
-        } catch(e) { alert("เชื่อมต่อฐานข้อมูลล้มเหลว"); }
+        const res = await fetch(`${api}?action=universalLogin&key=${pin}`).then(r => r.json());
+        if (res.success) {
+            admin = res;
+            localStorage.setItem('session', JSON.stringify(res));
+            renderUI();
+        } else { alert("รหัส PIN ไม่ถูกต้อง"); }
     }
 
-    function start() {
-        const admin = JSON.parse(localStorage.getItem('auth'));
+    function renderUI() {
+        admin = admin || JSON.parse(localStorage.getItem('session'));
         if (!admin) return;
-        document.getElementById('login-scr').classList.add('hidden');
-        document.getElementById('admin-ui').classList.remove('hidden');
-        document.getElementById('user-info').innerText = admin.name;
 
-        // 🛡️ ระบบปลดล็อกแท็บสีทอง (เช็คสิทธิ์แบบยืดหยุ่น)
-        const role = String(admin.role).toUpperCase();
-        if (role.includes('SUPER') || role.includes('ADMIN')) {
+        document.getElementById('login-ui').classList.add('hidden');
+        document.getElementById('main-ui').classList.remove('hidden');
+        document.getElementById('admin-name').innerText = admin.name;
+
+        // 🛡️ ระบบปลดล็อกประตูลับ Dashboard เฉพาะ Super Admin
+        if (String(admin.role).toUpperCase().includes('SUPER')) {
             document.getElementById('gold-bar').classList.remove('hidden');
         }
 
-        fetchHouses(admin);
+        fetchData();
     }
 
-    async function fetchHouses(admin) {
-        const res = await fetch(`${gas_url}?role=${admin.role}&project=${admin.project}`).then(r => r.json());
-        house_data = res;
-        document.getElementById('load-box').classList.add('hidden');
-        document.getElementById('list-box').classList.remove('hidden');
-        renderList(house_data);
+    async function fetchData() {
+        const res = await fetch(`${api}?role=${admin.role}&project=${admin.project}`).then(r => r.json());
+        properties = res;
+        document.getElementById('loading-box').classList.add('hidden');
+        document.getElementById('list-container').classList.remove('hidden');
+        renderList(properties);
     }
 
     function renderList(data) {
-        document.getElementById('list-box').innerHTML = data.map(h => `
-            <div class="row-item">
+        const container = document.getElementById('list-container');
+        container.innerHTML = data.map(i => `
+            <div class="property-row">
                 <div>
-                    <div style="font-weight:600; color:var(--navy); font-size:1.1rem;">${h.HP_ID} | ${h.ID}</div>
-                    <div style="font-size:0.85rem; color:#888;">${h.District} | ${h.Status}</div>
+                    <div style="font-weight:600; font-size:1.15rem; color:var(--navy-header);">${i.HP_ID} | ${i.ID}</div>
+                    <div style="font-size:0.85rem; color:#888;">${i.District} | ${i.Status} | ฿${Number(i.Price).toLocaleString()}</div>
                 </div>
-                <div class="edit-icon" onclick="alert('แก้ไขทรัพย์: ${h.HP_ID}')">
+                <div class="edit-icon" onclick="alert('เตรียมเข้าสู่ฟอร์มแก้ไขทรัพย์: ${i.HP_ID}')">
                     <i class="fas fa-edit"></i>
                 </div>
             </div>
         `).join('');
     }
 
-    function doSearch() {
-        const v = document.getElementById('findInput').value.toLowerCase();
-        renderList(house_data.filter(h => h.HP_ID.toLowerCase().includes(v) || h.ID.toLowerCase().includes(v)));
+    function filterData() {
+        const val = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = properties.filter(p => p.HP_ID.toLowerCase().includes(val) || p.ID.toLowerCase().includes(val));
+        renderList(filtered);
     }
 
     function logout() { localStorage.clear(); location.reload(); }
-    window.onload = () => { if(localStorage.getItem('auth')) start(); };
+    window.onload = () => { if(localStorage.getItem('session')) renderUI(); };
 </script>
 </body>
 </html>
