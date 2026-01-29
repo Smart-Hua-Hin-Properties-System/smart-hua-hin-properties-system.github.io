@@ -13,7 +13,7 @@
         }
         body { font-family: 'Kanit', sans-serif; background: #f4f7f6; margin: 0; overflow-x: hidden; }
         
-        /* 📱 Header ปรับให้พอดีมือถือ */
+        /* 📱 ปรับ Header สำหรับมือถือ (รักษาตามเดิม) */
         header { background: var(--navy); padding: 10px 15px; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; font-size: 0.9rem; }
         .master-badge { background: #5d7a8c; color: white; padding: 2px 8px; border-radius: 50px; font-size: 0.65rem; }
         .logout-btn { background: var(--red-btn); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-family: 'Kanit'; font-size: 0.85rem; }
@@ -21,12 +21,12 @@
         .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
         h2 { color: var(--navy); font-weight: 500; font-size: 1.5rem; margin-bottom: 25px; text-align: center; }
 
-        /* 👑 แถบสีทอง: รักษาไว้ตามต้นฉบับ (โชว์ตลอด) */
+        /* 👑 แถบสีทอง (รักษาไว้ตามเดิม 100% ห้ามแตะต้อง) */
         .gold-section { background: var(--gold-bg); border: 1px solid var(--gold-border); border-radius: 15px; padding: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .gold-label { color: #856404; font-weight: 600; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-gold { background: var(--gold-btn); color: white; width: 100%; max-width: 100%; padding: 15px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; box-shadow: 0 4px 10px rgba(133,100,4,0.3); box-sizing: border-box; }
 
-        /* ปุ่มสีน้ำเงินสำหรับเพิ่มรายการ */
+        /* ปุ่มสีน้ำเงินสำหรับเพิ่มรายการ (รักษาตามเดิม) */
         .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 15px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.1rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; box-shadow: 0 6px 15px rgba(26, 82, 118, 0.2); box-sizing: border-box; }
 
         .search-box { background: white; border-radius: 12px; padding: 12px 15px; margin-bottom: 20px; border: 1px solid #ddd; display: flex; align-items: center; gap: 10px; }
@@ -35,14 +35,16 @@
         /* ⚪ กล่องรายการข้อมูล */
         .data-white-box { background: white; border-radius: 25px; padding: 10px; border: 1px solid #f0f0f0; box-shadow: 0 10px 30px rgba(0,0,0,0.04); min-height: 200px; }
         
-        /* 📝 รายการบ้านพร้อมไอคอน Edit */
+        /* 📝 แถวรายการบ้าน */
         .property-row { padding: 15px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center; }
         .property-row:last-child { border: none; }
         .item-info { flex-grow: 1; text-align: left; }
         .item-id { font-weight: 600; color: var(--navy); font-size: 1rem; }
-        .item-sub { font-size: 0.8rem; color: #888; margin-top: 3px; }
         
-        /* สไตล์ไอคอน Edit */
+        /* 🏷️ ตำแหน่งที่ 1: เปลี่ยนเป็นชื่อโครงการตามสั่ง */
+        .item-sub { font-size: 0.85rem; color: #555; margin-top: 3px; font-weight: 400; }
+        
+        /* 📝 ตำแหน่งที่ 2: ไอคอนแก้ไข (Edit) */
         .edit-icon { color: var(--blue-btn); cursor: pointer; font-size: 1.6rem; padding: 5px; transition: 0.2s; }
         .edit-icon:hover { color: #000; transform: scale(1.1); }
 
@@ -77,7 +79,7 @@
             </a>
         </div>
 
-        <button class="btn-blue" onclick="alert('เปิดฟอร์มเพิ่มรายการ...')">
+        <button class="btn-blue" onclick="alert('ฟอร์มเพิ่มรายการกำลังเตรียมการใน Phase ถัดไป...')">
             <i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่เข้าสู่ระบบ
         </button>
 
@@ -129,12 +131,12 @@
     }
 
     function renderList(data) {
-        // เพิ่มไอคอน Edit ที่ตำแหน่งท้ายรายการตามที่คุณต้องการ
+        // อัปเดตการแสดงผล: ดึงชื่อโครงการมาใส่ และเพิ่มไอคอน Edit ท้ายรายการ
         document.getElementById('list-container').innerHTML = data.map(i => `
             <div class="property-row">
                 <div class="item-info">
                     <div class="item-id">${i.HP_ID} | ${i.ID}</div>
-                    <div class="item-sub">${i.District} | ${i.Status} | ฿${Number(i.Price).toLocaleString()}</div>
+                    <div class="item-sub">${i.Project_Name || 'ไม่ระบุชื่อโครงการ'}</div>
                 </div>
                 <div class="edit-icon" onclick="alert('เตรียมเข้าสู่ฟอร์มแก้ไข: ${i.HP_ID}')">
                     <i class="fas fa-edit-square"></i>
