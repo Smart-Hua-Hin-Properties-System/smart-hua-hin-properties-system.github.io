@@ -12,27 +12,49 @@
             --gold-btn: #856404; --blue-btn: #1a5276; --red-btn: #e74c3c;
         }
         body { font-family: 'Kanit', sans-serif; background: #f4f7f6; margin: 0; }
-        header { background: var(--navy); padding: 12px 30px; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        
+        /* 🔵 Header Section */
+        header { background: var(--navy); padding: 12px 30px; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .master-badge { background: #5d7a8c; color: white; padding: 2px 12px; border-radius: 50px; font-size: 0.75rem; }
-        .logout-btn { background: var(--red-btn); color: white; border: none; padding: 7px 18px; border-radius: 6px; cursor: pointer; font-family: 'Kanit'; }
+        .logout-btn { background: var(--red-btn); color: white; border: none; padding: 7px 18px; border-radius: 6px; cursor: pointer; font-family: 'Kanit'; font-weight: 500; }
 
-        .container { max-width: 950px; margin: 40px auto; padding: 0 20px; }
-        h2 { color: var(--navy); font-weight: 500; font-size: 1.8rem; margin-bottom: 35px; }
+        .container { max-width: 950px; margin: 30px auto; padding: 0 15px; }
+        h2 { color: var(--navy); font-weight: 500; font-size: 1.6rem; margin-bottom: 25px; }
 
-        /* 👑 แถบสีทอง: รอบนี้เปิดโชว์ตลอด (ไม่ต้องรอเช็คสิทธิ์) */
-        .gold-section { background: var(--gold-bg); border: 1.5px solid var(--gold-border); border-radius: 15px; padding: 25px; margin-bottom: 30px; text-align: center; }
-        .gold-label { color: #856404; font-weight: 600; font-size: 1.15rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-gold { background: var(--gold-btn); color: white; width: 100%; max-width: 600px; margin: 0 auto; padding: 18px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; text-decoration: none; box-shadow: 0 4px 10px rgba(133,100,4,0.3); }
+        /* 👑 แถบสีทอง: ปรับแต่งให้พอดีกับมือถือ (Mobile Responsive) */
+        .gold-section { background: var(--gold-bg); border: 1.5px solid var(--gold-border); border-radius: 15px; padding: 20px; margin-bottom: 25px; text-align: center; }
+        .gold-label { color: #856404; font-weight: 600; font-size: 1.1rem; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-gold { background: var(--gold-btn); color: white; width: 100%; max-width: 550px; margin: 0 auto; padding: 15px; border-radius: 10px; border: none; font-family: 'Kanit'; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; box-shadow: 0 4px 10px rgba(133,100,4,0.3); transition: 0.3s; }
+        .btn-gold:active { transform: scale(0.98); }
 
-        .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 20px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.25rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px; box-shadow: 0 8px 20px rgba(26, 82, 118, 0.25); }
+        /* ปุ่มเพิ่มรายการสีน้ำเงิน */
+        .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 18px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.15rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(26, 82, 118, 0.2); }
 
-        .search-box { background: white; border-radius: 15px; padding: 18px 25px; margin-bottom: 25px; border: 1px solid #ddd; display: flex; align-items: center; gap: 15px; }
-        .search-box input { border: none; outline: none; width: 100%; font-family: 'Kanit'; font-size: 1.1rem; }
+        /* ช่องค้นหา */
+        .search-box { background: white; border-radius: 12px; padding: 15px 20px; margin-bottom: 20px; border: 1px solid #ddd; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .search-box input { border: none; outline: none; width: 100%; font-family: 'Kanit'; font-size: 1rem; }
 
-        .data-white-box { background: white; border-radius: 30px; padding: 20px; border: 1px solid #f0f0f0; box-shadow: 0 10px 40px rgba(0,0,0,0.04); min-height: 250px; }
-        .property-row { padding: 20px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center; }
+        /* ⚪ กล่องขาวแสดงผลข้อมูล พร้อมปุ่ม Edit */
+        .data-white-box { background: white; border-radius: 25px; padding: 10px; border: 1px solid #f0f0f0; box-shadow: 0 5px 25px rgba(0,0,0,0.03); min-height: 200px; }
+        .property-row { padding: 20px; border-bottom: 1px solid #f2f2f2; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        .property-row:hover { background: #f9fbff; }
         .property-row:last-child { border: none; }
-        .edit-icon { color: var(--blue-btn); cursor: pointer; font-size: 1.8rem; }
+        
+        /* 📝 สไตล์ไอคอน Edit */
+        .edit-icon { color: var(--blue-btn); cursor: pointer; font-size: 1.7rem; transition: 0.2s; padding: 5px; }
+        .edit-icon:hover { color: #000; transform: scale(1.1); }
+
+        /* Responsive สำหรับมือถือขนาดเล็ก */
+        @media (max-width: 600px) {
+            header { padding: 10px 15px; }
+            .h-text { font-size: 0.9rem; }
+            h2 { font-size: 1.4rem; }
+            .gold-section { padding: 15px; }
+            .gold-label { font-size: 0.95rem; }
+            .btn-gold { font-size: 0.9rem; padding: 12px; }
+            .btn-blue { font-size: 1.05rem; padding: 15px; }
+            .property-row { padding: 15px; }
+        }
 
         .hidden { display: none !important; }
         #login-ui { position: fixed; inset: 0; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
@@ -41,43 +63,46 @@
 <body>
 
 <div id="login-ui">
-    <div style="text-align:center; max-width:360px; width:100%; padding:25px;">
-        <h2 style="margin-bottom:35px; color:var(--navy);">Smart Admin Login</h2>
-        <input type="password" id="pinInput" placeholder="ENTER ACCESS PIN" style="width:100%; padding:20px; border-radius:15px; border:1.5px solid #eee; text-align:center; font-size:1.6rem; outline:none; margin-bottom:25px; box-sizing:border-box;">
-        <button onclick="handleLogin()" style="width:100%; padding:18px; border-radius:15px; background:var(--navy); color:white; border:none; font-weight:600; cursor:pointer;">ACCESS DASHBOARD</button>
+    <div style="text-align:center; max-width:340px; width:100%; padding:20px;">
+        <i class="fas fa-user-shield fa-4x" style="color:var(--navy); margin-bottom:20px;"></i>
+        <h2 style="margin-bottom:30px; color:var(--navy);">Admin Access</h2>
+        <input type="password" id="pinInput" placeholder="ENTER ACCESS PIN" style="width:100%; padding:18px; border-radius:12px; border:1.5px solid #eee; text-align:center; font-size:1.5rem; outline:none; margin-bottom:25px; box-sizing:border-box;">
+        <button onclick="handleLogin()" style="width:100%; padding:15px; border-radius:12px; background:var(--navy); color:white; border:none; font-weight:600; cursor:pointer; font-size:1.1rem;">LOGIN TO SYSTEM</button>
     </div>
 </div>
 
 <div id="main-ui" class="hidden">
     <header>
-        <div style="display:flex; align-items:center; gap:10px; font-weight:600;">Smart Control <span class="master-badge">Master</span></div>
-        <div id="admin-name" style="font-size: 0.95rem;">MASTER_ADMIN</div>
+        <div style="display:flex; align-items:center; gap:8px; font-weight:600;" class="h-text">
+            Smart Control <span class="master-badge">Master</span>
+        </div>
+        <div id="admin-name" style="font-size: 0.85rem; opacity: 0.8;">MASTER_ADMIN</div>
         <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
     </header>
 
     <div class="container">
         <h2>จัดการ ทุกโครงการ</h2>
 
-        <div class="gold-section">
+        <div class="gold-section" id="gold-banner">
             <div class="gold-label"><i class="fas fa-crown"></i> สำหรับผู้บริหารสูงสุดเท่านั้น</div>
             <a href="dashboard.html" class="btn-gold">
                 <i class="fas fa-chart-line"></i> เข้าสู่หน้าสรุปยอดบริหาร (Executive Dashboard)
             </a>
         </div>
 
-        <button class="btn-blue" onclick="alert('เปิดฟอร์มเพิ่มรายการ...')">
+        <button class="btn-blue" onclick="alert('เปิดฟอร์มเพิ่มรายการใหม่...')">
             <i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านใหม่เข้าสู่ระบบ
         </button>
 
         <div class="search-box">
             <i class="fas fa-search" style="color:#aaa;"></i>
-            <input type="text" id="searchInput" placeholder="ค้นหารหัสบ้าน..." onkeyup="filterData()">
+            <input type="text" id="searchInput" placeholder="ค้นหารหัสบ้าน หรือ ทำเล..." onkeyup="filterData()">
         </div>
 
         <div class="data-white-box">
             <div id="loading-box" style="text-align:center; padding:50px;">
                 <i class="fas fa-sync fa-spin fa-3x" style="color:var(--navy);"></i>
-                <div>กำลังดึงข้อมูล...</div>
+                <div style="margin-top:15px; color:#666;">กำลังดึงข้อมูลมหาอำนาจ...</div>
             </div>
             <div id="list-container" class="hidden"></div>
         </div>
@@ -85,24 +110,33 @@
 </div>
 
 <script>
+    // 🔗 URL Apps Script ของคุณ
     const api = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
     let properties = [];
 
     async function handleLogin() {
         const pin = document.getElementById('pinInput').value;
-        const res = await fetch(`${api}?action=universalLogin&key=${pin}`).then(r => r.json());
-        if (res.success) {
-            localStorage.setItem('session', JSON.stringify(res));
-            renderUI();
-        } else { alert("รหัสผิดพลาด"); }
+        try {
+            const res = await fetch(`${api}?action=universalLogin&key=${pin}`).then(r => r.json());
+            if (res.success) {
+                localStorage.setItem('session_admin', JSON.stringify(res));
+                renderUI();
+            } else { alert("รหัสผ่านไม่ถูกต้อง"); }
+        } catch(e) { alert("เชื่อมต่อฐานข้อมูลล้มเหลว"); }
     }
 
     function renderUI() {
-        const admin = JSON.parse(localStorage.getItem('session'));
+        const admin = JSON.parse(localStorage.getItem('session_admin'));
         if (!admin) return;
         document.getElementById('login-ui').classList.add('hidden');
         document.getElementById('main-ui').classList.remove('hidden');
         document.getElementById('admin-name').innerText = admin.name;
+
+        // 🛡️ ปลดล็อกแถบสีทองเฉพาะสิทธิ์ที่เหมาะสม
+        if (!String(admin.role).toUpperCase().includes('ADMIN')) {
+            document.getElementById('gold-banner').classList.add('hidden');
+        }
+
         fetchData(admin);
     }
 
@@ -115,19 +149,28 @@
     }
 
     function renderList(data) {
+        // 📝 เพิ่มไอคอน Edit ในทุกรายการ
         document.getElementById('list-container').innerHTML = data.map(i => `
             <div class="property-row">
                 <div>
-                    <div style="font-weight:600; color:var(--navy);">${i.HP_ID} | ${i.ID}</div>
-                    <div style="font-size:0.85rem; color:#888;">${i.District} | ${i.Status}</div>
+                    <div style="font-weight:600; color:var(--navy); font-size:1.1rem;">${i.HP_ID} | ${i.ID}</div>
+                    <div style="font-size:0.85rem; color:#888;">${i.District} | ${i.Status} | ฿${Number(i.Price).toLocaleString()}</div>
                 </div>
-                <div class="edit-icon"><i class="fas fa-edit-square"></i></div>
+                <div class="edit-icon" onclick="alert('แก้ไขข้อมูลทรัพย์: ${i.HP_ID}')">
+                    <i class="fas fa-edit"></i>
+                </div>
             </div>
         `).join('');
     }
 
+    function filterData() {
+        const val = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = properties.filter(p => p.HP_ID.toLowerCase().includes(val) || p.ID.toLowerCase().includes(val));
+        renderList(filtered);
+    }
+
     function logout() { localStorage.clear(); location.reload(); }
-    window.onload = () => { if(localStorage.getItem('session')) renderUI(); };
+    window.onload = () => { if(localStorage.getItem('session_admin')) renderUI(); };
 </script>
 </body>
 </html>
