@@ -3,92 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SMART PROPERTIES SYSTEM - Luxury V93.0</title>
+    <title>SMART PROPERTIES | V94.0 Dynamic Filter</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #9CBCE3; --white: #ffffff; --green: #00d44b; --text: #2c3e50; --border: #eee; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; color: var(--text); -webkit-tap-highlight-color: transparent; }
         
+        /* 📱 Mobile Lock: ป้องกันหน้าจอล้น 100% */
+        html, body { 
+            font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; 
+            color: var(--text); overflow-x: hidden; width: 100%; position: relative;
+        }
+        * { box-sizing: border-box; }
+
         /* 🎨 Loader ดุ๊กดิ๊ก */
         #loader-container { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: 0.5s; }
         .emoji-group { display: flex; gap: 15px; margin-bottom: 25px; font-size: 60px; }
         .bounce { animation: bounce 0.6s infinite alternate; }
-        .bounce:nth-child(2) { animation-delay: 0.2s; }
-        .bounce:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
 
         /* 🚩 Header & Flags */
-        header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; }
         .flag-list { display: flex; gap: 5px; }
-        .flag-btn { border: none; background: none; padding: 0; cursor: pointer; transition: 0.2s; }
-        .flag-btn:hover { transform: scale(1.2); }
-        .flag-btn img { width: 24px; height: 16px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .flag-btn img { width: 24px; height: 16px; border-radius: 2px; }
 
-        /* 🔍 Filter Area (4 ช่องตามสั่ง) */
-        .filter-area { padding: 20px 15px; max-width: 1200px; margin: 0 auto; }
-        .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(255,255,255,0.9); padding: 15px; border-radius: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.05); }
+        /* 🔍 Filter Grid: แก้ไขให้พอดีจอมือถือ [cite: 2026-01-27] */
+        .filter-area { padding: 15px; width: 100%; max-width: 1200px; margin: 0 auto; }
+        .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(255,255,255,0.9); padding: 15px; border-radius: 25px; }
         @media (min-width: 768px) { .filter-grid { grid-template-columns: repeat(4, 1fr); } }
-        .select-box { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); font-family: 'Kanit'; color: var(--primary); font-size: 0.85rem; outline: none; }
+        .select-box { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); font-family: 'Kanit'; color: var(--primary); font-size: 0.82rem; background: white; }
 
-        /* 🏠 Cards */
-        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 15px 40px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--white); border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: 0.3s; }
-        .card:hover { transform: translateY(-8px); }
+        /* 🏠 Cards: แก้ไขขนาดให้ไม่ล้นจอ */
+        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 0 15px 40px; width: 100%; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--white); border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
         .badge { position: absolute; top: 20px; left: 20px; background: var(--green); color: white; padding: 6px 18px; border-radius: 50px; font-weight: 500; font-size: 0.8rem; z-index: 10; }
         .card-img { width: 100%; height: 350px; object-fit: cover; background: #eee; }
         .card-body { padding: 25px; text-align: center; }
-        .price-text { font-size: 2rem; color: var(--primary); font-weight: 600; margin-bottom: 20px; }
-        .btn-detail { display: block; width: 90%; margin: 0 auto; padding: 14px; background: var(--primary); color: white; text-align: center; border-radius: 50px; text-decoration: none; font-size: 1rem; font-weight: 500; }
+        .price-text { font-size: 1.8rem; color: var(--primary); font-weight: 600; margin-bottom: 20px; }
+        .btn-detail { display: block; width: 100%; padding: 14px; background: var(--primary); color: white; text-align: center; border-radius: 50px; text-decoration: none; font-size: 1rem; font-weight: 500; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div id="loader-container">
-    <div class="emoji-group"><span class="bounce">🐚</span><span class="bounce">🌊</span><span class="bounce">🌴</span></div>
-    <div class="loader-text" style="color:white; font-weight:900;">SMART PROPERTIES</div>
+    <div class="emoji-group"><span class="bounce" style="animation-delay:0s">🐚</span><span class="bounce" style="animation-delay:0.2s">🌊</span><span class="bounce" style="animation-delay:0.4s">🌴</span></div>
+    <div style="color:white; font-weight:900; font-size:1.5rem;">SMART PROPERTIES</div>
 </div>
 
 <header>
-    <div style="font-weight:900; color:var(--primary); font-size:1.1rem; letter-spacing:-0.5px;">HUAHIN.PROPERTIES</div>
+    <div style="font-weight:900; color:var(--primary); font-size:1rem;">HUAHIN.PROPERTIES</div>
     <div class="flag-list">
-        <button class="flag-btn" onclick="setLanguage('th')"><img src="https://flagcdn.com/w40/th.png"></button>
-        <button class="flag-btn" onclick="setLanguage('en')"><img src="https://flagcdn.com/w40/us.png"></button>
-        <button class="flag-btn" onclick="setLanguage('cn')"><img src="https://flagcdn.com/w40/cn.png"></button>
-        <button class="flag-btn" onclick="setLanguage('ru')"><img src="https://flagcdn.com/w40/ru.png"></button>
-        <button class="flag-btn" onclick="setLanguage('de')"><img src="https://flagcdn.com/w40/de.png"></button>
-        <button class="flag-btn" onclick="setLanguage('fr')"><img src="https://flagcdn.com/w40/fr.png"></button>
+        <button class="flag-btn" style="border:none;background:none;" onclick="setLanguage('th')"><img src="https://flagcdn.com/w40/th.png"></button>
+        <button class="flag-btn" style="border:none;background:none;" onclick="setLanguage('en')"><img src="https://flagcdn.com/w40/us.png"></button>
+        <button class="flag-btn" style="border:none;background:none;" onclick="setLanguage('cn')"><img src="https://flagcdn.com/w40/cn.png"></button>
+        <button class="flag-btn" style="border:none;background:none;" onclick="setLanguage('ru')"><img src="https://flagcdn.com/w40/ru.png"></button>
+        <button class="flag-btn" style="border:none;background:none;" onclick="setLanguage('de')"><img src="https://flagcdn.com/w40/de.png"></button>
+        <button class="flag-btn" style="border:none;background:none;" onclick="setLanguage('fr')"><img src="https://flagcdn.com/w40/fr.png"></button>
     </div>
 </header>
 
 <div class="filter-area">
     <div class="filter-grid">
-        <select class="select-box" id="distFilter" onchange="applyFilters()"><option value="" data-lang="optDist">📍 อำเภอทั้งหมด</option></select>
-        <select class="select-box" id="subDistFilter" onchange="applyFilters()"><option value="" data-lang="optSub">🏘️ ตำบลทั้งหมด</option></select>
-        <select class="select-box" id="bedFilter" onchange="applyFilters()"><option value="" data-lang="optBed">🛌 ห้องนอนทั้งหมด</option><option value="1">1 Bed</option><option value="2">2 Beds</option><option value="3">3 Beds</option><option value="4">4+ Beds</option></select>
-        <select class="select-box" id="priceSort" onchange="applyFilters()"><option value="" data-lang="optPrice">💰 เรียงตามราคา</option><option value="low" data-lang="priceLow">น้อยไปมาก</option><option value="high" data-lang="priceHigh">มากไปน้อย</option></select>
+        <select class="select-box" id="distFilter" onchange="updateSubDistricts()">
+            <option value="">📍 อำเภอทั้งหมด</option>
+            <option value="หัวหิน">หัวหิน</option>
+            <option value="ชะอำ">ชะอำ</option>
+            <option value="ปราณบุรี">ปราณบุรี</option>
+        </select>
+        <select class="select-box" id="subDistFilter" onchange="applyFilters()">
+            <option value="">🏘️ ตำบลทั้งหมด</option>
+        </select>
+        <select class="select-box" id="bedFilter" onchange="applyFilters()">
+            <option value="">🛌 ห้องนอนทั้งหมด</option>
+            <option value="1">1 Bed</option><option value="2">2 Beds</option><option value="3">3 Beds</option>
+            <option value="4">4 Beds</option><option value="5">5 Beds</option><option value="6">6 Beds</option>
+            <option value="6.5">6+ Beds</option>
+        </select>
+        <select class="select-box" id="priceSort" onchange="applyFilters()">
+            <option value="">💰 เรียงตามราคา</option>
+            <option value="low">น้อยไปมาก</option>
+            <option value="high">มากไปน้อย</option>
+        </select>
     </div>
 </div>
 
 <div class="property-grid" id="grid"></div>
 
 <script>
-    // 🚩 URL ล่าสุดของคุณ (V88.0)
     const api = "https://script.google.com/macros/s/AKfycbzkweiEgczmmU_4FiqRffJ4exvgZl3RwGPIBWXssLgkUpdMArif9-eUEv6yP2Kvtzh1/exec";
     let allData = [], currentLang = localStorage.getItem('smartLang') || 'th';
-
-    const i18n = {
-        th: { optDist: "📍 อำเภอทั้งหมด", optSub: "🏘️ ตำบลทั้งหมด", optBed: "🛌 ห้องนอนทั้งหมด", optPrice: "💰 เรียงตามราคา", priceLow: "น้อยไปมาก", priceHigh: "มากไปน้อย", view: "ดูรายละเอียด" },
-        en: { optDist: "📍 All Districts", optSub: "🏘️ All Sub-districts", optBed: "🛌 Bedrooms", optPrice: "💰 Sort Price", priceLow: "Low to High", priceHigh: "High to Low", view: "View Details" },
-        cn: { optDist: "📍 所有地区", optSub: "🏘️ 所有乡镇", optBed: "🛌 卧室", optPrice: "💰 价格排序", priceLow: "从低到高", priceHigh: "从高到低", view: "查看详情" }
-        // ... (เพิ่ม RU, DE, FR ตามความต้องการได้ครับ)
-    };
 
     async function init() {
         try {
             const res = await fetch(`${api}?role=PUBLIC`);
             allData = await res.json();
-            populateFilters();
             setLanguage(currentLang);
             document.getElementById('loader-container').style.opacity = '0';
             setTimeout(() => document.getElementById('loader-container').style.display = 'none', 500);
@@ -97,21 +105,25 @@
 
     function setLanguage(lang) {
         currentLang = lang; localStorage.setItem('smartLang', lang);
-        const t = i18n[lang] || i18n.en;
-        document.querySelectorAll('[data-lang]').forEach(el => { const key = el.getAttribute('data-lang'); if (t[key]) el.innerText = t[key]; });
         applyFilters();
     }
 
-    function populateFilters() {
-        const dSel = document.getElementById('distFilter'), sSel = document.getElementById('subDistFilter');
-        [...new Set(allData.map(it => it.District))].filter(Boolean).sort().forEach(d => dSel.innerHTML += `<option value="${d}">${d}</option>`);
-        [...new Set(allData.map(it => it.SubDistrict))].filter(Boolean).sort().forEach(s => sSel.innerHTML += `<option value="${s}">${s}</option>`);
+    // ✨ ฟังก์ชันตำบลเปลี่ยนตามอำเภออัตโนมัติ [cite: 2026-01-27]
+    function updateSubDistricts() {
+        const d = document.getElementById('distFilter').value;
+        const sSel = document.getElementById('subDistFilter');
+        sSel.innerHTML = '<option value="">🏘️ ตำบลทั้งหมด</option>';
+        
+        if (d) {
+            const subs = [...new Set(allData.filter(it => it.District === d).map(it => it.SubDistrict))].filter(Boolean).sort();
+            subs.forEach(s => sSel.innerHTML += `<option value="${s}">${s}</option>`);
+        }
+        applyFilters();
     }
 
     function renderGrid(items) {
         const grid = document.getElementById('grid'); grid.innerHTML = "";
         items.forEach(it => {
-            // ✅ ระบบแก้ลิงก์รูป H3 อัตโนมัติ [cite: 2026-01-27]
             let img = it.Thumbnail ? it.Thumbnail.replace('id=', 'export=view&id=') : 'https://placehold.co/600x800';
             grid.innerHTML += `
                 <div class="card">
@@ -120,7 +132,7 @@
                     <div class="card-body">
                         <div style="font-size:0.8rem; color:#888; margin-bottom:5px;">${it.Project_Name || 'HUAHIN'}</div>
                         <div class="price-text">฿${Number(it.Price).toLocaleString()}</div>
-                        <a href="details.html?id=${it.HP_ID}" class="btn-detail">${i18n[currentLang]?.view || 'View Details'}</a>
+                        <a href="details.html?id=${it.HP_ID}" class="btn-detail">ดูรายละเอียด</a>
                     </div>
                 </div>`;
         });
@@ -131,7 +143,10 @@
         const d = document.getElementById('distFilter').value, s = document.getElementById('subDistFilter').value, b = document.getElementById('bedFilter').value, sort = document.getElementById('priceSort').value;
         if (d) data = data.filter(it => it.District === d);
         if (s) data = data.filter(it => it.SubDistrict === s);
-        if (b) data = data.filter(it => Number(it.Bedrooms) >= Number(b));
+        if (b) {
+            if (b === "6.5") data = data.filter(it => Number(it.Bedrooms) >= 6);
+            else data = data.filter(it => Number(it.Bedrooms) >= Number(b));
+        }
         if (sort === "low") data.sort((a,b) => a.Price - b.Price); else if (sort === "high") data.sort((a,b) => b.Price - a.Price);
         renderGrid(data);
     }
