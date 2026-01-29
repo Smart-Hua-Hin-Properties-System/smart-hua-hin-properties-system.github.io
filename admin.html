@@ -23,10 +23,11 @@
         .container { max-width: 950px; margin: 45px auto; padding: 0 20px; }
         h2 { color: var(--navy-header); font-weight: 500; font-size: 1.9rem; margin-bottom: 35px; }
 
-        /* 👑 ตำแหน่งที่ 2: แถบสีทองเชื่อมไป Dashboard */
+        /* 👑 แถบสีทอง: ลิงก์เข้าสู่หน้า Dashboard (ตำแหน่งที่คุณทำเครื่องหมายไว้) */
         .gold-section { background: var(--gold-bg); border: 1.5px solid var(--gold-border); border-radius: 15px; padding: 25px; margin-bottom: 30px; text-align: center; }
-        .gold-label { color: #856404; font-weight: 600; font-size: 1.15rem; text-align: center; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-gold { background: var(--gold-btn); color: white; width: 100%; max-width: 600px; margin: 0 auto; padding: 18px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; text-decoration: none; box-shadow: 0 4px 10px rgba(133,100,4,0.3); }
+        .gold-label { color: #856404; font-weight: 600; font-size: 1.15rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--gold-btn); color: white; width: 100%; max-width: 600px; margin: 0 auto; padding: 18px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; text-decoration: none; box-shadow: 0 4px 10px rgba(133,100,4,0.3); transition: 0.3s; }
+        .btn-gold:hover { background: #6e5303; transform: translateY(-2px); }
 
         /* ปุ่มเพิ่มรายการบ้าน */
         .btn-add { background: var(--action-blue); color: white; width: 100%; padding: 22px; border-radius: 12px; border: none; font-family: 'Kanit'; font-size: 1.25rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(26, 82, 118, 0.25); }
@@ -36,14 +37,13 @@
         .search-box input { border: none; outline: none; width: 100%; font-family: 'Kanit'; font-size: 1.1rem; }
 
         /* ⚪ กล่องขาวแสดงผลข้อมูล */
-        .data-white-box { background: white; border-radius: 30px; padding: 40px; border: 1px solid #f0f0f0; box-shadow: 0 10px 40px rgba(0,0,0,0.04); min-height: 250px; text-align: center; }
-        .property-list { text-align: left; }
+        .data-white-box { background: white; border-radius: 30px; padding: 20px; border: 1px solid #f0f0f0; box-shadow: 0 10px 40px rgba(0,0,0,0.04); min-height: 250px; }
         
-        /* 📝 ตำแหน่งที่ 1: แถวข้อมูลพร้อมปุ่ม Edit */
+        /* 📝 แถวข้อมูลบ้านพร้อมปุ่ม Edit */
         .property-row { padding: 20px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center; }
         .property-row:last-child { border: none; }
-        .edit-icon { color: var(--action-blue); cursor: pointer; font-size: 1.6rem; transition: 0.2s; }
-        .edit-icon:hover { color: #000; transform: scale(1.1); }
+        .edit-icon { color: var(--action-blue); cursor: pointer; font-size: 1.8rem; transition: 0.2s; }
+        .edit-icon:hover { color: #000; transform: scale(1.2); }
 
         .hidden { display: none !important; }
         #login-ui { position: fixed; inset: 0; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
@@ -53,6 +53,7 @@
 
 <div id="login-ui">
     <div style="text-align:center; max-width:360px; width:100%; padding:25px;">
+        <i class="fas fa-key fa-4x" style="color:var(--navy-header); margin-bottom:25px;"></i>
         <h2 style="margin-bottom:35px; color:var(--navy-header);">Smart Admin Login</h2>
         <input type="password" id="pinInput" placeholder="ENTER ACCESS PIN" style="width:100%; padding:20px; border-radius:15px; border:1.5px solid #eee; text-align:center; font-size:1.6rem; outline:none; margin-bottom:25px; box-sizing:border-box;">
         <button onclick="handleLogin()" style="width:100%; padding:18px; border-radius:15px; background:var(--navy-header); color:white; border:none; font-weight:600; cursor:pointer; font-size:1.2rem;">ACCESS DASHBOARD</button>
@@ -69,7 +70,7 @@
     <div class="container">
         <h2>จัดการ ทุกโครงการ</h2>
 
-        <div id="gold-bar" class="gold-section hidden">
+        <div id="gold-link-bar" class="gold-section hidden">
             <div class="gold-label"><i class="fas fa-crown"></i> สำหรับผู้บริหารสูงสุดเท่านั้น</div>
             <a href="dashboard.html" class="btn-gold">
                 <i class="fas fa-chart-line"></i> เข้าสู่หน้าสรุปยอดบริหาร (Executive Dashboard)
@@ -86,28 +87,31 @@
         </div>
 
         <div class="data-white-box">
-            <div id="loading-box">
+            <div id="loading-box" style="text-align:center; padding:50px;">
                 <i class="fas fa-sync fa-spin fa-3x" style="color:var(--navy-header); margin-bottom:25px;"></i>
                 <div style="font-size:1.2rem; font-weight:500;">กำลังดึงข้อมูลมหาอำนาจ...</div>
             </div>
-            <div id="list-container" class="property-list hidden"></div>
+            <div id="list-container" class="hidden"></div>
         </div>
     </div>
 </div>
 
 <script>
+    // 🔗 ตรวจสอบ URL นี้ให้ตรงกับ Apps Script ที่ Deploy ล่าสุดครับ
     const api = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
     let properties = [];
     let admin = null;
 
     async function handleLogin() {
         const pin = document.getElementById('pinInput').value;
-        const res = await fetch(`${api}?action=universalLogin&key=${pin}`).then(r => r.json());
-        if (res.success) {
-            admin = res;
-            localStorage.setItem('session', JSON.stringify(res));
-            renderUI();
-        } else { alert("รหัส PIN ไม่ถูกต้อง"); }
+        try {
+            const res = await fetch(`${api}?action=universalLogin&key=${pin}`).then(r => r.json());
+            if (res.success) {
+                admin = res;
+                localStorage.setItem('session', JSON.stringify(res));
+                renderUI();
+            } else { alert("รหัส PIN ไม่ถูกต้อง"); }
+        } catch(e) { alert("เชื่อมต่อฐานข้อมูลล้มเหลว"); }
     }
 
     function renderUI() {
@@ -118,20 +122,23 @@
         document.getElementById('main-ui').classList.remove('hidden');
         document.getElementById('admin-name').innerText = admin.name;
 
-        // 🛡️ ระบบปลดล็อกประตูลับ Dashboard เฉพาะ Super Admin
-        if (String(admin.role).toUpperCase().includes('SUPER')) {
-            document.getElementById('gold-bar').classList.remove('hidden');
+        // 🛡️ ปรับแก้ตรรกะเช็ค Role: ถ้ามีคำว่า "ADMIN" หรือ "SUPER" ให้โชว์แถบทองทันที
+        const roleName = String(admin.role).toUpperCase();
+        if (roleName.includes('ADMIN') || roleName.includes('SUPER')) {
+            document.getElementById('gold-link-bar').classList.remove('hidden');
         }
 
         fetchData();
     }
 
     async function fetchData() {
-        const res = await fetch(`${api}?role=${admin.role}&project=${admin.project}`).then(r => r.json());
-        properties = res;
-        document.getElementById('loading-box').classList.add('hidden');
-        document.getElementById('list-container').classList.remove('hidden');
-        renderList(properties);
+        try {
+            const res = await fetch(`${api}?role=${admin.role}&project=${admin.project}`).then(r => r.json());
+            properties = res;
+            document.getElementById('loading-box').classList.add('hidden');
+            document.getElementById('list-container').classList.remove('hidden');
+            renderList(properties);
+        } catch(e) { document.getElementById('loading-box').innerText = "โหลดข้อมูลไม่สำเร็จ"; }
     }
 
     function renderList(data) {
@@ -142,8 +149,8 @@
                     <div style="font-weight:600; font-size:1.15rem; color:var(--navy-header);">${i.HP_ID} | ${i.ID}</div>
                     <div style="font-size:0.85rem; color:#888;">${i.District} | ${i.Status} | ฿${Number(i.Price).toLocaleString()}</div>
                 </div>
-                <div class="edit-icon" onclick="alert('เตรียมเข้าสู่ฟอร์มแก้ไขทรัพย์: ${i.HP_ID}')">
-                    <i class="fas fa-edit"></i>
+                <div class="edit-icon" onclick="alert('เตรียมเข้าสู่ฟอร์มแก้ไข: ${i.HP_ID}')">
+                    <i class="fas fa-edit-square"></i>
                 </div>
             </div>
         `).join('');
@@ -151,8 +158,7 @@
 
     function filterData() {
         const val = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = properties.filter(p => p.HP_ID.toLowerCase().includes(val) || p.ID.toLowerCase().includes(val));
-        renderList(filtered);
+        renderList(properties.filter(p => p.HP_ID.toLowerCase().includes(val) || p.ID.toLowerCase().includes(val)));
     }
 
     function logout() { localStorage.clear(); location.reload(); }
