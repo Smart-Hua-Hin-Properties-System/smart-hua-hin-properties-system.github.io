@@ -11,7 +11,7 @@
             --header-bg: #1a4361; --body-bg: #f8fafb;
             --blue: #1a5276; --orange: #d35400; --green: #27ae60; --purple: #8e44ad; --gold: #f1c40f;
         }
-        body { font-family: 'Kanit', sans-serif; background: var(--body-bg); margin: 0; padding-bottom: 50px; color: #333; }
+        body { font-family: 'Kanit', sans-serif; background: var(--body-bg); margin: 0; padding-bottom: 50px; color: #333; overflow-x: hidden; }
         
         /* 🔵 Header Section */
         .dash-header { background: var(--header-bg); color: white; padding: 45px 20px; text-align: center; }
@@ -53,20 +53,33 @@
         /* 📑 Summary List Section */
         .summary-box { 
             background: white; border-radius: 30px; padding: 35px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.03); text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03); margin-bottom: 30px;
         }
         .summary-title { 
             display: flex; align-items: center; gap: 12px; 
-            font-size: 1.25rem; font-weight: 600; color: #333; margin-bottom: 30px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
+            font-size: 1.25rem; font-weight: 600; color: #333; margin-bottom: 25px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;
         }
 
-        /* Loading Spinner */
-        .sync-spinner { font-size: 3rem; color: #ddd; margin: 40px 0; }
+        /* Project Row Styling */
+        .project-row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px; border-bottom: 1px solid #f9f9f9; transition: 0.2s;
+        }
+        .project-row:hover { background: #fcfdfe; }
+        .project-row:last-child { border: none; }
+        .proj-name { font-weight: 600; color: var(--header-bg); font-size: 1.1rem; }
+        .proj-meta { font-size: 0.85rem; color: #888; margin-top: 4px; }
+        .proj-stats { text-align: right; }
+        .proj-val { font-weight: 600; color: var(--blue); font-size: 1.1rem; }
+
+        .sync-spinner { font-size: 3rem; color: #ddd; margin: 40px 0; text-align: center; display: block; }
 
         @media (max-width: 768px) {
             .dash-header h1 { font-size: 1.4rem; }
             .kpi-val { font-size: 1.8rem; }
             .loc-card { padding: 20px 15px; }
+            .project-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .proj-stats { text-align: left; border-top: 1px dashed #eee; width: 100%; pt: 10px; margin-top: 5px; padding-top: 10px; }
         }
     </style>
 </head>
@@ -79,7 +92,7 @@
 
 <div class="container">
     <a href="admin.html" class="back-nav">
-        <i class="fas fa-arrow-left"></i> กลับไปแผงควบคุมหลัก
+        <i class="fas fa-arrow-left"></i> กลับไปหน้าจัดการ
     </a>
 
     <div class="location-grid">
@@ -107,7 +120,7 @@
         <div class="loc-card" style="border-left-color: var(--purple);">
             <i class="fas fa-globe" style="color: var(--purple);"></i>
             <div class="loc-info">
-                <div class="loc-name">อื่นๆ / รวม</div>
+                <div class="loc-name">รวมทุกพื้นที่</div>
                 <div class="loc-value" id="count-total">0 หลัง</div>
             </div>
         </div>
@@ -126,7 +139,7 @@
         </div>
         <div class="kpi-card">
             <i class="fas fa-piggy-bank" style="color: var(--gold);"></i>
-            <div class="kpi-label">ค่าคอมมิชชันรอรับรวม</div>
+            <div class="kpi-label">ค่าคอมมิชชันรอรับรวม (1.5%)</div>
             <div class="kpi-val" id="total-commission" style="color: var(--gold);">฿0</div>
         </div>
     </div>
@@ -135,64 +148,83 @@
         <div class="summary-title">
             <i class="fas fa-list-ul"></i> สรุปผลงานแยกรายโครงการ
         </div>
-        <div id="loading-spinner">
+        <div id="loading-summary">
             <i class="fas fa-sync fa-spin sync-spinner"></i>
-            <p style="color:#999; font-weight:300;">กำลังรวบรวมข้อมูลดิบจากฐานข้อมูล...</p>
         </div>
-        <div id="project-list-summary" style="text-align: left;"></div>
+        <div id="project-list-summary">
+            </div>
     </div>
 </div>
 
 <script>
-    // 🔗 เชื่อมโยงข้อมูล Apps Script ของคุณ
     const apiURL = "https://script.google.com/macros/s/AKfycbxUduvVQ2oDjgJT3HJlGDzpbEav1_orj-G2UalilY27QoRtSgNOHPFdw7-NNYPdakA8/exec";
 
-    async function loadExecutiveStats() {
+    async function loadFullDashboard() {
         try {
             const response = await fetch(apiURL);
             const data = await response.json();
             
-            let stats = {
-                hh: 0, ca: 0, pb: 0, total: 0,
-                assetVal: 0, soldVal: 0
-            };
+            let stats = { hh: 0, ca: 0, pb: 0, total: 0, assetVal: 0, soldVal: 0 };
+            let projectMap = {}; // สำหรับจัดกลุ่มรายโครงการ [cite: 2026-01-27]
 
             data.forEach(item => {
                 const price = Number(item.Price) || 0;
+                const pName = item.Project_Name || item["Project Name"] || "โครงการทั่วไป";
+                
                 stats.total++;
                 stats.assetVal += price;
+                if (item.Status === 'Sold') stats.soldVal += price;
 
-                if (item.Status === 'Sold') {
-                    stats.soldVal += price;
-                }
-
-                // นับแยกรายพื้นที่
+                // 1. สรุปรายพื้นที่
                 const district = String(item.District || "").toLowerCase();
                 if (district.includes("hua hin")) stats.hh++;
                 else if (district.includes("cha-am") || district.includes("cha am")) stats.ca++;
                 else if (district.includes("pranburi")) stats.pb++;
+
+                // 2. จัดกลุ่มข้อมูลรายโครงการ
+                if (!projectMap[pName]) {
+                    projectMap[pName] = { count: 0, value: 0, soldCount: 0, district: item.District || "N/A" };
+                }
+                projectMap[pName].count++;
+                projectMap[pName].value += price;
+                if (item.Status === 'Sold') projectMap[pName].soldCount++;
             });
 
-            // อัปเดตตัวเลขลงหน้าจอ [cite: 2026-01-27]
+            // อัปเดตส่วนบน
             document.getElementById('count-huahin').innerText = stats.hh + ' หลัง';
             document.getElementById('count-chaam').innerText = stats.ca + ' หลัง';
             document.getElementById('count-pranburi').innerText = stats.pb + ' หลัง';
             document.getElementById('count-total').innerText = stats.total + ' หลัง';
-
             document.getElementById('total-assets').innerText = '฿' + stats.assetVal.toLocaleString();
             document.getElementById('total-sold').innerText = '฿' + stats.soldVal.toLocaleString();
-            // คำนวณค่าคอมฯ 1.5% จากมูลค่าทรัพย์รวม (หรือตามสูตรธุรกิจของคุณ)
-            document.getElementById('total-commission').innerText = '฿' + (stats.assetVal * 0.015).toLocaleString();
+            document.getElementById('total-commission').innerText = '฿' + (stats.soldVal * 0.015).toLocaleString();
 
-            document.getElementById('loading-spinner').style.display = 'none';
+            // อัปเดตส่วนล่าง: รายการโครงการ
+            const summaryDiv = document.getElementById('project-list-summary');
+            document.getElementById('loading-summary').style.display = 'none';
+            
+            summaryDiv.innerHTML = Object.keys(projectMap).map(name => {
+                const p = projectMap[name];
+                return `
+                    <div class="project-row">
+                        <div>
+                            <div class="proj-name">${name}</div>
+                            <div class="proj-meta">พื้นที่: ${p.district} | จำนวนทั้งหมด ${p.count} ยูนิต</div>
+                        </div>
+                        <div class="proj-stats">
+                            <div class="proj-val">฿${p.value.toLocaleString()}</div>
+                            <div class="proj-meta">ขายได้แล้ว ${p.soldCount} หลัง</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
 
         } catch (error) {
-            console.error("Error loading stats:", error);
-            document.getElementById('loading-spinner').innerHTML = "<p style='color:red;'>⚠️ ไม่สามารถดึงข้อมูลได้ โปรดเช็คการเชื่อมต่อ</p>";
+            document.getElementById('loading-summary').innerHTML = "<p style='color:red;'>⚠️ โหลดข้อมูลโครงการล้มเหลว</p>";
         }
     }
 
-    window.onload = loadExecutiveStats;
+    window.onload = loadFullDashboard;
 </script>
 </body>
 </html>
