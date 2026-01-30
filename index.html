@@ -1,280 +1,226 @@
 "<!DOCTYPE html>
 <html lang=""th"">
 <head>
-  <meta charset=""UTF-8"" />
-  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no""/>
-  <title>HUAHIN.PROPERTIES | Listings</title>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"">
+    <title>SMART PROPERTIES SYSTEM - Design V22.0</title>
+    <link href=""https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap"" rel=""stylesheet"">
+    <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"">
+    <style>
+        :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --gold: #f1c40f; --red: #e74c3c; --border: #ddd; --loader-bg: #9CBCE3; }
+        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text); font-weight: 300; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
+        
+        /* 🎨 ส่วนตัวดุ๊กดิ๊ก */
+        #loader-container { position: fixed; inset: 0; background: var(--loader-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s ease; }
+        .emoji-group { display: flex; gap: 15px; margin-bottom: 25px; font-size: 60px; }
+        .bounce { animation: bounce 0.6s infinite alternate; }
+        .bounce:nth-child(2) { animation-delay: 0.2s; }
+        .bounce:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+        .loader-text { color: white; font-weight: 900; font-size: 1.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
 
-  <link href=""https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap"" rel=""stylesheet"">
-  <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"">
+        /* 🚩 Header */
+        header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-left { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .brand-name { font-weight: 500; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; border-left: 1.5px solid #eee; padding-left: 10px; }
+        .flag-list { display: flex; gap: 4px; }
+        .flag-btn { border: none; background: none; padding: 0; cursor: pointer; }
+        .flag-btn img { width: 22px; height: 14px; border-radius: 2px; }
 
-  <style>
-    :root { --primary:#1a5276; --bg:#9CBCE3; --white:#fff; --green:#00d44b; --text:#2c3e50; --border:#eee; }
-    html,body{font-family:'Kanit',sans-serif;background:var(--bg);margin:0;padding:0;overflow-x:hidden;width:100%}
-    *{box-sizing:border-box}
+        /* 🍔 Sidebar ปรับปรุงใหม่ตามสั่ง (แคบลง + มนพิเศษ) */
+        .sidebar { 
+            position: fixed; left: -320px; top: 0; width: 280px; height: 100%; 
+            background: #fff; z-index: 3500; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            padding-top: 30px; box-shadow: 5px 0 35px rgba(0,0,0,0.15); 
+            border-radius: 0 40px 40px 0; 
+        }
+        .sidebar.active { left: 0; }
+        
+        .sidebar-header { padding: 0 30px 25px; border-bottom: 1px solid #f8f9fa; margin-bottom: 15px; }
+        .sidebar-item { 
+            padding: 14px 25px; margin: 8px 15px; display: flex; align-items: center; gap: 18px; 
+            text-decoration: none; color: var(--text); font-size: 0.95rem; font-weight: 400;
+            transition: 0.3s; border-radius: 20px; /* ความมนแบบที่สั่ง */
+        }
+        .sidebar-item:hover { background: #eef2f5; color: var(--primary); transform: translateX(5px); }
+        .sidebar-item i { width: 22px; font-size: 1.1rem; color: var(--primary); transition: 0.3s; }
+        .sidebar-item:hover i { transform: scale(1.2); }
+        
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(26, 82, 118, 0.2); z-index: 3000; backdrop-filter: blur(4px); transition: 0.3s; }
+        .sidebar-overlay.active { display: block; }
 
-    #loader-container{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:.5s}
-    .emoji-group{display:flex;gap:15px;margin-bottom:25px;font-size:60px}
-    .bounce{animation:bounce .6s infinite alternate}
-    @keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-20px)}}
+        /* 🔍 Filter Grid */
+        .filter-area { padding: 15px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+        .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media (min-width: 768px) { .filter-grid { grid-template-columns: repeat(4, 1fr); } }
+        .select-box, .id-trigger { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); background: #fff; font-family: 'Kanit'; color: var(--primary); font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-sizing: border-box; }
 
-    header{background:#fff;padding:12px 15px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-    .header-left{display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--primary)}
-    .flag-list{display:flex;gap:5px}
-    .flag-btn{border:none;background:none;padding:0;cursor:pointer}
-    .flag-btn img{width:24px;height:16px;border-radius:2px}
+        /* 🏠 Cards */
+        .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 15px 40px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--white); border-radius: 25px; overflow: hidden; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: white; padding: 6px 16px; border-radius: 50px; font-weight: 400; font-size: 0.72rem; z-index: 10; }
+        .card-img { width: 100%; height: 230px; object-fit: cover; background: #eee; }
+        .card-body { padding: 20px; text-align: center; }
+        .card-info-row { font-size: 0.82rem; color: #666; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .price-text { font-size: 2.1rem; color: var(--primary); font-weight: 400; margin-bottom: 18px; letter-spacing: -1px; }
+        .btn-detail { display: block; width: 85%; margin: 0 auto; padding: 12px; background: var(--primary); color: white; text-align: center; border-radius: 50px; text-decoration: none; font-size: 0.95rem; }
 
-    .filter-area{padding:15px;max-width:1200px;margin:0 auto}
-    .filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:rgba(255,255,255,.9);padding:15px;border-radius:25px}
-    @media(min-width:768px){.filter-grid{grid-template-columns:repeat(4,1fr)}}
-    .select-box{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);font-family:'Kanit';color:var(--primary);font-size:.82rem}
-
-    .property-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:0 15px 40px;max-width:1200px;margin:0 auto}
-    .card{background:var(--white);border-radius:40px;overflow:hidden;position:relative;box-shadow:0 15px 35px rgba(0,0,0,.1)}
-    .badge{position:absolute;top:20px;left:20px;background:var(--green);color:#fff;padding:6px 18px;border-radius:50px;font-weight:500;font-size:.8rem;z-index:10}
-    .card-img{width:100%;height:350px;object-fit:cover}
-    .card-body{padding:18px 18px 22px}
-    .btn-detail{display:block;width:90%;margin:0 auto 20px;padding:14px;background:var(--primary);color:white;text-align:center;border-radius:50px;text-decoration:none;font-weight:500}
-    .muted{color:#888;font-size:.85rem}
-  </style>
+        /* 🛌 Modal */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 4000; align-items: flex-end; }
+        .modal-content { background: #fff; border-radius: 40px 40px 0 0; width: 100%; max-height: 85vh; padding: 25px; overflow-y: auto; box-sizing: border-box; }
+        .id-item { padding: 15px; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+        .status-tag { padding: 3px 10px; border-radius: 8px; font-weight: 500; font-size: 0.7rem; }
+        .available { background: #e8f5e9; color: var(--green); } .pending { background: #fff9e6; color: var(--gold); } .sold { background: #fdeaea; color: var(--red); }
+        .centered-close-btn { display: block; background: var(--red); color: white; padding: 12px; border-radius: 50px; text-align: center; margin-bottom: 20px; font-weight: 600; cursor: pointer; }
+    </style>
 </head>
-
 <body>
-  <div id=""loader-container"">
-    <div class=""emoji-group"">
-      <span class=""bounce"" style=""animation-delay:0s"">🐚</span>
-      <span class=""bounce"" style=""animation-delay:0.2s"">🌊</span>
-      <span class=""bounce"" style=""animation-delay:0.4s"">🌴</span>
-    </div>
-    <div style=""color:white;font-weight:900;font-size:1.5rem;"">SMART PROPERTIES</div>
-  </div>
 
-  <header>
-    <div class=""header-left"">
-      <i class=""fas fa-bars fa-lg""></i> <span style=""font-size:0.85rem;font-weight:500;margin-left:5px;"">เมนู</span>
+<div id=""loader-container"">
+    <div class=""emoji-group""><span class=""bounce"">🐚</span><span class=""bounce"">🌊</span><span class=""bounce"">🌴</span></div>
+    <div class=""loader-text"" id=""loader-msg"">SMART PROPERTIES SYSTEM</div>
+</div>
+
+<div class=""sidebar-overlay"" id=""sidebarOverlay"" onclick=""toggleSidebar()""></div>
+<div class=""sidebar"" id=""sidebar"">
+    <div class=""sidebar-header"">
+        <div style=""font-weight:900; color:var(--primary); font-size:1.4rem; letter-spacing:-0.5px;"">SMART SYSTEM</div>
+        <div style=""font-size:0.7rem; color:#aaa; text-transform:uppercase; font-weight:500;"">Real Estate Solutions</div>
     </div>
-    <div style=""font-weight:900;color:var(--primary);font-size:0.9rem;"">HUAHIN.PROPERTIES</div>
+    
+    <a href=""index.html"" class=""sidebar-item"" onclick=""toggleSidebar()"">
+        <i class=""fas fa-home""></i> <span data-lang=""menuHome"">หน้าหลัก</span>
+    </a>
+    <a href=""#"" class=""sidebar-item"" onclick=""toggleSidebar()"">
+        <i class=""fas fa-layer-group""></i> <span data-lang=""menuAll"">ทรัพย์ทั้งหมด</span>
+    </a>
+    <a href=""#"" class=""sidebar-item"" onclick=""toggleSidebar()"">
+        <i class=""fas fa-paper-plane""></i> <span data-lang=""menuContact"">ติดต่อเรา</span>
+    </a>
+    <a href=""#"" class=""sidebar-item"" onclick=""toggleSidebar()"">
+        <i class=""fas fa-crown""></i> <span data-lang=""menuAbout"">เกี่ยวกับเรา</span>
+    </a>
+    
+    <div style=""margin: 25px 30px 10px; font-size: 0.65rem; color: #ddd; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;"">Admin Control</div>
+    <a href=""admin.html"" class=""sidebar-item"" style=""background: #fdf2f2; color: #e74c3c;"">
+        <i class=""fas fa-user-shield"" style=""color:#e74c3c;""></i> <span>Admin Access</span>
+    </a>
+</div>
+
+<header>
+    <div class=""header-left"" onclick=""toggleSidebar()"">
+        <i class=""fas fa-bars fa-lg"" style=""color:var(--primary);""></i>
+        <span id=""txt-menu"" style=""font-size: 0.85rem; color: var(--primary); font-weight: 500; margin-left: 5px;"">เมนู</span>
+        <div class=""brand-name"">SMART SYSTEM</div>
+    </div>
     <div class=""flag-list"">
-      <button class=""flag-btn"" onclick=""setLanguage('th')""><img src=""https://flagcdn.com/w40/th.png""></button>
-      <button class=""flag-btn"" onclick=""setLanguage('en')""><img src=""https://flagcdn.com/w40/us.png""></button>
+        <button class=""flag-btn"" onclick=""setLanguage('th')""><img src=""https://flagcdn.com/w40/th.png""></button>
+        <button class=""flag-btn"" onclick=""setLanguage('en')""><img src=""https://flagcdn.com/w40/us.png""></button>
+        <button class=""flag-btn"" onclick=""setLanguage('cn')""><img src=""https://flagcdn.com/w40/cn.png""></button>
+        <button class=""flag-btn"" onclick=""setLanguage('ru')""><img src=""https://flagcdn.com/w40/ru.png""></button>
+        <button class=""flag-btn"" onclick=""setLanguage('de')""><img src=""https://flagcdn.com/w40/de.png""></button>
+        <button class=""flag-btn"" onclick=""setLanguage('fr')""><img src=""https://flagcdn.com/w40/fr.png""></button>
     </div>
-  </header>
+</header>
 
-  <div class=""filter-area"">
+<div class=""filter-area"">
     <div class=""filter-grid"">
-      <select class=""select-box"" id=""distFilter"" onchange=""onDistrictChange()"">
-        <option value="""">📍 อำเภอทั้งหมด</option>
-      </select>
-
-      <select class=""select-box"" id=""subDistFilter"" onchange=""applyFilters()"">
-        <option value="""">🏘️ ตำบลทั้งหมด</option>
-      </select>
-
-      <select class=""select-box"" id=""bedFilter"" onchange=""applyFilters()"">
-        <option value="""">🛌 ห้องนอนทั้งหมด</option>
-        <option value=""1"">1</option><option value=""2"">2</option><option value=""3"">3</option>
-        <option value=""4"">4</option><option value=""5"">5</option><option value=""6"">6</option>
-        <option value=""6.5"">6+</option>
-      </select>
-
-      <select class=""select-box"" id=""priceSort"" onchange=""applyFilters()"">
-        <option value="""">💰 เรียงตามราคา</option>
-        <option value=""low"">น้อยไปมาก</option>
-        <option value=""high"">มากไปน้อย</option>
-      </select>
+        <select class=""select-box"" id=""districtFilter"" onchange=""applyFilters()""><option value="""" data-lang=""optDist"">📍 อำเภอทั้งหมด</option></select>
+        <select class=""select-box"" id=""bedFilter"" onchange=""applyFilters()""><option value="""" data-lang=""optBed"">🛌 ห้องนอนทั้งหมด</option><option value=""1"">1 Bed</option><option value=""2"">2 Beds</option><option value=""3"">3 Beds</option><option value=""4"">4+ Beds</option></select>
+        <select class=""select-box"" id=""priceSort"" onchange=""applyFilters()""><option value="""" data-lang=""optPrice"">💰 เรียงตามราคา</option><option value=""low"" data-lang=""priceLow"">น้อยไปมาก</option><option value=""high"" data-lang=""priceHigh"">มากไปน้อย</option></select>
+        <div class=""id-trigger"" onclick=""openIdModal()""><span id=""ui-selector-text"" data-lang=""optPlot"">🔍 เลือก รหัส / แปลง</span><i class=""fas fa-chevron-down"" style=""font-size:0.7rem;""></i></div>
     </div>
-  </div>
+</div>
 
-  <div class=""property-grid"" id=""grid""></div>
+<div class=""property-grid"" id=""grid""></div>
+
+<div class=""modal"" id=""idModal"">
+    <div class=""modal-content""><div class=""centered-close-btn"" onclick=""clearIdFilter()"" data-lang=""btnClose"">CLOSE / RESET</div><div id=""idList""></div></div>
+</div>
 
 <script>
-  // ✅ เปลี่ยนเป็น endpoint ใหม่
-  const api = ""https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec"";
+    const api = ""https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec"";
+    let allData = [], selectedHPID = null, currentLang = localStorage.getItem('smartLang') || 'th';
 
-  let allData = [];
-  let currentLang = localStorage.getItem('smartLang') || 'th';
+    const i18n = {
+        th: { menu: ""เมนู"", optDist: ""📍 อำเภอทั้งหมด"", optBed: ""🛌 ห้องนอนทั้งหมด"", optPrice: ""💰 เรียงตามราคา"", priceLow: ""น้อยไปมาก"", priceHigh: ""มากไปน้อย"", optPlot: ""🔍 เลือก รหัส / แปลง"", btnClose: ""ปิด / ล้างค่า"", view: ""ดูรายละเอียด"", menuHome: ""หน้าหลัก"", menuAll: ""ทรัพย์ทั้งหมด"", menuContact: ""ติดต่อเรา"", menuAbout: ""เกี่ยวกับเรา"" },
+        en: { menu: ""MENU"", optDist: ""📍 All Districts"", optBed: ""🛌 All Bedrooms"", optPrice: ""💰 Sort Price"", priceLow: ""Low to High"", priceHigh: ""High to Low"", optPlot: ""🔍 Select Plot / ID"", btnClose: ""CLOSE / RESET"", view: ""View Details"", menuHome: ""Home"", menuAll: ""Properties"", menuContact: ""Contact"", menuAbout: ""About"" },
+        cn: { menu: ""菜单"", optDist: ""📍 所有地区"", optBed: ""🛌 所有卧室"", optPrice: ""💰 价格排序"", priceLow: ""从低到高"", priceHigh: ""从高到低"", optPlot: ""🔍 选择地块"", btnClose: ""关闭"", view: ""查看详情"", menuHome: ""首页"", menuAll: ""房产"", menuContact: ""联系"", menuAbout: ""关于"" },
+        ru: { menu: ""МЕНЮ"", optDist: ""📍 Все районы"", optBed: ""🛌 Все спальни"", optPrice: ""💰 Сортировка"", priceLow: ""Дешевле"", priceHigh: ""Дороже"", optPlot: ""🔍 Выбрать ID"", btnClose: ""ЗАКРЫТЬ"", view: ""Подробнее"", menuHome: ""Главная"", menuAll: ""Объекты"", menuContact: ""Контакты"", menuAbout: ""О нас"" },
+        de: { menu: ""MENÜ"", optDist: ""📍 Alle Bezirke"", optBed: ""🛌 Alle Zimmer"", optPrice: ""💰 Preis"", priceLow: ""Günstig"", priceHigh: ""Teuer"", optPlot: ""🔍 ID Wählen"", btnClose: ""SCHLIESSEN"", view: ""Details"", menuHome: ""Startseite"", menuAll: ""Immobilien"", menuContact: ""Kontakt"", menuAbout: ""Über"" },
+        fr: { menu: ""MENU"", optDist: ""📍 Districts"", optBed: ""🛌 Chambres"", optPrice: ""💰 Prix"", priceLow: ""Bas"", priceHigh: ""Haut"", optPlot: ""🔍 Choisir ID"", btnClose: ""FERMER"", view: ""Détails"", menuHome: ""Accueil"", menuAll: ""Propriétés"", menuContact: ""Contact"", menuAbout: ""À propos"" }
+    };
 
-  const i18n = {
-    th: { view: ""ดูรายละเอียด"" },
-    en: { view: ""View Details"" }
-  };
-
-  // normalize ให้เทียบชื่ออำเภอ/ตำบลได้ แม้ไทย/อังกฤษ/เว้นวรรค
-  function norm(s) {
-    return String(s || """")
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, """");
-  }
-
-  // ทำ label ไทยให้ดูสวย (ถ้าข้อมูลเป็นอังกฤษ)
-  const districtLabelMap = {
-    ""huahin"": ""หัวหิน"",
-    ""hua hin"": ""หัวหิน"",
-    ""chaam"": ""ชะอำ"",
-    ""cha-am"": ""ชะอำ"",
-    ""pranburi"": ""ปราณบุรี"",
-    ""pran buri"": ""ปราณบุรี""
-  };
-
-  function prettyDistrictName(raw) {
-    const k = String(raw || """").trim().toLowerCase();
-    const key = k.replace(/\s+/g, """");
-    return districtLabelMap[key] || raw || """";
-  }
-
-  function formatToH3(url) {
-    if (!url || url.trim() === """") return ""https://placehold.co/600x800"";
-    // ถ้าเป็น lh3 อยู่แล้ว ใช้ได้เลย
-    if (url.includes(""https://lh3.googleusercontent.com/d/"")) return url;
-
-    // เผื่อบางเคสยังเป็น drive link
-    let fileId = """";
-    try {
-      if (url.includes(""id="")) fileId = url.split(""id="")[1].split(""&"")[0];
-      else if (url.includes(""/file/d/"")) fileId = url.split(""/file/d/"")[1].split(""/"")[0];
-    } catch(e) {}
-    return fileId ? (""https://lh3.googleusercontent.com/d/"" + fileId) : url;
-  }
-
-  async function init() {
-    try {
-      const res = await fetch(`${api}?action=listPublic`);
-      const payload = await res.json();
-
-      // payload เป็น list ตรงๆ (ตาม Apps Script)
-      allData = Array.isArray(payload) ? payload : [];
-
-      buildDistrictOptions();
-      onDistrictChange(); // ทำให้ตำบลพร้อม และ render ครั้งแรก
-
-      setLanguage(currentLang);
-
-      document.getElementById('loader-container').style.opacity = '0';
-      setTimeout(() => document.getElementById('loader-container').style.display = 'none', 500);
-    } catch (e) {
-      document.getElementById('grid').innerHTML = ""Error Connecting to Database"";
-    }
-  }
-
-  function setLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('smartLang', lang);
-    applyFilters();
-  }
-
-  function buildDistrictOptions() {
-    const distSel = document.getElementById('distFilter');
-
-    // เคลียร์แล้วเติมใหม่
-    distSel.innerHTML = `<option value="""">📍 อำเภอทั้งหมด</option>`;
-
-    const districts = [...new Set(allData.map(x => x.District).filter(Boolean))];
-
-    // เรียงแบบตัวอักษร
-    districts.sort((a,b) => String(a).localeCompare(String(b), 'th'));
-
-    districts.forEach(d => {
-      const label = prettyDistrictName(d);
-      distSel.innerHTML += `<option value=""${escapeHtml(d)}"">${escapeHtml(label)}</option>`;
-    });
-  }
-
-  function onDistrictChange() {
-    updateSubDistrictOptions();
-    applyFilters();
-  }
-
-  function updateSubDistrictOptions() {
-    const distSel = document.getElementById('distFilter');
-    const subSel = document.getElementById('subDistFilter');
-    const selectedDistrictRaw = distSel.value;
-
-    subSel.innerHTML = `<option value="""">🏘️ ตำบลทั้งหมด</option>`;
-
-    if (!selectedDistrictRaw) return;
-
-    // ✅ เทียบแบบ normalize ป้องกันไทย/อังกฤษ/เว้นวรรค
-    const selectedNorm = norm(selectedDistrictRaw);
-
-    const subs = [...new Set(
-      allData
-        .filter(x => norm(x.District) === selectedNorm)
-        .map(x => x.SubDistrict)
-        .filter(Boolean)
-    )].sort((a,b) => String(a).localeCompare(String(b), 'th'));
-
-    subs.forEach(s => {
-      subSel.innerHTML += `<option value=""${escapeHtml(s)}"">${escapeHtml(s)}</option>`;
-    });
-  }
-
-  function applyFilters() {
-    let data = [...allData];
-
-    const dist = document.getElementById('distFilter').value;
-    const sub = document.getElementById('subDistFilter').value;
-    const bed = document.getElementById('bedFilter').value;
-    const sort = document.getElementById('priceSort').value;
-
-    if (dist) {
-      const dn = norm(dist);
-      data = data.filter(x => norm(x.District) === dn);
-    }
-    if (sub) {
-      const sn = norm(sub);
-      data = data.filter(x => norm(x.SubDistrict) === sn);
-    }
-    if (bed) {
-      if (bed === ""6.5"") data = data.filter(x => Number(x.Bedrooms) >= 6);
-      else data = data.filter(x => Number(x.Bedrooms) >= Number(bed));
+    async function init() {
+        try {
+            const res = await fetch(api);
+            const data = await res.json();
+            allData = Array.isArray(data) ? data.filter(it => it.HP_ID || it.hp_id) : [];
+            setLanguage(currentLang);
+            populateDistricts();
+            hideLoader();
+        } catch (e) { document.getElementById('grid').innerHTML = ""<div style='text-align:center;padding:50px;'>❌ Connection Error</div>""; hideLoader(); }
     }
 
-    if (sort === ""low"") data.sort((a,b) => (Number(a.Price)||0) - (Number(b.Price)||0));
-    if (sort === ""high"") data.sort((a,b) => (Number(b.Price)||0) - (Number(a.Price)||0));
-
-    renderGrid(data);
-  }
-
-  function renderGrid(items) {
-    const grid = document.getElementById('grid');
-    grid.innerHTML = """";
-
-    if (!items.length) {
-      grid.innerHTML = `<div class=""muted"">ไม่พบบ้านที่ตรงเงื่อนไขที่เลือก</div>`;
-      return;
+    function toggleSidebar() { 
+        document.getElementById('sidebar').classList.toggle('active'); 
+        document.getElementById('sidebarOverlay').classList.toggle('active'); 
     }
 
-    items.forEach(it => {
-      const img = formatToH3(it.Thumbnail);
-      const price = Number(it.Price || 0).toLocaleString();
+    function setLanguage(lang) {
+        currentLang = lang; localStorage.setItem('smartLang', lang);
+        const t = i18n[lang] || i18n.en;
+        document.getElementById('txt-menu').innerText = t.menu;
+        document.getElementById('loader-msg').innerText = lang === 'th' ? ""สมาร์ท พร็อพเพอร์ตี้ ซิสเต็มส์"" : ""SMART PROPERTIES SYSTEM"";
+        document.querySelectorAll('[data-lang]').forEach(el => { const key = el.getAttribute('data-lang'); if (t[key]) el.innerText = t[key]; });
+        renderIdList(); applyFilters();
+    }
 
-      grid.innerHTML += `
-        <div class=""card"">
-          <div class=""badge"">CODE: ${escapeHtml(it.ID || '')}</div>
-          <img src=""${img}"" class=""card-img"" onerror=""this.src='https://placehold.co/600x800'"">
-          <div class=""card-body"">
-            <div style=""font-size:0.8rem;color:#888;margin-bottom:6px;"">${escapeHtml(it.Project_Name || 'HUAHIN')}</div>
-            <div style=""font-size:1.8rem;color:var(--primary);font-weight:600;margin-bottom:16px;"">฿${price}</div>
-            <a href=""details.html?id=${encodeURIComponent(it.HP_ID)}"" class=""btn-detail"">
-              ${(i18n[currentLang] && i18n[currentLang].view) ? i18n[currentLang].view : ""View Details""}
-            </a>
-          </div>
-        </div>
-      `;
-    });
-  }
+    function populateDistricts() {
+        const select = document.getElementById('districtFilter');
+        const districts = [...new Set(allData.map(it => it.District))].filter(Boolean).sort();
+        districts.forEach(d => { const opt = document.createElement('option'); opt.value = d; opt.innerText = d; select.appendChild(opt); });
+    }
 
-  function escapeHtml(str){
-    return String(str || """")
-      .replaceAll(""&"",""&amp;"")
-      .replaceAll(""<"",""&lt;"")
-      .replaceAll("">"",""&gt;"")
-      .replaceAll('""',""&quot;"")
-      .replaceAll(""'"",""&#039;"");
-  }
+    function renderIdList() {
+        const list = document.getElementById('idList'); list.innerHTML = """";
+        allData.forEach(it => {
+            const hid = it.HP_ID || it.hp_id;
+            const item = document.createElement('div');
+            item.className = ""id-item""; item.onclick = () => { selectedHPID = hid; document.getElementById('ui-selector-text').innerText = it.ID || hid; closeIdModal(); applyFilters(); };
+            item.innerHTML = `<div style=""display:flex; justify-content:space-between; margin-bottom:5px;""><div style=""font-weight:600; color:var(--primary);"">${hid} | ${it.ID || '-'}</div><div style=""font-weight:600;"">฿${Number(it.Price).toLocaleString()}</div></div>
+            <div style=""display:flex; justify-content:space-between; font-size:0.8rem; color:#777;""><div>🛌 ${it.Bedrooms || 0} | 🏠 ${it['Living Area (sq.m)'] || 0}m²</div><div class=""status-tag ${it.Status?.toLowerCase()}"">${it.Status || '-'}</div></div>`;
+            list.appendChild(item);
+        });
+    }
 
-  window.onload = init;
+    function renderGrid(items) {
+        const grid = document.getElementById('grid'); grid.innerHTML = items.length ? """" : ""<div style='grid-column:1/-1;text-align:center;padding:50px;color:#999;'>No results found.</div>"";
+        items.forEach(it => {
+            const hid = it.HP_ID || it.hp_id;
+            grid.innerHTML += `<div class=""card""><div class=""badge"">${hid} | ${it.ID || ''}</div><img src=""${it.Thumbnail}"" class=""card-img"" onerror=""this.src='https://placehold.co/600x400?text=Sovereign'"">
+            <div class=""card-body""><div class=""card-info-row""><span><i class=""fas fa-map-marker-alt""></i> ${it.District || ''} | ${it.SubDistrict || ''}</span><span><i class=""fas fa-bed""></i> ${it.Bedrooms || 0} Bed</span></div>
+            <div class=""price-text"">฿${Number(it.Price).toLocaleString()}</div><a href=""details.html?id=${hid}"" class=""btn-detail"">${i18n[currentLang].view}</a></div></div>`;
+        });
+    }
+
+    function applyFilters() {
+        let data = [...allData];
+        const dist = document.getElementById('districtFilter').value;
+        const bed = document.getElementById('bedFilter').value;
+        const sort = document.getElementById('priceSort').value;
+        if (selectedHPID) data = data.filter(it => (it.HP_ID || it.hp_id) === selectedHPID);
+        if (dist) data = data.filter(it => it.District === dist);
+        if (bed) data = data.filter(it => Number(it.Bedrooms) >= Number(bed));
+        if (sort === ""low"") data.sort((a,b) => a.Price - b.Price); else if (sort === ""high"") data.sort((a,b) => b.Price - a.Price);
+        renderGrid(data);
+    }
+
+    function hideLoader() { const l = document.getElementById('loader-container'); l.style.opacity = '0'; setTimeout(() => l.style.display = 'none', 500); }
+    function openIdModal() { document.getElementById('idModal').style.display = 'flex'; }
+    function closeIdModal() { document.getElementById('idModal').style.display = 'none'; }
+    function clearIdFilter() { selectedHPID = null; document.getElementById('ui-selector-text').innerText = i18n[currentLang].optPlot; closeIdModal(); applyFilters(); }
+    init();
 </script>
 </body>
 </html>
