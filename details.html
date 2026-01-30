@@ -1,11 +1,11 @@
-"<!DOCTYPE html>
-<html lang=""th"">
+<!DOCTYPE html>
+<html lang="th">
 <head>
-    <meta charset=""UTF-8"">
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Property Details - SMART SYSTEM V26.0</title>
-    <link href=""https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap"" rel=""stylesheet"">
-    <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #1a5276; --bg: #f4f7f6; --white: #ffffff; --green: #27ae60; --text: #2c3e50; --gold: #f1c40f; --red: #e74c3c; --border: #eee; --loader-bg: #9CBCE3; }
         body { font-family: 'Kanit', sans-serif; background: #fff; margin: 0; padding: 0; color: var(--text); overflow-x: hidden; }
@@ -73,62 +73,62 @@
 </head>
 <body>
 
-<div id=""loader-container"">
-    <div class=""emoji-group"" id=""loader-emojis""><span class=""bounce"">🐚</span><span class=""bounce"">🌊</span><span class=""bounce"">🌴</span></div>
-    <div class=""loader-text"" id=""loader-msg"">SMART PROPERTIES SYSTEM</div>
+<div id="loader-container">
+    <div class="emoji-group" id="loader-emojis"><span class="bounce">🐚</span><span class="bounce">🌊</span><span class="bounce">🌴</span></div>
+    <div class="loader-text" id="loader-msg">SMART PROPERTIES SYSTEM</div>
 </div>
 
-<div class=""sidebar-overlay"" id=""sidebarOverlay"" onclick=""toggleSidebar()""></div>
-<div class=""sidebar"" id=""sidebar"">
-    <div class=""sidebar-header"">
-        <div style=""font-weight:900; color:var(--primary); font-size:1.4rem;"">SMART SYSTEM</div>
-        <div style=""font-size:0.7rem; color:#aaa; text-transform:uppercase;"">Real Estate Solutions</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div style="font-weight:900; color:var(--primary); font-size:1.4rem;">SMART SYSTEM</div>
+        <div style="font-size:0.7rem; color:#aaa; text-transform:uppercase;">Real Estate Solutions</div>
     </div>
-    <a href=""index.html"" class=""sidebar-item""><i class=""fas fa-home""></i> <span data-lang=""menuHome"">หน้าหลัก</span></a>
-    <a href=""index.html"" class=""sidebar-item""><i class=""fas fa-layer-group""></i> <span data-lang=""menuAll"">ทรัพย์ทั้งหมด</span></a>
-    <a href=""#"" class=""sidebar-item""><i class=""fas fa-paper-plane""></i> <span data-lang=""menuContact"">ติดต่อเรา</span></a>
-    <a href=""#"" class=""sidebar-item""><i class=""fas fa-crown""></i> <span data-lang=""menuAbout"">เกี่ยวกับเรา</span></a>
-    <div style=""margin: 25px 30px 10px; font-size: 0.65rem; color: #ddd; text-transform: uppercase;"">Admin Section</div>
-    <a href=""admin.html"" class=""sidebar-item"" style=""background: #fdf2f2; color: #e74c3c;""><i class=""fas fa-user-shield""></i> <span>Admin Access</span></a>
+    <a href="index.html" class="sidebar-item"><i class="fas fa-home"></i> <span data-lang="menuHome">หน้าหลัก</span></a>
+    <a href="index.html" class="sidebar-item"><i class="fas fa-layer-group"></i> <span data-lang="menuAll">ทรัพย์ทั้งหมด</span></a>
+    <a href="#" class="sidebar-item"><i class="fas fa-paper-plane"></i> <span data-lang="menuContact">ติดต่อเรา</span></a>
+    <a href="#" class="sidebar-item"><i class="fas fa-crown"></i> <span data-lang="menuAbout">เกี่ยวกับเรา</span></a>
+    <div style="margin: 25px 30px 10px; font-size: 0.65rem; color: #ddd; text-transform: uppercase;">Admin Section</div>
+    <a href="admin.html" class="sidebar-item" style="background: #fdf2f2; color: #e74c3c;"><i class="fas fa-user-shield"></i> <span>Admin Access</span></a>
 </div>
 
 <header>
-    <div class=""header-left"" onclick=""toggleSidebar()"">
-        <i class=""fas fa-bars fa-lg"" style=""color:var(--primary);""></i>
-        <span id=""txt-menu"" style=""font-size: 0.85rem; color: var(--primary); font-weight: 500; margin-left: 5px;"">เมนู</span>
-        <div class=""brand-name"">SMART SYSTEM</div>
+    <div class="header-left" onclick="toggleSidebar()">
+        <i class="fas fa-bars fa-lg" style="color:var(--primary);"></i>
+        <span id="txt-menu" style="font-size: 0.85rem; color: var(--primary); font-weight: 500; margin-left: 5px;">เมนู</span>
+        <div class="brand-name">SMART SYSTEM</div>
     </div>
-    <div class=""flag-list"">
-        <button class=""flag-btn"" onclick=""setLang('th')""><img src=""https://flagcdn.com/w40/th.png""></button>
-        <button class=""flag-btn"" onclick=""setLang('en')""><img src=""https://flagcdn.com/w40/us.png""></button>
-        <button class=""flag-btn"" onclick=""setLang('cn')""><img src=""https://flagcdn.com/w40/cn.png""></button>
-        <button class=""flag-btn"" onclick=""setLang('ru')""><img src=""https://flagcdn.com/w40/ru.png""></button>
-        <button class=""flag-btn"" onclick=""setLang('de')""><img src=""https://flagcdn.com/w40/de.png""></button>
-        <button class=""flag-btn"" onclick=""setLang('fr')""><img src=""https://flagcdn.com/w40/fr.png""></button>
+    <div class="flag-list">
+        <button class="flag-btn" onclick="setLang('th')"><img src="https://flagcdn.com/w40/th.png"></button>
+        <button class="flag-btn" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png"></button>
+        <button class="flag-btn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png"></button>
+        <button class="flag-btn" onclick="setLang('ru')"><img src="https://flagcdn.com/w40/ru.png"></button>
+        <button class="flag-btn" onclick="setLang('de')"><img src="https://flagcdn.com/w40/de.png"></button>
+        <button class="flag-btn" onclick="setLang('fr')"><img src="https://flagcdn.com/w40/fr.png"></button>
     </div>
 </header>
 
-<div id=""mainContent""></div>
+<div id="mainContent"></div>
 
 <script>
-    const api = ""https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec"";
+    const api = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
     const pId = new URLSearchParams(window.location.search).get('id');
     let currentProp = null, otherUnits = [], currentLang = localStorage.getItem('smartLang') || 'th';
 
     const i18n = {
-        th: { menu: ""เมนู"", menuHome: ""หน้าหลัก"", menuAll: ""ทรัพย์ทั้งหมด"", menuContact: ""ติดต่อเรา"", menuAbout: ""เกี่ยวกับเรา"", bed: ""ห้องนอน"", bath: ""ห้องน้ำ"", living: ""พื้นที่ใช้สอย"", landM: ""ที่ดิน (ตร.ม.)"", landW: ""ที่ดิน (ตร.ว.)"", pool: ""สระว่ายน้ำ"", depth: ""ความลึก"", furniture: ""เฟอร์นิเจอร์"", parking: ""ที่จอดรถ"", electric: ""ไฟฟ้า"", loc: ""ทำเล"", other: ""หลังอื่นๆ"", contact: ""Inquire via LINE"" },
-        en: { menu: ""MENU"", menuHome: ""Home"", menuAll: ""Properties"", menuContact: ""Contact"", menuAbout: ""About"", bed: ""Bedrooms"", bath: ""Bathrooms"", living: ""Living Area"", landM: ""Land (sq.m)"", landW: ""Land (sq.w)"", pool: ""Pool Size"", depth: ""Pool Depth"", furniture: ""Furnishing"", parking: ""Parking"", electric: ""Electricity"", loc: ""Location"", other: ""Other Units"", contact: ""Inquire via LINE"" },
-        cn: { menu: ""菜单"", menuHome: ""首页"", menuAll: ""所有房产"", menuContact: ""联系我们"", menuAbout: ""关于我们"", bed: ""卧室"", bath: ""浴室"", living: ""建筑面积"", landM: ""土地 (m²)"", landW: ""土地 (sq.w)"", pool: ""泳池大小"", depth: ""深度"", furniture: ""家具"", parking: ""停车位"", electric: ""电力系统"", loc: ""地点"", other: ""其他房源"", contact: ""通过 LINE 咨询"" },
-        ru: { menu: ""МЕНЮ"", menuHome: ""Главная"", menuAll: ""Объекты"", menuContact: ""Контакты"", menuAbout: ""О нас"", bed: ""Спальни"", bath: ""Ванные"", living: ""Жилая площадь"", landM: ""Земля (m²)"", landW: ""Земля (sq.w)"", pool: ""Бассейн"", depth: ""Глубина"", furniture: ""Мебель"", parking: ""Парковка"", electric: ""Электричество"", loc: ""Локация"", other: ""Другие объекты"", contact: ""Связаться через LINE"" },
-        de: { menu: ""MENÜ"", menuHome: ""Startseite"", menuAll: ""Immobilien"", menuContact: ""Kontakt"", menuAbout: ""Über uns"", bed: ""Schlafzimmer"", bath: ""Badezimmer"", living: ""Wohnfläche"", landM: ""Grundstück (m²)"", landW: ""Grundstück (sq.w)"", pool: ""Poolgröße"", depth: ""Tiefe"", furniture: ""Möbel"", parking: ""Parkplatz"", electric: ""Strom"", loc: ""Standort"", other: ""Andere Einheiten"", contact: ""Per LINE anfragen"" },
-        fr: { menu: ""MENU"", menuHome: ""Accueil"", menuAll: ""Propriétés"", menuContact: ""Contact"", menuAbout: ""À propos"", bed: ""Chambres"", bath: ""Salles de bain"", living: ""Surface"", landM: ""Terrain (m²)"", landW: ""Terrain (sq.w)"", pool: ""Piscine"", depth: ""Profondeur"", furniture: ""Ameublement"", parking: ""Parking"", electric: ""Électricité"", loc: ""Emplacement"", other: ""Autres unités"", contact: ""Contactez via LINE"" }
+        th: { menu: "เมนู", menuHome: "หน้าหลัก", menuAll: "ทรัพย์ทั้งหมด", menuContact: "ติดต่อเรา", menuAbout: "เกี่ยวกับเรา", bed: "ห้องนอน", bath: "ห้องน้ำ", living: "พื้นที่ใช้สอย", landM: "ที่ดิน (ตร.ม.)", landW: "ที่ดิน (ตร.ว.)", pool: "สระว่ายน้ำ", depth: "ความลึก", furniture: "เฟอร์นิเจอร์", parking: "ที่จอดรถ", electric: "ไฟฟ้า", loc: "ทำเล", other: "หลังอื่นๆ", contact: "Inquire via LINE" },
+        en: { menu: "MENU", menuHome: "Home", menuAll: "Properties", menuContact: "Contact", menuAbout: "About", bed: "Bedrooms", bath: "Bathrooms", living: "Living Area", landM: "Land (sq.m)", landW: "Land (sq.w)", pool: "Pool Size", depth: "Pool Depth", furniture: "Furnishing", parking: "Parking", electric: "Electricity", loc: "Location", other: "Other Units", contact: "Inquire via LINE" },
+        cn: { menu: "菜单", menuHome: "首页", menuAll: "所有房产", menuContact: "联系我们", menuAbout: "关于我们", bed: "卧室", bath: "浴室", living: "建筑面积", landM: "土地 (m²)", landW: "土地 (sq.w)", pool: "泳池大小", depth: "深度", furniture: "家具", parking: "停车位", electric: "电力系统", loc: "地点", other: "其他房源", contact: "通过 LINE 咨询" },
+        ru: { menu: "МЕНЮ", menuHome: "Главная", menuAll: "Объекты", menuContact: "Контакты", menuAbout: "О нас", bed: "Спальни", bath: "Ванные", living: "Жилая площадь", landM: "Земля (m²)", landW: "Земля (sq.w)", pool: "Бассейн", depth: "Глубина", furniture: "Мебель", parking: "Парковка", electric: "Электричество", loc: "Локация", other: "Другие объекты", contact: "Связаться через LINE" },
+        de: { menu: "MENÜ", menuHome: "Startseite", menuAll: "Immobilien", menuContact: "Kontakt", menuAbout: "Über uns", bed: "Schlafzimmer", bath: "Badezimmer", living: "Wohnfläche", landM: "Grundstück (m²)", landW: "Grundstück (sq.w)", pool: "Poolgröße", depth: "Tiefe", furniture: "Möbel", parking: "Parkplatz", electric: "Strom", loc: "Standort", other: "Andere Einheiten", contact: "Per LINE anfragen" },
+        fr: { menu: "MENU", menuHome: "Accueil", menuAll: "Propriétés", menuContact: "Contact", menuAbout: "À propos", bed: "Chambres", bath: "Salles de bain", living: "Surface", landM: "Terrain (m²)", landW: "Terrain (sq.w)", pool: "Piscine", depth: "Profondeur", furniture: "Ameublement", parking: "Parking", electric: "Électricité", loc: "Emplacement", other: "Autres unités", contact: "Contactez via LINE" }
     };
 
     async function load() {
-        if (!pId) { window.location.href = ""index.html""; return; }
+        if (!pId) { window.location.href = "index.html"; return; }
         setTimeout(() => {
-            document.getElementById('loader-emojis').innerHTML = '<span class=""bounce"">🏠</span><span class=""spin"">✨</span><span class=""bounce"">🌴</span>';
-            document.getElementById('loader-msg').innerText = ""FETCHING DETAILS..."";
+            document.getElementById('loader-emojis').innerHTML = '<span class="bounce">🏠</span><span class="spin">✨</span><span class="bounce">🌴</span>';
+            document.getElementById('loader-msg').innerText = "FETCHING DETAILS...";
         }, 1200);
 
         try {
@@ -159,66 +159,66 @@
         document.querySelectorAll('[data-lang]').forEach(el => { const k = el.getAttribute('data-lang'); if (t[k]) el.innerText = t[k]; });
 
         document.getElementById('mainContent').innerHTML = `
-            <div class=""hero-box"">
-                <div class=""hp-badge"">${it.HP_ID} | ${it.ID || ''}</div>
-                <img src=""${it.Thumbnail}"" class=""main-img"" onerror=""this.src='https://placehold.co/800x600?text=Asset'"">
+            <div class="hero-box">
+                <div class="hp-badge">${it.HP_ID} | ${it.ID || ''}</div>
+                <img src="${it.Thumbnail}" class="main-img" onerror="this.src='https://placehold.co/800x600?text=Asset'">
             </div>
-            <div class=""main-container"">
-                <div class=""content-card"">
-                    <h1 class=""title"">${it.Project_Name || it.ID}</h1>
-                    <div class=""price"">฿${Number(it.Price || 0).toLocaleString()}</div>
-                    <div class=""info-grid"">
-                        <div class=""info-item""><i class=""fas fa-map-pin""></i><div><span class=""info-label"">${t.loc}</span><span class=""info-value"">${it.SubDistrict || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-city""></i><div><span class=""info-label"">PROJECT</span><span class=""info-value"">${it.Project_Name || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-home""></i><div><span class=""info-label"">TYPE</span><span class=""info-value"">${it.Type || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-bed""></i><div><span class=""info-label"">${t.bed}</span><span class=""info-value"">${it.Bedrooms || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-bath""></i><div><span class=""info-label"">${t.bath}</span><span class=""info-value"">${it.Bathrooms || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-expand""></i><div><span class=""info-label"">${t.living}</span><span class=""info-value"">${it['Living Area (sq.m)'] || '-'} m²</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-vector-square""></i><div><span class=""info-label"">${t.landM}</span><span class=""info-value"">${it['Land Area (sq.m)'] || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-th-large""></i><div><span class=""info-label"">${t.landW}</span><span class=""info-value"">${it['Land Area (sq.w)'] || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-swimming-pool""></i><div><span class=""info-label"">${t.pool}</span><span class=""info-value"">${it['Pool Size'] || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-water""></i><div><span class=""info-label"">${t.depth}</span><span class=""info-value"">${it['Pool Depth'] || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-couch""></i><div><span class=""info-label"">${t.furniture}</span><span class=""info-value"">${it.Furnishing || '-'}</span></div></div>
-                        <div class=""info-item""><i class=""fas fa-car""></i><div><span class=""info-label"">${t.parking}</span><span class=""info-value"">${it.Parking || '-'}</span></div></div>
-                        <div class=""full-width info-item""><i class=""fas fa-bolt""></i><div><span class=""info-label"">${t.electric}</span><span class=""info-value"">${it.Electricity || '-'}</span></div></div>
+            <div class="main-container">
+                <div class="content-card">
+                    <h1 class="title">${it.Project_Name || it.ID}</h1>
+                    <div class="price">฿${Number(it.Price || 0).toLocaleString()}</div>
+                    <div class="info-grid">
+                        <div class="info-item"><i class="fas fa-map-pin"></i><div><span class="info-label">${t.loc}</span><span class="info-value">${it.SubDistrict || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-city"></i><div><span class="info-label">PROJECT</span><span class="info-value">${it.Project_Name || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-home"></i><div><span class="info-label">TYPE</span><span class="info-value">${it.Type || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-bed"></i><div><span class="info-label">${t.bed}</span><span class="info-value">${it.Bedrooms || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-bath"></i><div><span class="info-label">${t.bath}</span><span class="info-value">${it.Bathrooms || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-expand"></i><div><span class="info-label">${t.living}</span><span class="info-value">${it['Living Area (sq.m)'] || '-'} m²</span></div></div>
+                        <div class="info-item"><i class="fas fa-vector-square"></i><div><span class="info-label">${t.landM}</span><span class="info-value">${it['Land Area (sq.m)'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-th-large"></i><div><span class="info-label">${t.landW}</span><span class="info-value">${it['Land Area (sq.w)'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-swimming-pool"></i><div><span class="info-label">${t.pool}</span><span class="info-value">${it['Pool Size'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-water"></i><div><span class="info-label">${t.depth}</span><span class="info-value">${it['Pool Depth'] || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-couch"></i><div><span class="info-label">${t.furniture}</span><span class="info-value">${it.Furnishing || '-'}</span></div></div>
+                        <div class="info-item"><i class="fas fa-car"></i><div><span class="info-label">${t.parking}</span><span class="info-value">${it.Parking || '-'}</span></div></div>
+                        <div class="full-width info-item"><i class="fas fa-bolt"></i><div><span class="info-label">${t.electric}</span><span class="info-value">${it.Electricity || '-'}</span></div></div>
                     </div>
-                    <div style=""margin-top:30px;""><h3 style=""margin-bottom:10px;""><i class=""fas fa-file-alt""></i> Description</h3><p style=""color:#555; font-size:1rem; line-height:1.8;"">${it.Description || '-'}</p></div>
+                    <div style="margin-top:30px;"><h3 style="margin-bottom:10px;"><i class="fas fa-file-alt"></i> Description</h3><p style="color:#555; font-size:1rem; line-height:1.8;">${it.Description || '-'}</p></div>
 
-                    <div class=""share-section"">
-                        <div class=""share-icon-title""><i class=""fas fa-share-nodes""></i></div>
-                        <div class=""share-bar-wrapper"">
-                            <div class=""share-bar"">
-                                <button class=""share-btn"" onclick=""share('line')""><img src=""https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg""></button>
-                                <button class=""share-btn"" onclick=""share('fb')""><img src=""https://cdn-icons-png.flaticon.com/512/733/733547.png""></button>
-                                <button class=""share-btn"" onclick=""share('msg')""><img src=""https://cdn-icons-png.flaticon.com/512/5968/5968771.png""></button>
-                                <button class=""share-btn"" onclick=""share('wa')""><img src=""https://cdn-icons-png.flaticon.com/512/733/733585.png""></button>
-                                <button class=""share-btn"" onclick=""share('tg')""><img src=""https://cdn-icons-png.flaticon.com/512/2111/2111646.png""></button>
-                                <button class=""share-btn"" onclick=""share('sms')""><img src=""https://cdn-icons-png.flaticon.com/512/813/813636.png""></button>
-                                <button class=""share-btn"" onclick=""share('mail')""><img src=""https://cdn-icons-png.flaticon.com/512/732/732200.png""></button>
-                                <button class=""share-btn"" onclick=""share('copy')""><i class=""fas fa-link"" style=""color:#777; font-size:1.2rem;""></i></button>
+                    <div class="share-section">
+                        <div class="share-icon-title"><i class="fas fa-share-nodes"></i></div>
+                        <div class="share-bar-wrapper">
+                            <div class="share-bar">
+                                <button class="share-btn" onclick="share('line')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"></button>
+                                <button class="share-btn" onclick="share('fb')"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"></button>
+                                <button class="share-btn" onclick="share('msg')"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968771.png"></button>
+                                <button class="share-btn" onclick="share('wa')"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></button>
+                                <button class="share-btn" onclick="share('tg')"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></button>
+                                <button class="share-btn" onclick="share('sms')"><img src="https://cdn-icons-png.flaticon.com/512/813/813636.png"></button>
+                                <button class="share-btn" onclick="share('mail')"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png"></button>
+                                <button class="share-btn" onclick="share('copy')"><i class="fas fa-link" style="color:#777; font-size:1.2rem;"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class=""section-title"" style=""margin: 40px 15px 15px;""><i class=""fas fa-th-large""></i> ${t.other}</div>
-                <div style=""display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:0 15px;"">
+                <div class="section-title" style="margin: 40px 15px 15px;"><i class="fas fa-th-large"></i> ${t.other}</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:0 15px;">
                     ${otherUnits.map(r => `
-                        <div style=""background:#fff; border-radius:20px; overflow:hidden; border:1.5px solid #eee;"" onclick=""location.href='?id=${r.HP_ID || r.hp_id}'"">
-                            <img src=""${r.Thumbnail}"" style=""width:100%; height:110px; object-fit:cover;"">
-                            <div style=""padding:10px; text-align:center;""><div style=""font-weight:600; color:var(--primary); font-size:0.8rem;"">${r.ID}</div><div style=""font-size:0.85rem; font-weight:600;"">฿${Number(r.Price).toLocaleString()}</div></div>
+                        <div style="background:#fff; border-radius:20px; overflow:hidden; border:1.5px solid #eee;" onclick="location.href='?id=${r.HP_ID || r.hp_id}'">
+                            <img src="${r.Thumbnail}" style="width:100%; height:110px; object-fit:cover;">
+                            <div style="padding:10px; text-align:center;"><div style="font-weight:600; color:var(--primary); font-size:0.8rem;">${r.ID}</div><div style="font-size:0.85rem; font-weight:600;">฿${Number(r.Price).toLocaleString()}</div></div>
                         </div>`).join('')}
                 </div>
             </div>
-            <div class=""footer-action"">
-                <a href=""https://line.me/R/msg/text/?สนใจข้อมูลมหาอำนาจรหัส: ${it.HP_ID}"" class=""btn-line""><i class=""fab fa-line""></i> ${t.contact}</a>
+            <div class="footer-action">
+                <a href="https://line.me/R/msg/text/?สนใจข้อมูลมหาอำนาจรหัส: ${it.HP_ID}" class="btn-line"><i class="fab fa-line"></i> ${t.contact}</a>
             </div>
         `;
     }
 
     function share(p) {
         const url = window.location.href;
-        if(p === 'copy') { navigator.clipboard.writeText(url); alert(""คัดลอกลิงก์สำเร็จ!""); return; }
+        if(p === 'copy') { navigator.clipboard.writeText(url); alert("คัดลอกลิงก์สำเร็จ!"); return; }
         const links = {
             line: `https://line.me/R/msg/text/?${encodeURIComponent(url)}`,
             fb: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
@@ -233,4 +233,4 @@
     load();
 </script>
 </body>
-</html>"
+</html>
