@@ -1,116 +1,57 @@
 <!doctype html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Property Details | SMART SYSTEM</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{ --bg:#9fb8dc; --card:#ffffff; --text:#0f172a; --primary:#1a5276; --radius:35px; }
-    body{ margin:0; font-family: 'Kanit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
-    .page{ padding: 20px; display:flex; justify-content:center; }
-    .container{ width:100%; max-width: 650px; }
-    .btn{ display:inline-flex; align-items:center; gap:10px; padding: 12px 25px; border-radius: 50px; border: 0; background: var(--primary); color:#fff; font-weight:600; text-decoration:none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; }
-    .card{ background: var(--card); border-radius: var(--radius); padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); margin-top: 15px; position: relative; }
-    /* แก้ไขส่วนแสดงรูปให้ใหญ่และชัดเจน */
-    .hero-img{ width:100%; border-radius: 25px; object-fit: cover; margin: 20px 0; aspect-ratio: 16/10; background: #f0f0f0; display: block; }
-    .pill{ display:inline-flex; background:#f1f5f9; padding: 10px 18px; border-radius: 50px; margin: 5px; font-size: 0.9rem; font-weight: 500; border: 1px solid #e2e8f0; }
-    .overlay{ position:fixed; inset:0; background: var(--bg); display:flex; align-items:center; justify-content:center; z-index: 9999; }
-    .badge { position: absolute; top: 40px; left: 40px; background: #00d44b; color: white; padding: 6px 18px; border-radius: 50px; font-weight: 500; font-size: 0.8rem; z-index: 10; }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Property Details | SMART SYSTEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{ --bg:#9fb8dc; --card:#ffffff; --primary:#1a5276; }
+        body{ margin:0; font-family: 'Kanit', sans-serif; background: var(--bg); }
+        .page{ padding: 20px; display:flex; justify-content:center; }
+        .card{ background: #fff; border-radius: 35px; padding: 25px; max-width: 600px; width:100%; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .hero-img{ width:100%; border-radius: 20px; object-fit: cover; margin: 15px 0; max-height: 400px; background: #eee; }
+        .btn-back{ background: var(--primary); color:#fff; border:none; padding:10px 20px; border-radius:50px; cursor:pointer; text-decoration:none; display:inline-block; }
+        .pill{ display:inline-block; background:#f1f5f9; padding: 8px 15px; border-radius: 50px; margin: 5px; font-size: 0.9rem; }
+    </style>
 </head>
 <body>
 
-<div id="overlay" class="overlay">
-    <div style="text-align:center; color:white;">
-        <div style="font-size:50px;">🏠 ✨ 🌴</div>
-        <h2 id="msg">กำลังดึงข้อมูลบ้าน...</h2>
-    </div>
-</div>
-
 <div class="page">
-    <div class="container">
-        <a class="btn" href="index.html">⬅️ กลับหน้าหลัก</a>
-        <div class="card" id="main-ui" style="display:none;">
-            <div id="d_Badge" class="badge">CODE: -</div>
-            
-            <div id="d_Proj" style="color:#888; font-weight:500; margin-top:40px;">-</div>
-            <h1 id="d_ID" style="margin:5px 0 15px 0; color:var(--primary); font-size:2rem;">-</h1>
-            
-            <img id="d_Img" class="hero-img" src="" alt="Property Image">
-            
-            <div style="font-size:2.2rem; font-weight:700; color:var(--primary); margin-bottom:20px;">฿ <span id="d_Price">-</span></div>
-            
-            <div id="info-grid">
-                <div class="pill">📍 ทำเล: <b id="d_Loc">-</b></div>
-                <div class="pill">🏡 โครงการ: <b id="d_ProjName">-</b></div>
-                <div class="pill">🛌 ห้องนอน: <b id="d_Bed">-</b></div>
-                <div class="pill">🛁 ห้องน้ำ: <b id="d_Bath">-</b></div>
-                <div class="pill">✅ สถานะ: <b id="d_Stat">-</b></div>
-            </div>
-
-            <div style="margin-top:30px;">
-                <a id="shareLine" class="btn" style="background:#00c300; width:100%; justify-content:center; font-size:1.1rem;" href="#">
-                    <i class="fab fa-line"></i> ติดต่อสอบถามผ่าน LINE
-                </a>
-            </div>
+    <div class="card" id="ui">
+        <a href="index.html" class="btn-back">⬅️ กลับหน้าหลัก</a>
+        <h1 id="d_HOUSE_ID" style="color:var(--primary); margin:20px 0 5px 0;">HOUSE_ID: -</h1>
+        <div id="d_Proj" style="color:#888;">-</div>
+        <img id="d_Img" class="hero-img" src="">
+        <div style="font-size:2rem; font-weight:700; color:#27ae60; margin-bottom:15px;">฿ <span id="d_Price">-</span></div>
+        <div>
+            <div class="pill">🛌 ห้องนอน: <b id="d_Bed">-</b></div>
+            <div class="pill">🛁 ห้องน้ำ: <b id="d_Bath">-</b></div>
+            <div class="pill">📍 ทำเล: <b id="d_Loc">-</b></div>
+            <div class="pill">✅ สถานะ: <b id="d_Stat">-</b></div>
         </div>
     </div>
 </div>
 
 <script>
-    // 🚩 URL ของ Apps Script ที่คุณ Deploy ล่าสุด (ตรวจสอบจาก Screenshot 215912)
-    const API_URL = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
-    
-    /** 🖼️ ฟังก์ชันแปลงลิงก์ให้แสดงผลได้แน่นอน (H3 Standard) */
-    function normalizeImageUrl(url) {
-        if (!url || typeof url !== 'string') return "https://via.placeholder.com/800x500?text=NO+IMAGE";
-        if (url.includes("export=view")) return url;
-        let fileId = "";
-        if (url.includes("id=")) { fileId = url.split("id=")[1].split("&")[0]; }
-        else if (url.includes("/file/d/")) { fileId = url.split("/file/d/")[1].split("/")[0]; }
-        return fileId ? "https://drive.google.com/uc?export=view&id=" + fileId : url;
-    }
-
+    const api = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
     async function load() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id'); // รับค่า HP-0010 จาก URL [cite: 2026-01-27]
-        
-        if (!id) { document.getElementById('msg').innerText = "ไม่พบรหัสทรัพย์"; return; }
-
+        const id = new URLSearchParams(window.location.search).get('id');
         try {
-            const res = await fetch(`${API_URL}?action=getOne&role=PUBLIC&hp_id=${id}`);
+            const res = await fetch(`${api}?action=getOne&hp_id=${id}`);
             const data = await res.json();
-            
             if (data.success && data.item) {
                 const it = data.item;
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('main-ui').style.display = 'block';
-                
-                // แสดงข้อมูลตามคอลัมน์ใน Google Sheet ของคุณเป๊ะๆ
-                document.getElementById('d_Badge').innerText = it.HP_ID + " | " + it.ID;
-                document.getElementById('d_ID').innerText = it.ID || it.HP_ID;
-                document.getElementById('d_Proj').innerText = it.Project_Name || "Smart Property";
-                document.getElementById('d_Price').innerText = Number(it.Price || 0).toLocaleString();
-                document.getElementById('d_Bed').innerText = it.Bedrooms || "-";
+                document.getElementById('d_HOUSE_ID').innerText = "HOUSE_ID: " + it.HOUSE_ID;
+                document.getElementById('d_Proj').innerText = it.Project_Name;
+                document.getElementById('d_Price').innerText = Number(it.Price).toLocaleString();
+                document.getElementById('d_Img').src = it.Thumbnail || "";
+                document.getElementById('d_Bed').innerText = it.Bedrooms;
                 document.getElementById('d_Bath').innerText = it.Bathrooms || "-";
-                document.getElementById('d_Loc').innerText = (it.District || "-") + " / " + (it.SubDistrict || "-");
-                document.getElementById('d_ProjName').innerText = it.Project_Name || "-";
-                document.getElementById('d_Stat').innerText = it.Status || "Available";
-                
-                // จัดการรูปภาพด้วยระบบ Normalize
-                const finalImg = normalizeImageUrl(it.Thumbnail);
-                document.getElementById('d_Img').src = finalImg;
-                
-                // ปุ่มแชร์ไป LINE พร้อมรายละเอียด [cite: 2026-01-27]
-                document.getElementById('shareLine').href = `https://line.me/R/msg/text/?สนใจบ้านรหัส ${it.ID} โครงการ ${it.Project_Name}: ${encodeURIComponent(window.location.href)}`;
-            } else {
-                document.getElementById('msg').innerText = "ขออภัย ไม่พบข้อมูลบ้านหลังนี้";
+                document.getElementById('d_Loc').innerText = (it.District || "") + " / " + (it.SubDistrict || "");
+                document.getElementById('d_Stat').innerText = it.Status;
             }
-        } catch (e) { 
-            console.error(e);
-            document.getElementById('msg').innerText = "การเชื่อมต่อขัดข้อง กรุณาลองใหม่อีกครั้ง"; 
-        }
+        } catch (e) { alert("Error Loading Data"); }
     }
     window.onload = load;
 </script>
