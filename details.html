@@ -1,395 +1,82 @@
 <!doctype html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>SMART PROPERTIES SYSTEM</title>
-
-  <style>
-    :root{
-      --bg:#9fb8dc;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#475569;
-      --primary:#0b4a78;
-      --radius:24px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    /* ---------- Layout ---------- */
-    .page{
-      min-height:100svh;
-      padding: 16px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-    }
-    .container{
-      width:min(720px, 100%);
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:flex-start;
-      margin: 6px 0 14px;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 12px 16px;
-      border-radius: 999px;
-      border: 0;
-      background: var(--primary);
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
-      text-decoration:none;
-      box-shadow: 0 10px 20px rgba(0,0,0,.15);
-      user-select:none;
-    }
-    .btn:active{transform:translateY(1px)}
-    .btn.secondary{
-      background:#0f2f48;
-    }
-
-    .card{
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 20px 40px rgba(0,0,0,.15);
-      padding: 18px;
-      overflow:hidden;
-    }
-
-    h1{
-      margin: 6px 0 12px;
-      font-size: clamp(22px, 3.2vw, 34px);
-      letter-spacing: .3px;
-    }
-    .subtitle{
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-weight:600;
-    }
-
-    /* ---------- Image ---------- */
-    .hero{
-      width:100%;
-      aspect-ratio: 16/10;
-      background:#e2e8f0;
-      border-radius: 18px;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .hero img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-    }
-
-    /* ---------- Info grid ---------- */
-    .info{
-      margin-top: 16px;
-      display:grid;
-      gap: 12px;
-    }
-    .row{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 10px 14px;
-      align-items:center;
-      font-size: 18px;
-      line-height: 1.4;
-    }
-    .row strong{font-weight:800}
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background:#ecfeff;
-      border:1px solid #a5f3fc;
-      font-weight:800;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background:#f1f5f9;
-      border:1px solid #e2e8f0;
-      font-weight:700;
-      color:#0f172a;
-    }
-
-    /* ---------- Loader overlay ---------- */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background: var(--bg);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 20px;
-      z-index: 9999;
-    }
-    .loaderBox{
-      text-align:center;
-      width:min(460px, 100%);
-      padding: 18px;
-    }
-    .icons{
-      font-size: 52px;
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 8px 14px rgba(0,0,0,.18));
-    }
-    .icons span{
-      display:inline-block;
-      animation: bounce 1.05s infinite ease-in-out;
-      transform-origin: center bottom;
-    }
-    .icons span:nth-child(2){animation-delay:.12s}
-    .icons span:nth-child(3){animation-delay:.24s}
-
-    @keyframes bounce{
-      0%,100%{transform:translateY(0) scale(1)}
-      50%{transform:translateY(-10px) scale(1.03)}
-    }
-
-    .bigMsg{
-      font-weight:900;
-      color:#fff;
-      letter-spacing:.6px;
-      font-size: 20px;
-      text-transform: uppercase;
-      margin: 6px 0 6px;
-      text-shadow: 0 8px 18px rgba(0,0,0,.25);
-    }
-    .smallMsg{
-      margin:0;
-      color: rgba(255,255,255,.86);
-      font-weight:700;
-      font-size: 14px;
-    }
-
-    .hidden{display:none !important}
-
-    /* ---------- Mobile tweaks ---------- */
-    @media (max-width: 420px){
-      .card{padding: 14px}
-      .row{font-size: 17px}
-      .icons{font-size: 46px}
-    }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>SMART PROPERTIES | รายละเอียด</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{ --bg:#9fb8dc; --card:#ffffff; --text:#0f172a; --primary:#1a5276; --radius:35px; }
+        body{ margin:0; font-family: 'Kanit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .page{ padding: 20px; display:flex; justify-content:center; }
+        .container{ width:100%; max-width: 650px; }
+        .btn{ display:inline-flex; align-items:center; gap:10px; padding: 12px 25px; border-radius: 50px; border: 0; background: var(--primary); color:#fff; font-weight:600; text-decoration:none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .card{ background: var(--card); border-radius: var(--radius); padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); margin-top: 15px; }
+        .hero-img{ width:100%; border-radius: 25px; object-fit: cover; margin: 20px 0; max-height: 450px; background: #eee; }
+        .pill{ display:inline-flex; background:#f1f5f9; padding: 10px 18px; border-radius: 50px; margin: 5px; font-size: 0.9rem; font-weight: 500; }
+        .overlay{ position:fixed; inset:0; background: var(--bg); display:flex; align-items:center; justify-content:center; z-index: 9999; }
+    </style>
 </head>
-
 <body>
-  <!-- LOADER -->
-  <div id="overlay" class="overlay">
-    <div class="loaderBox">
-      <div class="icons" aria-hidden="true">
-        <span>🏠</span><span>✨</span><span>🌴</span>
-      </div>
-      <div id="msg" class="bigMsg">SMART PROPERTIES SYSTEM</div>
-      <p id="submsg" class="smallMsg">กำลังโหลดข้อมูลบ้าน…</p>
-    </div>
-  </div>
 
-  <!-- PAGE -->
-  <div class="page">
+<div id="overlay" class="overlay">
+    <div style="text-align:center; color:white;">
+        <div style="font-size:50px;">🏠 ✨ 🌴</div>
+        <h2 id="msg">FETCHING DETAILS...</h2>
+    </div>
+</div>
+
+<div class="page">
     <div class="container">
-      <div class="topbar">
-        <a class="btn" href="./index.html">⬅️ กลับหน้าหลัก</a>
-      </div>
-
-      <div class="card">
-        <h1 id="codeTitle">CODE: -</h1>
-        <div class="subtitle" id="projectLine">SMART PROPERTIES SYSTEM</div>
-
-        <div class="hero">
-          <img id="heroImg" alt="Property image" loading="eager" />
+        <a class="btn" href="index.html">⬅️ กลับหน้าหลัก</a>
+        <div class="card" id="main-ui" style="display:none;">
+            <h1 id="d_ID" style="margin:0; color:var(--primary);">CODE: -</h1>
+            <div id="d_Proj" style="color:#888; font-weight:500;">-</div>
+            <img id="d_Img" class="hero-img" src="">
+            <div style="font-size:1.8rem; font-weight:700; color:#27ae60; margin-bottom:15px;">฿ <span id="d_Price">-</span></div>
+            <div id="info-grid">
+                <div class="pill">🛌 ห้องนอน: <b id="d_Bed">-</b></div>
+                <div class="pill">🛁 ห้องน้ำ: <b id="d_Bath">-</b></div>
+                <div class="pill">📍 ทำเล: <b id="d_Loc">-</b></div>
+                <div class="pill">✅ สถานะ: <b id="d_Stat">-</b></div>
+            </div>
+            <div style="margin-top:25px;">
+                <a id="shareLine" class="btn" style="background:#00c300; width:100%; justify-content:center;" href="#">💬 สอบถามผ่าน LINE</a>
+            </div>
         </div>
-
-        <div class="info" id="info">
-          <div class="row"><span class="badge">💰 ราคา: <strong id="price">-</strong></span></div>
-          <div class="row"><span class="pill">🏡 โครงการ: <strong id="project">-</strong></span></div>
-          <div class="row"><span class="pill">📍 ทำเล: <strong id="location">-</strong></span></div>
-          <div class="row">
-            <span class="pill">🛏️ ห้องนอน: <strong id="bed">-</strong></span>
-            <span class="pill">🛁 ห้องน้ำ: <strong id="bath">-</strong></span>
-          </div>
-          <div class="row"><span class="pill">✅ สถานะ: <strong id="status">-</strong></span></div>
-
-          <div class="row" style="margin-top:6px; justify-content:flex-start; gap:10px;">
-            <a id="mapBtn" class="btn secondary" href="#" target="_blank" rel="noopener">🌍 ไปที่แผนที่</a>
-            <a id="shareBtn" class="btn secondary" href="#" target="_blank" rel="noopener">🔗 แชร์ลิงก์</a>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
 <script>
-/** =========================
- * CONFIG: ใส่ URL Web App ของ Apps Script ที่คุณ Deploy ไว้
- * ========================= */
-const API_URL = "https://script.google.com/macros/s/AKfycbzkweiEgczmmU_4FiqRffJ4exvgZl3RwGPIBWXssLgkUpdMArif9-eUEv6yP2Kvtzh1/exec"; 
-// ตัวอย่างหน้าตา: https://script.google.com/macros/s/xxxxxxxxxxxx/exec
+    const api = "https://script.google.com/macros/s/AKfycbzkweiEgczmmU_4FiqRffJ4exvgZl3RwGPIBWXssLgkUpdMArif9-eUEv6yP2Kvtzh1/exec";
+    
+    async function load() {
+        const id = new URLSearchParams(window.location.search).get('id');
+        if (!id) { document.getElementById('msg').innerText = "ID MISSING"; return; }
 
-/** =========================
- * Helpers
- * ========================= */
-function qs(name){
-  return new URLSearchParams(location.search).get(name) || "";
-}
-function fmtMoney(n){
-  const num = Number(String(n).replace(/,/g,""));
-  if (!isFinite(num)) return String(n || "-");
-  return num.toLocaleString("en-US");
-}
-function safeText(v){
-  return (v===null || v===undefined || String(v).trim()==="") ? "-" : String(v);
-}
-function setLoading(isLoading, message, sub){
-  const overlay = document.getElementById("overlay");
-  const msg = document.getElementById("msg");
-  const submsg = document.getElementById("submsg");
-  if (message) msg.textContent = message;
-  if (sub) submsg.textContent = sub;
-  overlay.classList.toggle("hidden", !isLoading);
-}
-
-/** =========================
- * Render
- * รองรับชื่อคอลัมน์หลายแบบ (กันพัง)
- * ========================= */
-function pick(obj, keys){
-  for (const k of keys){
-    if (obj && obj[k] !== undefined && obj[k] !== null && String(obj[k]).trim() !== "") return obj[k];
-  }
-  return "";
-}
-
-function render(item){
-  const code = pick(item, ["ID","Code","CODE","HouseCode","HOUSE_CODE"]);
-  const hpId = pick(item, ["HP_ID","hp_id"]);
-  const price = pick(item, ["PRICE","Price","ราคา"]);
-  const project = pick(item, ["PROJECT","Project","โครงการ"]);
-  const amphoe = pick(item, ["AMPHOE","Amphoe","อำเภอ"]);
-  const tambon = pick(item, ["TAMBON","Tambon","ตำบล"]);
-  const bed = pick(item, ["BEDROOMS","Bedrooms","ห้องนอน"]);
-  const bath = pick(item, ["BATHROOMS","Bathrooms","ห้องน้ำ"]);
-  const status = pick(item, ["STATUS","Status","สถานะ"]);
-  const img = pick(item, ["IMAGE","Image","MAIN_IMAGE","IMAGE_URL","photo","img"]);
-  const map = pick(item, ["MAP","Map","GOOGLE_MAP","MAP_URL","แผนที่"]);
-
-  document.getElementById("codeTitle").textContent = "CODE: " + (safeText(code) !== "-" ? code : safeText(hpId));
-  document.getElementById("projectLine").textContent = "SMART PROPERTIES SYSTEM";
-
-  document.getElementById("price").textContent = fmtMoney(price);
-  document.getElementById("project").textContent = safeText(project);
-  document.getElementById("location").textContent = safeText([amphoe, tambon].filter(Boolean).join(" / "));
-  document.getElementById("bed").textContent = safeText(bed);
-  document.getElementById("bath").textContent = safeText(bath);
-  document.getElementById("status").textContent = safeText(status);
-
-  const heroImg = document.getElementById("heroImg");
-  heroImg.src = img || "https://via.placeholder.com/1200x800?text=NO+IMAGE";
-  heroImg.onerror = () => {
-    heroImg.src = "https://via.placeholder.com/1200x800?text=NO+IMAGE";
-  };
-
-  const mapBtn = document.getElementById("mapBtn");
-  mapBtn.href = map || "https://www.google.com/maps";
-  mapBtn.style.opacity = map ? "1" : ".65";
-  mapBtn.style.pointerEvents = map ? "auto" : "none";
-
-  const shareBtn = document.getElementById("shareBtn");
-  shareBtn.href = location.href;
-}
-
-/** =========================
- * Fetch (เร็วขึ้น + กันค้าง)
- * - sessionStorage cache
- * - timeout 12s
- * ========================= */
-async function fetchDetailByHPID(hp_id){
-  const cacheKey = "detail_" + hp_id;
-  const cached = sessionStorage.getItem(cacheKey);
-  if (cached){
-    try { return JSON.parse(cached); } catch(e){}
-  }
-
-  const ctrl = new AbortController();
-  const t = setTimeout(()=>ctrl.abort(), 12000);
-
-  const url = `${API_URL}?action=getOne&role=PUBLIC&hp_id=${encodeURIComponent(hp_id)}&ts=${Date.now()}`;
-  const res = await fetch(url, { signal: ctrl.signal, cache: "no-store" });
-  clearTimeout(t);
-
-  if (!res.ok) throw new Error("HTTP " + res.status);
-  const data = await res.json();
-
-  sessionStorage.setItem(cacheKey, JSON.stringify(data));
-  return data;
-}
-
-/** =========================
- * Main
- * ========================= */
-(async function init(){
-  const id = qs("id").trim(); // ตัวอย่าง: HP-0003
-  document.title = "SMART PROPERTIES SYSTEM";
-
-  if (!API_URL || API_URL.includes("PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE")){
-    setLoading(true, "SMART PROPERTIES SYSTEM", "ยังไม่ได้ตั้งค่า API_URL ใน details.html");
-    return;
-  }
-
-  if (!id){
-    setLoading(true, "SMART PROPERTIES SYSTEM", "ไม่พบค่า id ใน URL เช่น ?id=HP-0003");
-    return;
-  }
-
-  try{
-    setLoading(true, "SMART PROPERTIES SYSTEM", "กำลังโหลดข้อมูลบ้าน…");
-
-    const data = await fetchDetailByHPID(id);
-
-    // รูปแบบ response ที่รองรับ
-    // { success:true, item:{...} }
-    // { item:{...} }
-    // { success:true, data:{...} }
-    const item = data?.item || data?.data || data;
-
-    if (!item || (data?.success === false)){
-      setLoading(true, "SMART PROPERTIES SYSTEM", "PROPERTY NOT FOUND");
-      return;
+        try {
+            const res = await fetch(`${api}?action=getOne&role=PUBLIC&hp_id=${id}`);
+            const data = await res.json();
+            
+            if (data.success && data.item) {
+                const it = data.item;
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('main-ui').style.display = 'block';
+                document.getElementById('d_ID').innerText = "CODE: " + it.ID;
+                document.getElementById('d_Proj').innerText = it.Project_Name;
+                document.getElementById('d_Price').innerText = Number(it.Price).toLocaleString();
+                document.getElementById('d_Bed').innerText = it.Bedrooms;
+                document.getElementById('d_Bath').innerText = it.Bathrooms || '-';
+                document.getElementById('d_Loc').innerText = (it.District || "") + " / " + (it.SubDistrict || "");
+                document.getElementById('d_Stat').innerText = it.Status;
+                document.getElementById('d_Img').src = it.Thumbnail;
+                document.getElementById('shareLine').href = `https://line.me/R/msg/text/?สนใจบ้านรหัส ${it.ID} โครงการ ${it.Project_Name}: ${encodeURIComponent(window.location.href)}`;
+            } else {
+                document.getElementById('msg').innerText = "PROPERTY NOT FOUND";
+            }
+        } catch (e) { document.getElementById('msg').innerText = "CONNECTION ERROR"; }
     }
-
-    render(item);
-    setLoading(false);
-
-  }catch(err){
-    console.error(err);
-    setLoading(true, "SMART PROPERTIES SYSTEM", "โหลดไม่สำเร็จ (ตรวจ API_URL / สิทธิ์ Web App / คอลัมน์ HP_ID)");
-  }
-})();
+    window.onload = load;
 </script>
 </body>
 </html>
