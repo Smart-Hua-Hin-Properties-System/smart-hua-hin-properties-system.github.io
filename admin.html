@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART CONTROL | V86.0 LINE ENABLED</title>
+    <title>SMART CONTROL | V85.0 FULL RECOVERY</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,36 +11,55 @@
         body { font-family: 'Kanit', sans-serif; background: #f4f7f6; margin: 0; }
         header { background: var(--navy); padding: 12px 15px; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .container { max-width: 950px; margin: 20px auto; padding: 0 15px; }
+
+        /* แถบทอง Dashboard */
         .gold-section { background: var(--gold-bg); border: 1.5px solid #ffeeba; border-radius: 18px; padding: 18px; margin-bottom: 20px; text-align: center; }
-        .btn-gold { background: var(--gold-btn); color: white; padding: 14px; border-radius: 12px; text-decoration: none; display: block; font-weight: 500; font-size: 1rem; }
+        .btn-gold { background: var(--gold-btn); color: white; padding: 14px; border-radius: 12px; text-decoration: none; display: block; font-weight: 500; }
         .btn-blue { background: var(--blue-btn); color: white; width: 100%; padding: 16px; border-radius: 15px; border: none; font-family: 'Kanit'; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(26, 82, 118, 0.2); }
+
+        /* 🔍 ช่อง Search ขนาดเต็มพื้นที่ (Full-Width) สวยงามบนมือถือ */
         .search-container { width: 100%; margin-bottom: 25px; }
-        .search-box { background: white; border-radius: 15px; padding: 14px 20px; display: flex; align-items: center; border: 1.5px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.02); width: 100%; box-sizing: border-box; }
+        .search-box { 
+            background: white; border-radius: 15px; padding: 14px 20px; 
+            display: flex; align-items: center; border: 1.5px solid #eee; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02); width: 100%; box-sizing: border-box; 
+        }
         .search-box input { border: none; outline: none; width: 100%; font-family: 'Kanit'; font-size: 1rem; margin-left: 12px; background: transparent; }
+
+        /* รายการทรัพย์ */
         .property-row { background: white; padding: 15px; border-radius: 22px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #f9f9f9; }
         .item-left { display: flex; align-items: center; gap: 15px; }
         .item-img { width: 75px; height: 75px; border-radius: 15px; object-fit: cover; background: #eee; border: 1px solid #f0f0f0; }
         .main-id-text { font-weight: 600; font-size: 1.35rem; color: var(--navy); line-height: 1.1; }
         .sub-plot-text { font-size: 0.85rem; color: #666; margin-top: 4px; }
+
+        /* 🟢 ขวาสุด: สถานะสี และไอคอนแก้ไขที่ถูกต้อง (ดินสอ) */
         .item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
         .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; }
         .st-available { background: #e8f5e9; color: var(--green); }
         .st-sold { background: #ffebee; color: var(--red); }
         .st-pending { background: #fff3e0; color: #f39c12; }
-        .edit-action-btn { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border: 1px solid #f0f0f0; border-radius: 12px; background: #fafafa; cursor: pointer; color: var(--blue-btn); font-size: 1.6rem; transition: 0.2s; }
-        .edit-action-btn:hover { transform: scale(1.1); background: #fff; }
+        
+        .edit-action-btn { 
+            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; 
+            border: 1px solid #f0f0f0; border-radius: 12px; background: #fafafa; 
+            cursor: pointer; color: var(--blue-btn); font-size: 1.6rem; transition: 0.2s; 
+        }
+        .edit-action-btn:hover { transform: scale(1.1); background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: flex-end; justify-content: center; z-index: 2000; visibility: hidden; opacity: 0; transition: 0.3s; }
         .modal.active { visibility: visible; opacity: 1; }
         .modal-content { background: white; width: 100%; max-width: 650px; border-radius: 30px 30px 0 0; padding: 30px; max-height: 94vh; overflow-y: auto; transform: translateY(100%); transition: 0.4s; }
         .modal.active .modal-content { transform: translateY(0); }
         .form-group input, .form-group select { width: 100%; padding: 13px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Kanit'; outline: none; margin-bottom: 15px; box-sizing: border-box; }
+        
         .hidden { display: none !important; }
         .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 4000; display: none; }
     </style>
 </head>
 <body>
 
-<div id="loading-screen" class="loading-overlay"><i class="fas fa-sync fa-spin fa-3x" style="color:var(--navy); margin-bottom:15px;"></i><div>กำลังประมวลผลระบบมหาอำนาจ...</div></div>
+<div id="loading-screen" class="loading-overlay"><i class="fas fa-sync fa-spin fa-3x" style="color:var(--navy); margin-bottom:15px;"></i><div>กำลังทำงานตามมาตรฐานมหาอำนาจ...</div></div>
 
 <div id="login-ui">
     <div style="text-align:center; padding:50px; background:white; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
@@ -66,7 +85,10 @@
         <button id="btn-add-property" class="btn-blue" onclick="openForm('add')"><i class="fas fa-plus-circle"></i> เพิ่มรายการบ้านหลังใหม่</button>
         
         <div class="search-container">
-            <div class="search-box"><i class="fas fa-search" style="color:#bbb;"></i><input type="text" id="searchInput" placeholder="ค้นหาชื่อเรียก หรือเลขที่บ้าน..." onkeyup="filterData()"></div>
+            <div class="search-box">
+                <i class="fas fa-search" style="color:#bbb;"></i>
+                <input type="text" id="searchInput" placeholder="ค้นหาชื่อเรียก หรือเลขที่บ้าน..." onkeyup="filterData()">
+            </div>
         </div>
 
         <div id="list-container"></div>
@@ -84,7 +106,7 @@
                 <div onclick="if(admin.role !== 'FINANCE') document.getElementById('f_file').click()" style="cursor:pointer;">
                     <i class="fas fa-camera fa-2x" style="color:#ddd;"></i><p style="margin:8px 0; color:#888; font-size:0.8rem;">รูปหน้าปก</p>
                     <input type="file" id="f_file" hidden accept="image/*" onchange="previewImage(this)">
-                    <img id="preview-img" style="width:100%; max-height:220px; object-fit:cover; border-radius:15px; margin-top:10px; display:none; border:3.5px solid white;">
+                    <img id="preview-img" style="width:100%; max-height:220px; object-fit:cover; border-radius:15px; margin-top:10px; display:none; border:3.5px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                 </div>
             </div>
             <div class="form-section" style="background:#f0f7ff; padding:20px; border-radius:20px; margin-bottom:15px;">
@@ -105,9 +127,10 @@
 </div>
 
 <script>
-    const api = "https://script.google.com/macros/s/AKfycbzkweiEgczmmU_4FiqRffJ4exvgZl3RwGPIBWXssLgkUpdMArif9-eUEv6yP2Kvtzh1/exec";
+    const api = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
     let properties = []; let admin = null; let currentBase64 = ""; let currentOldThumb = "";
 
+    // 🖼️ ระบบแปลงลิงก์เป็น H3 (Absolute Image Engine) [cite: 2026-01-27]
     function formatToH3(url) {
         if (!url || url.trim() === "") return 'https://via.placeholder.com/75';
         if (url.includes("googleusercontent.com/profile/picture/1")) return url;
@@ -115,6 +138,8 @@
         try {
             if (url.includes('id=')) fileId = url.split('id=')[1].split('&')[0];
             else if (url.includes('/file/d/')) fileId = url.split('/file/d/')[1].split('/')[0];
+            else if (url.includes('picture/1')) fileId = url.split('picture/1')[1];
+            else if (url.length > 20 && !url.includes('/')) fileId = url; 
         } catch (e) { return url; }
         return fileId ? `https://lh3.googleusercontent.com/d/${fileId}` : url;
     }
@@ -144,21 +169,25 @@
         properties = res; renderList(properties);
     }
 
+    // 📄 แสดงรายการ: กู้คืนไอคอนแก้ไขดินสอ และแปลงรูปเป็น H3 ทันที [cite: 2026-01-27]
     function renderList(data) {
         document.getElementById('list-container').innerHTML = data.map(i => {
             const stClass = "st-" + (i.Status || "Available").toLowerCase();
             const displayImg = formatToH3(i.Thumbnail);
-            return `<div class="property-row">
+            return `
+            <div class="property-row">
                 <div class="item-left">
                     <img src="${displayImg}" class="item-img" onerror="this.src='https://via.placeholder.com/75'">
                     <div class="item-text">
                         <div class="main-id-text">${i.ID || 'N/A'}</div>
-                        <div class="sub-plot-text">แปลง: ${i.Plot || '-'} | ${i.Project_Name}</div>
+                        <div class="sub-plot-text">เลขที่: ${i.Plot || '-'} | ${i.Project_Name}</div>
                     </div>
                 </div>
                 <div class="item-right">
                     <span class="status-badge ${stClass}">${i.Status}</span>
-                    <button class="edit-action-btn" type="button" onclick="openForm('edit', '${i.HP_ID}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="edit-action-btn" type="button" onclick="openForm('edit', '${i.HP_ID}')">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
                 </div>
             </div>`;
         }).join('');
@@ -176,7 +205,7 @@
         const form = document.getElementById('propertyForm'); form.reset(); currentBase64 = ""; document.getElementById('preview-img').style.display = 'none';
         const isReadonly = admin.role === 'FINANCE';
         if (mode === 'edit') {
-            document.getElementById('formTitle').innerText = isReadonly ? "รายละเอียดข้อมูล" : "แก้ไขข้อมูลบ้าน: " + id;
+            document.getElementById('formTitle').innerText = isReadonly ? "รายละเอียดข้อมูล (อ่านอย่างเดียว)" : "แก้ไขข้อมูลบ้าน: " + id;
             const item = properties.find(p => p.HP_ID === id);
             if (item) {
                 document.getElementById('f_HP_ID').value = item.HP_ID;
@@ -200,17 +229,7 @@
     async function submitData(e) {
         e.preventDefault(); if(admin.role === 'FINANCE') return;
         document.getElementById('loading-screen').style.display = 'flex';
-        const payload = { 
-            HP_ID: document.getElementById('f_HP_ID').value, 
-            ID: document.getElementById('f_ID').value, 
-            Plot: document.getElementById('f_Plot').value, 
-            Project_Name: document.getElementById('f_Project_Name').value, 
-            Price: document.getElementById('f_Price').value, 
-            Status: document.getElementById('f_Status').value, 
-            Updated_By: admin.name, // ✨ ส่งชื่อผู้บันทึกไปให้ LINE แจ้งเตือน
-            imageRaw: currentBase64, 
-            oldThumbnailUrl: currentOldThumb 
-        };
+        const payload = { HP_ID: document.getElementById('f_HP_ID').value, ID: document.getElementById('f_ID').value, Plot: document.getElementById('f_Plot').value, Project_Name: document.getElementById('f_Project_Name').value, Price: document.getElementById('f_Price').value, Status: document.getElementById('f_Status').value, Updated_By: admin.name, imageRaw: currentBase64, oldThumbnailUrl: currentOldThumb };
         const res = await fetch(api, { method: 'POST', body: JSON.stringify(payload) }).then(r => r.json());
         if (res.success) { closeForm(); fetchData(); }
         document.getElementById('loading-screen').style.display = 'none';
