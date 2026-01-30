@@ -9,12 +9,15 @@
     <style>
         :root { --primary: #1a5276; --bg: #9CBCE3; --white: #ffffff; --green: #00d44b; --badge-navy: #154360; }
         
-        /* 📱 ป้องกันหน้าจอล้น 100% */
+        /* 📱 ป้องกันหน้าจอล้น 100% [cite: 2026-01-27] */
         html, body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; overflow-x: hidden; width: 100%; position: relative; }
         * { box-sizing: border-box; }
 
         /* 🎨 Loader ดุ๊กดิ๊ก */
-        #loader { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: 0.5s; }
+        #loader { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: 0.5s; }
+        .emoji-group { display: flex; gap: 15px; margin-bottom: 25px; font-size: 60px; }
+        .bounce { animation: bounce 0.6s infinite alternate; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
 
         /* 🚩 Header */
         header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -29,17 +32,17 @@
         @media (min-width: 768px) { .filter-grid { grid-template-columns: repeat(4, 1fr); } }
         .select-box { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd; font-family: 'Kanit'; color: var(--primary); font-size: 0.85rem; background: white; outline: none; }
 
-        /* 🏠 Cards Layout (กู้คืนตาม Screenshot 101134) */
+        /* 🏠 Cards Layout */
         .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 0 15px 40px; max-width: 1200px; margin: 0 auto; }
         .card { background: var(--white); border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: 0.3s; cursor: pointer; }
         
-        /* 📍 ตำแหน่ง HP-ID บนซ้าย (สีน้ำเงินเข้มตามรูป) */
+        /* 📍 ตำแหน่ง HP-ID บนซ้าย */
         .badge-hp { position: absolute; top: 15px; left: 15px; background: var(--badge-navy); color: white; padding: 5px 15px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; z-index: 10; }
 
         .card-img { width: 100%; height: 350px; object-fit: cover; background: #eee; border-bottom: 1px solid #f0f0f0; }
         .card-body { padding: 25px; text-align: left; }
         
-        /* 📍 ตำแหน่ง HOUSE_ID ล่างซ้าย (M16) */
+        /* 📍 ตำแหน่ง HOUSE_ID ล่างซ้าย (เช่น M16) */
         .house-id-text { font-size: 1.8rem; font-weight: 900; color: var(--primary); margin-bottom: 2px; text-transform: uppercase; }
         .project-name { font-size: 0.85rem; color: #888; margin-bottom: 12px; font-weight: 500; }
         .price-text { font-size: 1.6rem; color: var(--primary); font-weight: 700; margin-bottom: 15px; display: block; }
@@ -48,11 +51,14 @@
 </head>
 <body>
 
-<div id="loader"><h2 style="color:white; font-weight:900;">🏠 SMART PROPERTIES...</h2></div>
+<div id="loader">
+    <div class="emoji-group"><span class="bounce">🐚</span><span class="bounce" style="animation-delay:0.2s">🌊</span><span class="bounce" style="animation-delay:0.4s">🌴</span></div>
+    <h2 style="color:white; font-weight:900;">🏠 SMART PROPERTIES...</h2>
+</div>
 
 <header>
     <div class="header-left">
-        <i class="fas fa-bars fa-lg"></i> <span style="font-size:0.85rem; font-weight:500; margin-left:5px;">เมนู</span>
+        <i class="fas fa-bars fa-lg"></i> <span id="txt-menu" style="font-size:0.85rem; font-weight:500; margin-left:5px;">เมนู</span>
     </div>
     <div style="font-weight:900; color:var(--primary); font-size:1.1rem; letter-spacing:-0.5px;">HUAHIN.PROPERTIES</div>
     <div class="flag-list">
@@ -90,12 +96,13 @@
 <div class="property-grid" id="grid"></div>
 
 <script>
+    // 🚩 เปลี่ยนเป็น URL ของ Apps Script V106.0 ของคุณ [cite: 2026-01-30]
     const api = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
     let allData = [], currentLang = localStorage.getItem('smartLang') || 'th';
 
     const i18n = {
-        th: { fDist: "📍 อำเภอทั้งหมด", fSub: "🏘️ ตำบลทั้งหมด", fBed: "🛌 ห้องนอนทั้งหมด", fPrice: "💰 เรียงตามราคา", pLow: "น้อยไปมาก", pHigh: "มากไปน้อย", view: "ดูรายละเอียด" },
-        en: { fDist: "📍 All Districts", fSub: "🏘️ Sub-districts", fBed: "🛌 Bedrooms", fPrice: "💰 Sort Price", pLow: "Low to High", pHigh: "High to Low", view: "View Details" }
+        th: { menu: "เมนู", fDist: "📍 อำเภอทั้งหมด", fSub: "🏘️ ตำบลทั้งหมด", fBed: "🛌 ห้องนอนทั้งหมด", fPrice: "💰 เรียงตามราคา", pLow: "น้อยไปมาก", pHigh: "มากไปน้อย", view: "ดูรายละเอียด" },
+        en: { menu: "MENU", fDist: "📍 All Districts", fSub: "🏘️ Sub-districts", fBed: "🛌 Bedrooms", fPrice: "💰 Sort Price", pLow: "Low to High", pHigh: "High to Low", view: "View Details" }
     };
 
     async function init() {
@@ -110,10 +117,12 @@
     function setLanguage(l) {
         currentLang = l; localStorage.setItem('smartLang', l);
         const t = i18n[l] || i18n.en;
+        document.getElementById('txt-menu').innerText = t.menu;
         document.querySelectorAll('[data-lang]').forEach(el => { const k = el.getAttribute('data-lang'); if(t[k]) el.innerText = t[k]; });
         applyFilters();
     }
 
+    /** 🛠️ ฟังก์ชันตำบลเปลี่ยนตามอำเภออัตโนมัติ [cite: 2026-01-27] */
     function updateSubDistricts() {
         const d = document.getElementById('distFilter').value;
         const sSel = document.getElementById('subDistFilter');
