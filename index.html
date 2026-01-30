@@ -1,48 +1,197 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<title>SMART PROPERTIES SYSTEM</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&display=swap" rel="stylesheet">
-<style>
-body{font-family:Kanit;background:#9fb8dc;margin:0}
-header{padding:15px;font-weight:700;color:#1a4361}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;padding:20px}
-.card{background:#fff;border-radius:20px;overflow:hidden;cursor:pointer;transition:.2s}
-.card:hover{transform:translateY(-4px)}
-.card img{width:100%;height:180px;object-fit:cover;background:#eee}
-.card .box{padding:15px}
-.price{color:#1a5276;font-weight:700}
-</style>
+  <meta charset="UTF-8" />
+  <title>SMART PROPERTIES SYSTEM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #1a4361;
+      --gold: #856404;
+      --bg: #a9c0df;
+      --card: #ffffff;
+      --green: #1aa35f;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Kanit', sans-serif;
+      background: var(--bg);
+    }
+
+    header {
+      padding: 20px;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      padding: 0 20px 20px;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar input,
+    .filter-bar select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .house-id {
+      font-weight: 600;
+    }
+
+    .project {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    .status {
+      font-size: 14px;
+    }
+
+    .detail-btn {
+      margin-top: 10px;
+      padding: 10px;
+      text-align: center;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .detail-btn:hover {
+      background: #12344d;
+    }
+  </style>
 </head>
+
 <body>
 
-<header>SMART PROPERTIES SYSTEM</header>
+  <header>SMART PROPERTIES SYSTEM</header>
 
-<div class="grid" id="grid"></div>
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="ค้นหา House ID / โครงการ">
+    <select id="statusFilter">
+      <option value="">ทุกสถานะ</option>
+      <option value="Available">Available</option>
+      <option value="Pending">Pending</option>
+      <option value="Sold">Sold</option>
+    </select>
+  </div>
 
-<script>
-const API="https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec?role=PUBLIC";
+  <!-- PROPERTY GRID -->
+  <div class="grid" id="propertyGrid"></div>
 
-fetch(API)
-.then(r=>r.json())
-.then(data=>{
- const g=document.getElementById("grid");
- data.forEach(d=>{
-  const c=document.createElement("div");
-  c.className="card";
-  c.onclick=()=>location.href=`details.html?id=${d.HP_ID}`;
-  c.innerHTML=`
-   <img src="${d.Thumbnail||'https://via.placeholder.com/600x400'}">
-   <div class="box">
-    <b>${d.HOUSE_ID}</b><br>
-    ${d.Project_Name}<br>
-    <span class="price">฿${Number(d.Price).toLocaleString()}</span>
-   </div>`;
-  g.appendChild(c);
- });
-});
-</script>
+  <script>
+    const API_URL = "PUT_YOUR_API_URL_HERE"; // 🔴 ใส่ URL API เดิมของคุณ
+
+    let properties = [];
+
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        properties = data;
+        render(properties);
+      });
+
+    const grid = document.getElementById("propertyGrid");
+    const searchInput = document.getElementById("searchInput");
+    const statusFilter = document.getElementById("statusFilter");
+
+    function render(list) {
+      grid.innerHTML = "";
+      list.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <img src="${item.Thumbnail}" onclick="goDetail('${item.HP_ID}')">
+          <div class="card-body">
+            <div class="house-id">${item.HOUSE_ID}</div>
+            <div class="project">${item.Project_Name}</div>
+            <div class="price">฿${Number(item.Price).toLocaleString()}</div>
+            <div class="status">สถานะ: ${item.Status}</div>
+            <a class="detail-btn" href="details.html?id=${item.HP_ID}">
+              ดูรายละเอียด
+            </a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function goDetail(id) {
+      window.location.href = `details.html?id=${id}`;
+    }
+
+    function applyFilter() {
+      const keyword = searchInput.value.toLowerCase();
+      const status = statusFilter.value;
+
+      const filtered = properties.filter(p => {
+        const matchText =
+          p.HOUSE_ID.toLowerCase().includes(keyword) ||
+          p.Project_Name.toLowerCase().includes(keyword);
+
+        const matchStatus = status === "" || p.Status === status;
+
+        return matchText && matchStatus;
+      });
+
+      render(filtered);
+    }
+
+    searchInput.addEventListener("keyup", applyFilter);
+    statusFilter.addEventListener("change", applyFilter);
+  </script>
+
 </body>
 </html>
