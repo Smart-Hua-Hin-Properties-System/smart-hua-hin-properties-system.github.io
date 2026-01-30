@@ -2,45 +2,44 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>ADMIN</title>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;600&display=swap" rel="stylesheet">
+<title>ADMIN | SMART PROPERTIES SYSTEM</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
-body{font-family:Kanit;background:#f4f7f6;padding:20px}
-.card{background:#fff;border-radius:20px;padding:20px;max-width:500px;margin:auto}
+body{font-family:Kanit;background:#f4f7f6;padding:30px}
 input,select{width:100%;padding:10px;margin-bottom:10px}
-button{padding:12px;width:100%;background:#1a5276;color:#fff;border:none}
+button{padding:12px;background:#1a5276;color:#fff;border:0;width:100%}
 </style>
 </head>
 <body>
 
-<div class="card">
 <h2>ADMIN</h2>
+
 <input id="HOUSE_ID" placeholder="HOUSE_ID">
-<input id="Project_Name" placeholder="Project">
-<input id="Price" type="number" placeholder="Price">
-<select id="District">
-<option>Hua Hin</option><option>Pranburi</option><option>Cha-am</option>
-</select>
-<select id="Status">
-<option>Available</option><option>Pending</option><option>Sold</option>
+<input id="PROJECT" placeholder="Project">
+<input id="PRICE" placeholder="Price">
+<select id="STATUS">
+<option>Available</option>
+<option>Pending</option>
+<option>Sold</option>
 </select>
 <button onclick="save()">SAVE</button>
-<p id="msg"></p>
-</div>
 
 <script>
 const API="https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
+
 function save(){
-fetch(API,{method:'POST',mode:'no-cors',
-body:JSON.stringify({
-action:'save',
-HOUSE_ID:HOUSE_ID.value,
-Project_Name:Project_Name.value,
-Price:Price.value,
-District:District.value,
-Status:Status.value
-})});
-msg.innerText='บันทึกแล้ว';
+ fetch(API,{
+  method:"POST",
+  mode:"no-cors",
+  body:JSON.stringify({
+   action:"save",
+   HOUSE_ID:HOUSE_ID.value,
+   Project_Name:PROJECT.value,
+   Price:PRICE.value,
+   Status:STATUS.value
+  })
+ });
+ alert("Saved");
 }
 </script>
 </body>
