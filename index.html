@@ -7,36 +7,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root { --primary:#1a5276; --bg:#9CBCE3; --white:#ffffff; --green:#00d44b; --badge-bg:#154360; }
-    html, body { font-family:'Kanit',sans-serif; background:var(--bg); margin:0; padding:0; overflow-x:hidden; width:100%; }
-    * { box-sizing:border-box; }
+    :root { --primary: #1a5276; --bg: #9CBCE3; --white: #ffffff; --green: #00d44b; --badge-bg: #154360; }
+    html, body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 0; overflow-x: hidden; width: 100%; }
+    * { box-sizing: border-box; }
 
-    /* Loader */
-    #loader { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:9999; transition:0.5s; }
+    #loader { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: 0.5s; }
 
-    /* Header */
-    header { background:#fff; padding:12px 15px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.1); width:100%; }
-    .header-left { display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--primary); }
-    .flag-list { display:flex; gap:5px; }
-    .flag-btn { border:none; background:none; padding:0; cursor:pointer; }
-    .flag-btn img { width:24px; height:16px; border-radius:2px; }
+    header { background: #fff; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; }
+    .header-left { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--primary); }
+    .flag-list { display: flex; gap: 5px; }
+    .flag-btn { border: none; background: none; padding: 0; cursor: pointer; }
+    .flag-btn img { width: 24px; height: 16px; border-radius: 2px; }
 
-    /* Filter */
-    .filter-area { padding:15px; width:100%; max-width:1200px; margin:0 auto; }
-    .filter-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; background:rgba(255,255,255,0.9); padding:15px; border-radius:25px; box-shadow:0 8px 20px rgba(0,0,0,0.05); }
-    @media (min-width:768px){ .filter-grid{ grid-template-columns:repeat(4,1fr);} }
-    .select-box { width:100%; padding:12px; border-radius:12px; border:1px solid #ddd; font-family:'Kanit'; color:var(--primary); font-size:0.85rem; background:white; outline:none; }
+    .filter-area { padding: 15px; width: 100%; max-width: 1200px; margin: 0 auto; }
+    .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(255,255,255,0.9); padding: 15px; border-radius: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+    @media (min-width: 768px) { .filter-grid { grid-template-columns: repeat(4, 1fr); } }
+    .select-box { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd; font-family: 'Kanit'; color: var(--primary); font-size: 0.85rem; background: white; outline: none; }
 
-    /* Cards */
-    .property-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; padding:0 15px 40px; max-width:1200px; margin:0 auto; }
-    .card { background:var(--white); border-radius:40px; overflow:hidden; position:relative; box-shadow:0 15px 35px rgba(0,0,0,0.1); transition:0.3s; cursor:pointer; }
-    .badge-hp { position:absolute; top:15px; left:15px; background:var(--badge-bg); color:white; padding:5px 15px; border-radius:10px; font-size:0.75rem; font-weight:600; z-index:10; }
-    .card-img { width:100%; height:350px; object-fit:cover; background:#eee; }
-    .card-body { padding:25px; text-align:left; }
-    .house-id-text { font-size:1.8rem; font-weight:900; color:var(--primary); margin-bottom:2px; text-transform:uppercase; }
-    .project-name { font-size:0.85rem; color:#888; margin-bottom:12px; font-weight:500; }
-    .price-text { font-size:1.6rem; color:var(--primary); font-weight:700; margin-bottom:15px; display:block; }
-    .btn-detail { display:block; width:100%; padding:12px; background:var(--primary); color:white; text-align:center; border-radius:50px; text-decoration:none; font-weight:500; }
+    .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 0 15px 40px; max-width: 1200px; margin: 0 auto; }
+    .card { background: var(--white); border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: 0.3s; cursor: pointer; }
+
+    .badge-hp { position: absolute; top: 15px; left: 15px; background: var(--badge-bg); color: white; padding: 5px 15px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; z-index: 10; }
+
+    .card-img { width: 100%; height: 350px; object-fit: cover; background: #eee; }
+    .card-body { padding: 25px; text-align: left; }
+
+    .house-id-text { font-size: 1.8rem; font-weight: 900; color: var(--primary); margin-bottom: 2px; text-transform: uppercase; }
+    .project-name { font-size: 0.85rem; color: #888; margin-bottom: 12px; font-weight: 500; }
+    .price-text { font-size: 1.6rem; color: var(--primary); font-weight: 700; margin-bottom: 15px; display: block; }
+    .btn-detail { display: block; width: 100%; padding: 12px; background: var(--primary); color: white; text-align: center; border-radius: 50px; text-decoration: none; font-weight: 500; }
   </style>
 </head>
 <body>
@@ -45,8 +44,7 @@
 
 <header>
   <div class="header-left">
-    <i class="fas fa-bars fa-lg"></i>
-    <span style="font-size:0.85rem; font-weight:500; margin-left:5px;">เมนู</span>
+    <i class="fas fa-bars fa-lg"></i> <span style="font-size:0.85rem; font-weight:500; margin-left:5px;">เมนู</span>
   </div>
   <div style="font-weight:900; color:var(--primary); font-size:1.1rem; letter-spacing:-0.5px;">HUAHIN.PROPERTIES</div>
   <div class="flag-list">
@@ -87,28 +85,10 @@
 <div class="property-grid" id="grid"></div>
 
 <script>
-  const api = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
+  // ✅ ใส่ URL Web App ของคุณ (ตัวเดิมได้เลย)
+  const API_URL = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
   let allData = [];
 
-  // กัน error ถ้ายังไม่ได้ทำระบบภาษา
-  function setLanguage(){}
-
-  async function init() {
-    try {
-      const res = await fetch(`${api}?role=PUBLIC`);
-      allData = await res.json();
-
-      // เริ่มต้น: โหลดตำบลแบบ "ทั้งหมด" แล้วโชว์ทั้งหมด
-      updateSubDistricts(true);
-
-      document.getElementById('loader').style.display = 'none';
-    } catch (e) {
-      document.getElementById('loader').style.display = 'none';
-      document.getElementById('grid').innerHTML = "Connection Error";
-    }
-  }
-
-  // แปลง dropdown ไทย -> ค่าจริงในข้อมูล (District เป็นอังกฤษ)
   function normalizeDistrict(selected) {
     const map = {
       "หัวหิน": "Hua Hin",
@@ -118,62 +98,81 @@
     return map[selected] || selected || "";
   }
 
-  function updateSubDistricts(keepCurrentSub = false) {
-    const distSelect = document.getElementById('distFilter');
-    const subDistSelect = document.getElementById('subDistFilter');
-
-    const selectedDist = normalizeDistrict(distSelect.value);
-    const currentSub = subDistSelect.value;
-
-    subDistSelect.innerHTML = '<option value="">🏘️ ตำบลทั้งหมด</option>';
-
-    let dataForSub = [...allData];
-    if (selectedDist) {
-      dataForSub = dataForSub.filter(it => String(it.District || "").trim() === selectedDist);
-    }
-
-    const subDistricts = [...new Set(
-      dataForSub.map(it => String(it.SubDistrict || "").trim())
-    )].filter(Boolean).sort((a,b)=>a.localeCompare(b,'th'));
-
-    subDistricts.forEach(sub => {
-      const opt = document.createElement('option');
-      opt.value = sub;
-      opt.textContent = sub;
-      subDistSelect.appendChild(opt);
-    });
-
-    if (!keepCurrentSub) {
-      subDistSelect.value = "";
-    } else {
-      if (currentSub && subDistricts.includes(currentSub)) subDistSelect.value = currentSub;
-    }
-
-    applyFilters();
-  }
-
   function priceNum(x) {
     return Number(String(x || "0").replace(/,/g, "")) || 0;
   }
 
+  async function init() {
+    try {
+      const res = await fetch(`${API_URL}?role=PUBLIC`);
+      allData = await res.json();
+
+      // ✅ โหลดครั้งแรก: เติมตำบลทั้งหมดทุกอำเภอ และแสดงรายการทั้งหมด
+      updateSubDistricts(true);
+
+      document.getElementById("loader").style.display = "none";
+    } catch (e) {
+      document.getElementById("grid").innerHTML = "Connection Error";
+      document.getElementById("loader").style.display = "none";
+    }
+  }
+
+  // ✅ อัปเดต dropdown ตำบลให้ตรงตามอำเภอที่เลือก
+  // keepCurrentSub = true ใช้ตอน init เพื่อไม่รีเซ็ตซ้ำ
+  function updateSubDistricts(keepCurrentSub = false) {
+    const distRaw = document.getElementById("distFilter").value;
+    const dist = normalizeDistrict(distRaw);
+    const subSel = document.getElementById("subDistFilter");
+
+    const currentSub = subSel.value;
+
+    // reset options
+    subSel.innerHTML = `<option value="">🏘️ ตำบลทั้งหมด</option>`;
+
+    // ถ้าเลือกอำเภอ => เอาตำบลของอำเภอนั้น
+    // ถ้าไม่เลือกอำเภอ => เอาตำบลทั้งหมดทั้งฐานข้อมูล
+    let base = [...allData];
+    if (dist) base = base.filter(it => String(it.District || "").trim() === dist);
+
+    const subs = [...new Set(base.map(it => String(it.SubDistrict || "").trim()))]
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b, "th"));
+
+    subs.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.innerText = s;
+      subSel.appendChild(opt);
+    });
+
+    // ถ้าเปลี่ยนอำเภอ -> รีเซ็ตตำบล (กันค้างค่า)
+    if (!keepCurrentSub) {
+      subSel.value = "";
+    } else {
+      if (currentSub && subs.includes(currentSub)) subSel.value = currentSub;
+    }
+
+    // ✅ เลือกอำเภอแล้วต้องโชว์ทั้งหมดของอำเภอนั้นทันที
+    applyFilters();
+  }
+
   function renderGrid(items) {
-    const grid = document.getElementById('grid');
+    const grid = document.getElementById("grid");
     grid.innerHTML = "";
 
     items.forEach(it => {
-      const houseId = it.ID || it.HOUSE_ID || "";
-      const projectName = it.Project_Name || "";
-      const thumb = it.Thumbnail || "https://placehold.co/600x800";
-      const price = priceNum(it.Price);
+      const houseId = it.HOUSE_ID || it.ID || "";
+      const img = it.Thumbnail || "";
+      const price = priceNum(it.Price).toLocaleString();
 
       grid.innerHTML += `
-        <div class="card" onclick="window.location.href='details.html?id=${it.HP_ID}'">
+        <div class="card" onclick="window.location.href='details.html?id=${encodeURIComponent(it.HP_ID)}'">
           <div class="badge-hp">${it.HP_ID || ""}</div>
-          <img src="${thumb}" class="card-img" onerror="this.src='https://placehold.co/600x800'">
+          <img src="${img}" class="card-img" onerror="this.src='https://placehold.co/600x800'">
           <div class="card-body">
             <div class="house-id-text">${houseId}</div>
-            <div class="project-name">${projectName}</div>
-            <span class="price-text">฿${price.toLocaleString()}</span>
+            <div class="project-name">${it.Project_Name || ""}</div>
+            <span class="price-text">฿${price}</span>
             <div class="btn-detail">ดูรายละเอียด</div>
           </div>
         </div>
@@ -184,24 +183,24 @@
   function applyFilters() {
     let data = [...allData];
 
-    const d = normalizeDistrict(document.getElementById('distFilter').value);
-    const s = document.getElementById('subDistFilter').value;
-    const b = document.getElementById('bedFilter').value;
-    const sort = document.getElementById('priceSort').value;
+    const dRaw = document.getElementById("distFilter").value;
+    const d = normalizeDistrict(dRaw);
+    const s = document.getElementById("subDistFilter").value;
+    const b = document.getElementById("bedFilter").value;
+    const sort = document.getElementById("priceSort").value;
 
     if (d) data = data.filter(it => String(it.District || "").trim() === d);
     if (s) data = data.filter(it => String(it.SubDistrict || "").trim() === s);
+    if (b) data = data.filter(it => Number(it.Bedrooms || 0) >= Number(b));
 
-    if (b) {
-      const bedMin = Number(b);
-      data = data.filter(it => Number(it.Bedrooms || 0) >= bedMin);
-    }
-
-    if (sort === "low") data.sort((a,b) => priceNum(a.Price) - priceNum(b.Price));
-    if (sort === "high") data.sort((a,b) => priceNum(b.Price) - priceNum(a.Price));
+    if (sort === "low") data.sort((a, b) => priceNum(a.Price) - priceNum(b.Price));
+    if (sort === "high") data.sort((a, b) => priceNum(b.Price) - priceNum(a.Price));
 
     renderGrid(data);
   }
+
+  // กัน error ถ้ายังไม่ได้ทำระบบภาษา
+  function setLanguage(lang) { /* optional */ }
 
   window.onload = init;
 </script>
