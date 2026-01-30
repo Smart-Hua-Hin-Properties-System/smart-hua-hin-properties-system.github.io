@@ -4,89 +4,232 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Details | HUAHIN.PROPERTIES</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family:'Kanit',sans-serif; background:#9CBCE3; margin:0; overflow-x:hidden; width:100%; }
-    #loader { height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; text-align:center; }
-    .detail-card { background:white; width:92%; max-width:760px; margin:20px auto; border-radius:40px; padding:25px; display:none; box-shadow:0 10px 40px rgba(0,0,0,0.2); }
-    .btn-back{ background:#1a5276; color:white; border:none; padding:10px 25px; border-radius:50px; cursor:pointer; margin-bottom:20px; }
-    .img{ width:100%; border-radius:22px; margin:15px 0; object-fit:cover; max-height:520px; }
+    :root{
+      --bg:#9CBCE3;
+      --card:#ffffff;
+      --primary:#1a5276;
+      --shadow: 0 10px 40px rgba(0,0,0,.18);
+      --radius: 26px;
+    }
+
+    html, body{
+      margin:0;
+      padding:0;
+      width:100%;
+      height:100%;
+      font-family:'Kanit',sans-serif;
+      background:var(--bg);
+      overflow-x:hidden;
+      -webkit-text-size-adjust:100%;
+    }
+
+    /* ✅ Loader */
+    #loader{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#fff;
+      padding:24px;
+    }
+
+    .emoji-row{
+      display:flex;
+      gap:14px;
+      font-size:64px;
+      line-height:1;
+      margin-bottom:14px;
+      will-change: transform;
+    }
+
+    /* ✅ ดุ๊กดิ๊กแน่นอน */
+    .bounce{
+      display:inline-block;
+      animation: bounce .65s infinite alternate ease-in-out;
+    }
+    .bounce:nth-child(1){ animation-delay:0s; }
+    .bounce:nth-child(2){ animation-delay:.18s; }
+    .bounce:nth-child(3){ animation-delay:.36s; }
+
+    @keyframes bounce{
+      from{ transform: translateY(0); }
+      to{ transform: translateY(-16px); }
+    }
+
+    #msg{
+      margin:0;
+      font-weight:800;
+      letter-spacing:.5px;
+      font-size:22px;
+      text-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+
+    /* ✅ Layout container: พอดีมือถือ */
+    .wrap{
+      width:100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .card{
+      background:var(--card);
+      width: 100%;
+      max-width: 720px;
+      margin: 14px auto 22px;
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      padding: clamp(16px, 4vw, 26px);
+      display:none;
+      overflow:hidden; /* กันภาพ/องค์ประกอบล้น */
+    }
+
+    .back-btn{
+      background:var(--primary);
+      color:#fff;
+      border:none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight:600;
+      font-size: 15px;
+    }
+
+    .title{
+      margin: 14px 0 8px;
+      color: var(--primary);
+      font-size: clamp(22px, 5.2vw, 30px);
+      font-weight: 800;
+    }
+
+    .img{
+      width:100%;
+      max-width:100%;
+      height:auto;
+      border-radius: var(--radius);
+      margin: 12px 0 16px;
+      display:block;
+      object-fit:cover;
+      background:#eee;
+    }
+
+    .info{
+      font-size: 16px;
+      line-height: 1.9;
+      color:#1b2a38;
+    }
+
+    .row{
+      margin: 6px 0;
+      word-break: break-word;
+    }
+
+    .muted{
+      opacity:.75;
+      font-size: 14px;
+    }
+
+    /* กันการเกิดขอบขาว/ล้นบนมือถือบางรุ่น */
+    @supports(padding: max(0px)){
+      .wrap{ padding-left: max(14px, env(safe-area-inset-left)); padding-right: max(14px, env(safe-area-inset-right)); }
+    }
   </style>
 </head>
+
 <body>
 
+  <!-- ✅ Loader (ดุ๊กดิ๊ก) -->
   <div id="loader">
-    <div style="font-size:60px;">🏠 ✨ 🌴</div>
+    <div class="emoji-row" aria-hidden="true">
+      <span class="bounce">🏠</span>
+      <span class="bounce">✨</span>
+      <span class="bounce">🌴</span>
+    </div>
     <h2 id="msg">FETCHING DETAILS...</h2>
+    <div class="muted">กำลังโหลดข้อมูลบ้าน…</div>
   </div>
 
-  <div id="ui" class="detail-card">
-    <button class="btn-back" onclick="location.href='index.html'">⬅️ กลับหน้าหลัก</button>
-    <div id="content"></div>
+  <div class="wrap">
+    <div id="ui" class="card">
+      <button class="back-btn" onclick="history.back()">⬅️ กลับหน้าหลัก</button>
+      <div id="content"></div>
+    </div>
   </div>
 
-<script>
-  const api = "https://script.google.com/macros/s/AKfycbzkweiEgczmmU_4FiqRffJ4exvgZl3RwGPIBWXssLgkUpdMArif9-eUEv6yP2Kvtzh1/exec";
+  <script>
+    // ✅ ใส่ URL ของ Apps Script ของคุณ (เหมือนเดิม)
+    const api = "https://script.google.com/macros/s/AKfycbzkweiEgczmmU_4FiqRffJ4exvgZl3RwGPIBWXssLgkUpdMArif9-eUEv6yP2Kvtzh1/exec";
 
-  function formatToH3(url) {
-    if (!url || url.trim() === "") return "https://placehold.co/900x600";
-    if (url.includes("https://lh3.googleusercontent.com/d/")) return url;
+    function safeImg(url){
+      if(!url) return "https://placehold.co/900x600";
+      if(url.includes("lh3.googleusercontent.com/d/")) return url;
+      if(url.includes("id=")) return url.replace("id=","export=view&id=");
+      return url;
+    }
 
-    let fileId = "";
-    try {
-      if (url.includes("id=")) fileId = url.split("id=")[1].split("&")[0];
-      else if (url.includes("/file/d/")) fileId = url.split("/file/d/")[1].split("/")[0];
-    } catch(e) {}
-    return fileId ? ("https://lh3.googleusercontent.com/d/" + fileId) : url;
-  }
+    // ✅ ให้หน้าจอ “วาด loader” ก่อนเริ่ม fetch (แก้อาการนิ่งค้าง)
+    function nextPaint(){
+      return new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 0)));
+    }
 
-  async function load() {
-    const id = new URLSearchParams(window.location.search).get('id');
-    if (!id) { document.getElementById('msg').innerText = "รหัสไม่ถูกต้อง"; return; }
-
-    try {
-      const res = await fetch(`${api}?action=getProperty&id=${encodeURIComponent(id)}`);
-      const payload = await res.json();
-
-      if (!payload || !payload.success || !payload.item) {
-        document.getElementById('msg').innerText = "PROPERTY NOT FOUND";
+    async function load(){
+      const id = new URLSearchParams(window.location.search).get("id");
+      if(!id){
+        document.getElementById("msg").innerText = "รหัสไม่ถูกต้อง";
         return;
       }
 
-      const item = payload.item;
+      // ✅ บังคับให้ loader แสดงและ animate ก่อน
+      await nextPaint();
 
-      document.getElementById('loader').style.display = 'none';
-      document.getElementById('ui').style.display = 'block';
+      try{
+        const res = await fetch(`${api}?action=getOne&role=PUBLIC&id=${encodeURIComponent(id)}`, {
+          cache: "no-store"
+        });
 
-      const price = Number(item.Price || 0).toLocaleString();
-      const img = formatToH3(item.Thumbnail);
+        const out = await res.json();
 
-      document.getElementById('content').innerHTML = `
-        <h2 style="color:#1a5276; margin:0;">CODE: ${escapeHtml(item.ID || '')}</h2>
-        <img class="img" src="${img}" onerror="this.src='https://placehold.co/900x600'">
-        <div style="font-size:1.05rem; line-height:1.9;">
-          <p>💰 <b>ราคา:</b> ฿${price}</p>
-          <p>🏡 <b>โครงการ:</b> ${escapeHtml(item.Project_Name || '')}</p>
-          <p>📍 <b>ทำเล:</b> ${escapeHtml(item.District || '')} / ${escapeHtml(item.SubDistrict || '')}</p>
-          <p>🛌 <b>ห้องนอน:</b> ${escapeHtml(item.Bedrooms || '')} &nbsp;&nbsp; 🛁 <b>ห้องน้ำ:</b> ${escapeHtml(item.Bathrooms || '')}</p>
-          ${item.Status ? `<p>✅ <b>สถานะ:</b> ${escapeHtml(item.Status)}</p>` : ``}
-        </div>
-      `;
-    } catch (e) {
-      document.getElementById('msg').innerText = "ERROR LOADING DATA";
+        if(!out.success || !out.item){
+          document.getElementById("msg").innerText = "PROPERTY NOT FOUND";
+          return;
+        }
+
+        const item = out.item;
+
+        // ✅ แสดงผล
+        document.getElementById("loader").style.display = "none";
+        const ui = document.getElementById("ui");
+        ui.style.display = "block";
+
+        const img = safeImg(item.Thumbnail);
+        const price = Number(item.Price || 0).toLocaleString();
+
+        document.getElementById("content").innerHTML = `
+          <div class="title">CODE: ${item.ID || "-"}</div>
+
+          <img class="img" src="${img}" loading="eager" decoding="async"
+               onerror="this.src='https://placehold.co/900x600'">
+
+          <div class="info">
+            <div class="row">💰 <b>ราคา:</b> ฿${price}</div>
+            <div class="row">🏘️ <b>โครงการ:</b> ${item.Project_Name || "-"}</div>
+            <div class="row">📍 <b>ทำเล:</b> ${item.District || "-"} / ${item.SubDistrict || "-"}</div>
+            <div class="row">🛌 <b>ห้องนอน:</b> ${item.Bedrooms || "-"}</div>
+            <div class="row">✅ <b>สถานะ:</b> ${item.Status || "-"}</div>
+          </div>
+        `;
+      }catch(e){
+        document.getElementById("msg").innerText = "ERROR LOADING DATA";
+      }
     }
-  }
 
-  function escapeHtml(str){
-    return String(str || "")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  window.onload = load;
-</script>
+    window.onload = load;
+  </script>
 </body>
 </html>
