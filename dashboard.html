@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="th">
+"<!DOCTYPE html>
+<html lang=""th"">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta charset=""UTF-8"" />
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"" />
   <title>Details | HUAHIN.PROPERTIES</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href=""https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap"" rel=""stylesheet"">
   <style>
     body { font-family:'Kanit',sans-serif; background:#9CBCE3; margin:0; overflow-x:hidden; width:100%; }
     #loader { height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; text-align:center; }
@@ -15,41 +15,41 @@
 </head>
 <body>
 
-  <div id="loader">
-    <div style="font-size:60px;">🏠 ✨ 🌴</div>
-    <h2 id="msg">FETCHING DETAILS...</h2>
+  <div id=""loader"">
+    <div style=""font-size:60px;"">🏠 ✨ 🌴</div>
+    <h2 id=""msg"">FETCHING DETAILS...</h2>
   </div>
 
-  <div id="ui" class="detail-card">
-    <button class="btn-back" onclick="location.href='index.html'">⬅️ กลับหน้าหลัก</button>
-    <div id="content"></div>
+  <div id=""ui"" class=""detail-card"">
+    <button class=""btn-back"" onclick=""location.href='index.html'"">⬅️ กลับหน้าหลัก</button>
+    <div id=""content""></div>
   </div>
 
 <script>
-  const api = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
+  const api = ""https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec"";
 
   function formatToH3(url) {
-    if (!url || url.trim() === "") return "https://placehold.co/900x600";
-    if (url.includes("https://lh3.googleusercontent.com/d/")) return url;
+    if (!url || url.trim() === """") return ""https://placehold.co/900x600"";
+    if (url.includes(""https://lh3.googleusercontent.com/d/"")) return url;
 
-    let fileId = "";
+    let fileId = """";
     try {
-      if (url.includes("id=")) fileId = url.split("id=")[1].split("&")[0];
-      else if (url.includes("/file/d/")) fileId = url.split("/file/d/")[1].split("/")[0];
+      if (url.includes(""id="")) fileId = url.split(""id="")[1].split(""&"")[0];
+      else if (url.includes(""/file/d/"")) fileId = url.split(""/file/d/"")[1].split(""/"")[0];
     } catch(e) {}
-    return fileId ? ("https://lh3.googleusercontent.com/d/" + fileId) : url;
+    return fileId ? (""https://lh3.googleusercontent.com/d/"" + fileId) : url;
   }
 
   async function load() {
     const id = new URLSearchParams(window.location.search).get('id');
-    if (!id) { document.getElementById('msg').innerText = "รหัสไม่ถูกต้อง"; return; }
+    if (!id) { document.getElementById('msg').innerText = ""รหัสไม่ถูกต้อง""; return; }
 
     try {
       const res = await fetch(`${api}?action=getProperty&id=${encodeURIComponent(id)}`);
       const payload = await res.json();
 
       if (!payload || !payload.success || !payload.item) {
-        document.getElementById('msg').innerText = "PROPERTY NOT FOUND";
+        document.getElementById('msg').innerText = ""PROPERTY NOT FOUND"";
         return;
       }
 
@@ -62,9 +62,9 @@
       const img = formatToH3(item.Thumbnail);
 
       document.getElementById('content').innerHTML = `
-        <h2 style="color:#1a5276; margin:0;">CODE: ${escapeHtml(item.ID || '')}</h2>
-        <img class="img" src="${img}" onerror="this.src='https://placehold.co/900x600'">
-        <div style="font-size:1.05rem; line-height:1.9;">
+        <h2 style=""color:#1a5276; margin:0;"">CODE: ${escapeHtml(item.ID || '')}</h2>
+        <img class=""img"" src=""${img}"" onerror=""this.src='https://placehold.co/900x600'"">
+        <div style=""font-size:1.05rem; line-height:1.9;"">
           <p>💰 <b>ราคา:</b> ฿${price}</p>
           <p>🏡 <b>โครงการ:</b> ${escapeHtml(item.Project_Name || '')}</p>
           <p>📍 <b>ทำเล:</b> ${escapeHtml(item.District || '')} / ${escapeHtml(item.SubDistrict || '')}</p>
@@ -73,20 +73,20 @@
         </div>
       `;
     } catch (e) {
-      document.getElementById('msg').innerText = "ERROR LOADING DATA";
+      document.getElementById('msg').innerText = ""ERROR LOADING DATA"";
     }
   }
 
   function escapeHtml(str){
-    return String(str || "")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
+    return String(str || """")
+      .replaceAll(""&"",""&amp;"")
+      .replaceAll(""<"",""&lt;"")
+      .replaceAll("">"",""&gt;"")
+      .replaceAll('""',""&quot;"")
+      .replaceAll(""'"",""&#039;"");
   }
 
   window.onload = load;
 </script>
 </body>
-</html>
+</html>"
