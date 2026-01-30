@@ -1,11 +1,11 @@
-"<!DOCTYPE html>
-<html lang=""th"">
+<!DOCTYPE html>
+<html lang="th">
 <head>
-  <meta charset=""UTF-8"">
-  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SMART PROPERTY | CATALOG V101.0</title>
-  <link href=""https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap"" rel=""stylesheet"">
-  <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root { --primary:#1a5276; --bg:#9CBCE3; --white:#ffffff; --green:#00d44b; --badge-bg:#154360; }
     html, body { font-family:'Kanit',sans-serif; background:var(--bg); margin:0; padding:0; overflow-x:hidden; width:100%; }
@@ -41,53 +41,53 @@
 </head>
 <body>
 
-<div id=""loader""><h2 style=""color:white; font-weight:900;"">🏠 กำลังโหลดข้อมูล...</h2></div>
+<div id="loader"><h2 style="color:white; font-weight:900;">🏠 กำลังโหลดข้อมูล...</h2></div>
 
 <header>
-  <div class=""header-left"">
-    <i class=""fas fa-bars fa-lg""></i>
-    <span style=""font-size:0.85rem; font-weight:500; margin-left:5px;"">เมนู</span>
+  <div class="header-left">
+    <i class="fas fa-bars fa-lg"></i>
+    <span style="font-size:0.85rem; font-weight:500; margin-left:5px;">เมนู</span>
   </div>
-  <div style=""font-weight:900; color:var(--primary); font-size:1.1rem; letter-spacing:-0.5px;"">HUAHIN.PROPERTIES</div>
-  <div class=""flag-list"">
-    <button class=""flag-btn"" onclick=""setLanguage('th')""><img src=""https://flagcdn.com/w40/th.png"" alt=""TH""></button>
-    <button class=""flag-btn"" onclick=""setLanguage('en')""><img src=""https://flagcdn.com/w40/us.png"" alt=""EN""></button>
+  <div style="font-weight:900; color:var(--primary); font-size:1.1rem; letter-spacing:-0.5px;">HUAHIN.PROPERTIES</div>
+  <div class="flag-list">
+    <button class="flag-btn" onclick="setLanguage('th')"><img src="https://flagcdn.com/w40/th.png" alt="TH"></button>
+    <button class="flag-btn" onclick="setLanguage('en')"><img src="https://flagcdn.com/w40/us.png" alt="EN"></button>
   </div>
 </header>
 
-<div class=""filter-area"">
-  <div class=""filter-grid"">
-    <select class=""select-box"" id=""distFilter"" onchange=""updateSubDistricts()"">
-      <option value="""">📍 อำเภอทั้งหมด</option>
-      <option value=""หัวหิน"">หัวหิน</option>
-      <option value=""ชะอำ"">ชะอำ</option>
-      <option value=""ปราณบุรี"">ปราณบุรี</option>
+<div class="filter-area">
+  <div class="filter-grid">
+    <select class="select-box" id="distFilter" onchange="updateSubDistricts()">
+      <option value="">📍 อำเภอทั้งหมด</option>
+      <option value="หัวหิน">หัวหิน</option>
+      <option value="ชะอำ">ชะอำ</option>
+      <option value="ปราณบุรี">ปราณบุรี</option>
     </select>
 
-    <select class=""select-box"" id=""subDistFilter"" onchange=""applyFilters()"">
-      <option value="""">🏘️ ตำบลทั้งหมด</option>
+    <select class="select-box" id="subDistFilter" onchange="applyFilters()">
+      <option value="">🏘️ ตำบลทั้งหมด</option>
     </select>
 
-    <select class=""select-box"" id=""bedFilter"" onchange=""applyFilters()"">
-      <option value="""">🛌 ห้องนอนทั้งหมด</option>
-      <option value=""1"">1 Bed</option>
-      <option value=""2"">2 Beds</option>
-      <option value=""3"">3 Beds</option>
-      <option value=""4"">4+ Beds</option>
+    <select class="select-box" id="bedFilter" onchange="applyFilters()">
+      <option value="">🛌 ห้องนอนทั้งหมด</option>
+      <option value="1">1 Bed</option>
+      <option value="2">2 Beds</option>
+      <option value="3">3 Beds</option>
+      <option value="4">4+ Beds</option>
     </select>
 
-    <select class=""select-box"" id=""priceSort"" onchange=""applyFilters()"">
-      <option value="""">💰 เรียงตามราคา</option>
-      <option value=""low"">น้อยไปมาก</option>
-      <option value=""high"">มากไปน้อย</option>
+    <select class="select-box" id="priceSort" onchange="applyFilters()">
+      <option value="">💰 เรียงตามราคา</option>
+      <option value="low">น้อยไปมาก</option>
+      <option value="high">มากไปน้อย</option>
     </select>
   </div>
 </div>
 
-<div class=""property-grid"" id=""grid""></div>
+<div class="property-grid" id="grid"></div>
 
 <script>
-  const api = ""https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec"";
+  const api = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
   let allData = [];
 
   // กัน error ถ้ายังไม่ได้ทำระบบภาษา
@@ -98,24 +98,24 @@
       const res = await fetch(`${api}?role=PUBLIC`);
       allData = await res.json();
 
-      // เริ่มต้น: โหลดตำบลแบบ ""ทั้งหมด"" แล้วโชว์ทั้งหมด
+      // เริ่มต้น: โหลดตำบลแบบ "ทั้งหมด" แล้วโชว์ทั้งหมด
       updateSubDistricts(true);
 
       document.getElementById('loader').style.display = 'none';
     } catch (e) {
       document.getElementById('loader').style.display = 'none';
-      document.getElementById('grid').innerHTML = ""Connection Error"";
+      document.getElementById('grid').innerHTML = "Connection Error";
     }
   }
 
   // แปลง dropdown ไทย -> ค่าจริงในข้อมูล (District เป็นอังกฤษ)
   function normalizeDistrict(selected) {
     const map = {
-      ""หัวหิน"": ""Hua Hin"",
-      ""ชะอำ"": ""Cha-am"",
-      ""ปราณบุรี"": ""Pranburi""
+      "หัวหิน": "Hua Hin",
+      "ชะอำ": "Cha-am",
+      "ปราณบุรี": "Pranburi"
     };
-    return map[selected] || selected || """";
+    return map[selected] || selected || "";
   }
 
   function updateSubDistricts(keepCurrentSub = false) {
@@ -125,15 +125,15 @@
     const selectedDist = normalizeDistrict(distSelect.value);
     const currentSub = subDistSelect.value;
 
-    subDistSelect.innerHTML = '<option value="""">🏘️ ตำบลทั้งหมด</option>';
+    subDistSelect.innerHTML = '<option value="">🏘️ ตำบลทั้งหมด</option>';
 
     let dataForSub = [...allData];
     if (selectedDist) {
-      dataForSub = dataForSub.filter(it => String(it.District || """").trim() === selectedDist);
+      dataForSub = dataForSub.filter(it => String(it.District || "").trim() === selectedDist);
     }
 
     const subDistricts = [...new Set(
-      dataForSub.map(it => String(it.SubDistrict || """").trim())
+      dataForSub.map(it => String(it.SubDistrict || "").trim())
     )].filter(Boolean).sort((a,b)=>a.localeCompare(b,'th'));
 
     subDistricts.forEach(sub => {
@@ -144,7 +144,7 @@
     });
 
     if (!keepCurrentSub) {
-      subDistSelect.value = """";
+      subDistSelect.value = "";
     } else {
       if (currentSub && subDistricts.includes(currentSub)) subDistSelect.value = currentSub;
     }
@@ -153,28 +153,28 @@
   }
 
   function priceNum(x) {
-    return Number(String(x || ""0"").replace(/,/g, """")) || 0;
+    return Number(String(x || "0").replace(/,/g, "")) || 0;
   }
 
   function renderGrid(items) {
     const grid = document.getElementById('grid');
-    grid.innerHTML = """";
+    grid.innerHTML = "";
 
     items.forEach(it => {
-      const houseId = it.ID || it.HOUSE_ID || """";
-      const projectName = it.Project_Name || """";
-      const thumb = it.Thumbnail || ""https://placehold.co/600x800"";
+      const houseId = it.ID || it.HOUSE_ID || "";
+      const projectName = it.Project_Name || "";
+      const thumb = it.Thumbnail || "https://placehold.co/600x800";
       const price = priceNum(it.Price);
 
       grid.innerHTML += `
-        <div class=""card"" onclick=""window.location.href='details.html?id=${it.HP_ID}'"">
-          <div class=""badge-hp"">${it.HP_ID || """"}</div>
-          <img src=""${thumb}"" class=""card-img"" onerror=""this.src='https://placehold.co/600x800'"">
-          <div class=""card-body"">
-            <div class=""house-id-text"">${houseId}</div>
-            <div class=""project-name"">${projectName}</div>
-            <span class=""price-text"">฿${price.toLocaleString()}</span>
-            <div class=""btn-detail"">ดูรายละเอียด</div>
+        <div class="card" onclick="window.location.href='details.html?id=${it.HP_ID}'">
+          <div class="badge-hp">${it.HP_ID || ""}</div>
+          <img src="${thumb}" class="card-img" onerror="this.src='https://placehold.co/600x800'">
+          <div class="card-body">
+            <div class="house-id-text">${houseId}</div>
+            <div class="project-name">${projectName}</div>
+            <span class="price-text">฿${price.toLocaleString()}</span>
+            <div class="btn-detail">ดูรายละเอียด</div>
           </div>
         </div>
       `;
@@ -189,16 +189,16 @@
     const b = document.getElementById('bedFilter').value;
     const sort = document.getElementById('priceSort').value;
 
-    if (d) data = data.filter(it => String(it.District || """").trim() === d);
-    if (s) data = data.filter(it => String(it.SubDistrict || """").trim() === s);
+    if (d) data = data.filter(it => String(it.District || "").trim() === d);
+    if (s) data = data.filter(it => String(it.SubDistrict || "").trim() === s);
 
     if (b) {
       const bedMin = Number(b);
       data = data.filter(it => Number(it.Bedrooms || 0) >= bedMin);
     }
 
-    if (sort === ""low"") data.sort((a,b) => priceNum(a.Price) - priceNum(b.Price));
-    if (sort === ""high"") data.sort((a,b) => priceNum(b.Price) - priceNum(a.Price));
+    if (sort === "low") data.sort((a,b) => priceNum(a.Price) - priceNum(b.Price));
+    if (sort === "high") data.sort((a,b) => priceNum(b.Price) - priceNum(a.Price));
 
     renderGrid(data);
   }
@@ -207,4 +207,4 @@
 </script>
 
 </body>
-</html>"
+</html>
