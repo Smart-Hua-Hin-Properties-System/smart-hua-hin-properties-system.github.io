@@ -1,149 +1,210 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMIN | SMART PROPERTIES SYSTEM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #1a5276; --bg: #9fb8dc; --white: #ffffff; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        
-        /* 🔒 Login Box */
-        .login-card { background: white; padding: 40px; border-radius: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); width: 100%; max-width: 350px; text-align: center; }
-        .pin-input { width: 100%; padding: 15px; font-size: 24px; text-align: center; border-radius: 15px; border: 2px solid #eee; letter-spacing: 10px; margin: 20px 0; outline: none; }
-        
-        /* 📊 Dashboard (Hidden by Default) */
-        #adminDashboard { display: none; background: #f4f7f6; width: 100vw; height: 100vh; overflow-y: auto; position: fixed; inset: 0; padding: 20px; box-sizing: border-box; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .admin-card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        
-        /* UI Elements */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 500; color: var(--primary); }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; font-family: 'Kanit'; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-logout { background: #e74c3c; color: white; margin-top: 10px; padding: 10px; }
-        
-        .hidden { display: none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SMART PROPERTY | CATALOG V101.0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --primary:#1a5276; --bg:#9CBCE3; --white:#ffffff; --green:#00d44b; --badge-bg:#154360; }
+    html, body { font-family:'Kanit',sans-serif; background:var(--bg); margin:0; padding:0; overflow-x:hidden; width:100%; }
+    * { box-sizing:border-box; }
+
+    /* Loader */
+    #loader { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:9999; transition:0.5s; }
+
+    /* Header */
+    header { background:#fff; padding:12px 15px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.1); width:100%; }
+    .header-left { display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--primary); }
+    .flag-list { display:flex; gap:5px; }
+    .flag-btn { border:none; background:none; padding:0; cursor:pointer; }
+    .flag-btn img { width:24px; height:16px; border-radius:2px; }
+
+    /* Filter */
+    .filter-area { padding:15px; width:100%; max-width:1200px; margin:0 auto; }
+    .filter-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; background:rgba(255,255,255,0.9); padding:15px; border-radius:25px; box-shadow:0 8px 20px rgba(0,0,0,0.05); }
+    @media (min-width:768px){ .filter-grid{ grid-template-columns:repeat(4,1fr);} }
+    .select-box { width:100%; padding:12px; border-radius:12px; border:1px solid #ddd; font-family:'Kanit'; color:var(--primary); font-size:0.85rem; background:white; outline:none; }
+
+    /* Cards */
+    .property-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; padding:0 15px 40px; max-width:1200px; margin:0 auto; }
+    .card { background:var(--white); border-radius:40px; overflow:hidden; position:relative; box-shadow:0 15px 35px rgba(0,0,0,0.1); transition:0.3s; cursor:pointer; }
+    .badge-hp { position:absolute; top:15px; left:15px; background:var(--badge-bg); color:white; padding:5px 15px; border-radius:10px; font-size:0.75rem; font-weight:600; z-index:10; }
+    .card-img { width:100%; height:350px; object-fit:cover; background:#eee; }
+    .card-body { padding:25px; text-align:left; }
+    .house-id-text { font-size:1.8rem; font-weight:900; color:var(--primary); margin-bottom:2px; text-transform:uppercase; }
+    .project-name { font-size:0.85rem; color:#888; margin-bottom:12px; font-weight:500; }
+    .price-text { font-size:1.6rem; color:var(--primary); font-weight:700; margin-bottom:15px; display:block; }
+    .btn-detail { display:block; width:100%; padding:12px; background:var(--primary); color:white; text-align:center; border-radius:50px; text-decoration:none; font-weight:500; }
+  </style>
 </head>
 <body>
 
-    <div class="login-card" id="loginSection">
-        <div style="font-size: 50px;">🛡️</div>
-        <h2 style="color: var(--primary);">AGENT LOGIN</h2>
-        <p style="color: #888; font-size: 0.9rem;">กรุณากรอกรหัส PIN ของท่าน</p>
-        <input type="password" id="pinInput" class="pin-input" maxlength="6" placeholder="******">
-        <button class="btn btn-primary" onclick="handleLogin()">เข้าสู่ระบบ</button>
-        <div id="loginMsg" style="margin-top:15px; color:red; font-size:0.8rem;"></div>
-    </div>
+<div id="loader"><h2 style="color:white; font-weight:900;">🏠 กำลังโหลดข้อมูล...</h2></div>
 
-    <div id="adminDashboard">
-        <div class="container">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h2 style="color: var(--primary); margin:0;">จัดการรายการบ้าน</h2>
-                <button class="btn-logout btn" onclick="location.reload()" style="width:auto;">ออกจากระบบ</button>
-            </div>
+<header>
+  <div class="header-left">
+    <i class="fas fa-bars fa-lg"></i>
+    <span style="font-size:0.85rem; font-weight:500; margin-left:5px;">เมนู</span>
+  </div>
+  <div style="font-weight:900; color:var(--primary); font-size:1.1rem; letter-spacing:-0.5px;">HUAHIN.PROPERTIES</div>
+  <div class="flag-list">
+    <button class="flag-btn" onclick="setLanguage('th')"><img src="https://flagcdn.com/w40/th.png" alt="TH"></button>
+    <button class="flag-btn" onclick="setLanguage('en')"><img src="https://flagcdn.com/w40/us.png" alt="EN"></button>
+  </div>
+</header>
 
-            <div class="admin-card">
-                <form id="propertyForm">
-                    <div class="form-group">
-                        <label>รหัสระบบ (HP_ID)</label>
-                        <input type="text" id="HP_ID" readonly placeholder="สร้างให้อัตโนมัติ" style="background:#eee;">
-                    </div>
-                    <div class="form-group">
-                        <label>รหัสบ้าน / เลขแปลง (HOUSE_ID)</label>
-                        <input type="text" id="HOUSE_ID" required placeholder="เช่น M16">
-                    </div>
-                    <div class="form-group">
-                        <label>ชื่อโครงการ</label>
-                        <input type="text" id="Project_Name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ราคา (บาท)</label>
-                        <input type="number" id="Price" required>
-                    </div>
-                    <div class="form-group">
-                        <label>ลิงก์รูปภาพ (Thumbnail)</label>
-                        <input type="text" id="Thumbnail" placeholder="วางลิงก์จาก Google Drive">
-                    </div>
-                    <div class="form-group">
-                        <label>อำเภอ</label>
-                        <select id="District">
-                            <option value="หัวหิน">หัวหิน</option>
-                            <option value="ชะอำ">ชะอำ</option>
-                            <option value="ปราณบุรี">ปราณบุรี</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">💾 บันทึกข้อมูล</button>
-                </form>
-                <div id="saveMsg" style="margin-top:15px; text-align:center; font-weight:500;"></div>
-            </div>
-        </div>
-    </div>
+<div class="filter-area">
+  <div class="filter-grid">
+    <select class="select-box" id="distFilter" onchange="updateSubDistricts()">
+      <option value="">📍 อำเภอทั้งหมด</option>
+      <option value="หัวหิน">หัวหิน</option>
+      <option value="ชะอำ">ชะอำ</option>
+      <option value="ปราณบุรี">ปราณบุรี</option>
+    </select>
+
+    <select class="select-box" id="subDistFilter" onchange="applyFilters()">
+      <option value="">🏘️ ตำบลทั้งหมด</option>
+    </select>
+
+    <select class="select-box" id="bedFilter" onchange="applyFilters()">
+      <option value="">🛌 ห้องนอนทั้งหมด</option>
+      <option value="1">1 Bed</option>
+      <option value="2">2 Beds</option>
+      <option value="3">3 Beds</option>
+      <option value="4">4+ Beds</option>
+    </select>
+
+    <select class="select-box" id="priceSort" onchange="applyFilters()">
+      <option value="">💰 เรียงตามราคา</option>
+      <option value="low">น้อยไปมาก</option>
+      <option value="high">มากไปน้อย</option>
+    </select>
+  </div>
+</div>
+
+<div class="property-grid" id="grid"></div>
 
 <script>
-    // 🚩 เปลี่ยนเป็น URL ของ Apps Script ที่คุณ Deploy ใหม่ (สำคัญมาก)
-    const API_URL = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
+  const api = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
+  let allData = [];
 
-    /** 🔒 ระบบ LOGIN */
-    async function handleLogin() {
-        const pin = document.getElementById('pinInput').value;
-        if (!pin) return;
+  // กัน error ถ้ายังไม่ได้ทำระบบภาษา
+  function setLanguage(){}
 
-        try {
-            const res = await fetch(API_URL, {
-                method: 'POST',
-                body: JSON.stringify({ action: "login", pin: pin })
-            });
-            const data = await res.json();
+  async function init() {
+    try {
+      const res = await fetch(`${api}?role=PUBLIC`);
+      allData = await res.json();
 
-            if (data.success) {
-                document.getElementById('loginSection').classList.add('hidden');
-                document.getElementById('adminDashboard').style.display = 'block';
-                document.body.style.background = "#f4f7f6";
-            } else {
-                document.getElementById('loginMsg').innerText = data.message;
-            }
-        } catch (e) {
-            document.getElementById('loginMsg').innerText = "เกิดข้อผิดพลาดในการเชื่อมต่อ";
-        }
+      // เริ่มต้น: โหลดตำบลแบบ "ทั้งหมด" แล้วโชว์ทั้งหมด
+      updateSubDistricts(true);
+
+      document.getElementById('loader').style.display = 'none';
+    } catch (e) {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('grid').innerHTML = "Connection Error";
+    }
+  }
+
+  // แปลง dropdown ไทย -> ค่าจริงในข้อมูล (District เป็นอังกฤษ)
+  function normalizeDistrict(selected) {
+    const map = {
+      "หัวหิน": "Hua Hin",
+      "ชะอำ": "Cha-am",
+      "ปราณบุรี": "Pranburi"
+    };
+    return map[selected] || selected || "";
+  }
+
+  function updateSubDistricts(keepCurrentSub = false) {
+    const distSelect = document.getElementById('distFilter');
+    const subDistSelect = document.getElementById('subDistFilter');
+
+    const selectedDist = normalizeDistrict(distSelect.value);
+    const currentSub = subDistSelect.value;
+
+    subDistSelect.innerHTML = '<option value="">🏘️ ตำบลทั้งหมด</option>';
+
+    let dataForSub = [...allData];
+    if (selectedDist) {
+      dataForSub = dataForSub.filter(it => String(it.District || "").trim() === selectedDist);
     }
 
-    /** 💾 ระบบบันทึกข้อมูล */
-    document.getElementById('propertyForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const saveMsg = document.getElementById('saveMsg');
-        saveMsg.innerText = "⏳ กำลังบันทึก...";
-        
-        const payload = {
-            action: "save",
-            HP_ID: document.getElementById('HP_ID').value,
-            HOUSE_ID: document.getElementById('HOUSE_ID').value,
-            Project_Name: document.getElementById('Project_Name').value,
-            Price: document.getElementById('Price').value,
-            Thumbnail: document.getElementById('Thumbnail').value,
-            District: document.getElementById('District').value,
-            Status: "Available"
-        };
+    const subDistricts = [...new Set(
+      dataForSub.map(it => String(it.SubDistrict || "").trim())
+    )].filter(Boolean).sort((a,b)=>a.localeCompare(b,'th'));
 
-        try {
-            const res = await fetch(API_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            });
-            const result = await res.json();
-            if (result.success) {
-                saveMsg.innerText = "✅ " + result.message;
-                if(result.newId) document.getElementById('HP_ID').value = result.newId;
-            }
-        } catch (e) {
-            saveMsg.innerText = "❌ เกิดข้อผิดพลาดในการบันทึก";
-        }
-    };
+    subDistricts.forEach(sub => {
+      const opt = document.createElement('option');
+      opt.value = sub;
+      opt.textContent = sub;
+      subDistSelect.appendChild(opt);
+    });
+
+    if (!keepCurrentSub) {
+      subDistSelect.value = "";
+    } else {
+      if (currentSub && subDistricts.includes(currentSub)) subDistSelect.value = currentSub;
+    }
+
+    applyFilters();
+  }
+
+  function priceNum(x) {
+    return Number(String(x || "0").replace(/,/g, "")) || 0;
+  }
+
+  function renderGrid(items) {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = "";
+
+    items.forEach(it => {
+      const houseId = it.ID || it.HOUSE_ID || "";
+      const projectName = it.Project_Name || "";
+      const thumb = it.Thumbnail || "https://placehold.co/600x800";
+      const price = priceNum(it.Price);
+
+      grid.innerHTML += `
+        <div class="card" onclick="window.location.href='details.html?id=${it.HP_ID}'">
+          <div class="badge-hp">${it.HP_ID || ""}</div>
+          <img src="${thumb}" class="card-img" onerror="this.src='https://placehold.co/600x800'">
+          <div class="card-body">
+            <div class="house-id-text">${houseId}</div>
+            <div class="project-name">${projectName}</div>
+            <span class="price-text">฿${price.toLocaleString()}</span>
+            <div class="btn-detail">ดูรายละเอียด</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function applyFilters() {
+    let data = [...allData];
+
+    const d = normalizeDistrict(document.getElementById('distFilter').value);
+    const s = document.getElementById('subDistFilter').value;
+    const b = document.getElementById('bedFilter').value;
+    const sort = document.getElementById('priceSort').value;
+
+    if (d) data = data.filter(it => String(it.District || "").trim() === d);
+    if (s) data = data.filter(it => String(it.SubDistrict || "").trim() === s);
+
+    if (b) {
+      const bedMin = Number(b);
+      data = data.filter(it => Number(it.Bedrooms || 0) >= bedMin);
+    }
+
+    if (sort === "low") data.sort((a,b) => priceNum(a.Price) - priceNum(b.Price));
+    if (sort === "high") data.sort((a,b) => priceNum(b.Price) - priceNum(a.Price));
+
+    renderGrid(data);
+  }
+
+  window.onload = init;
 </script>
+
 </body>
 </html>
