@@ -1,157 +1,174 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMIN | SMART PROPERTIES SYSTEM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #1a5276; --secondary: #154360; --bg: #f4f7f6; --white: #ffffff; }
-        body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .admin-container { max-width: 600px; margin: 0 auto; }
-        
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { color: var(--primary); margin: 0; font-weight: 600; }
-        
-        .card { background: var(--white); border-radius: 25px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--primary); font-size: 0.9rem; }
-        .form-group input, .form-group select, .form-group textarea { 
-            width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #ddd; 
-            font-family: 'Kanit'; font-size: 1rem; box-sizing: border-box; outline: none; transition: 0.3s;
-        }
-        .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.1); }
-        .form-group input[readonly] { background: #f8f9fa; color: #888; cursor: not-allowed; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADMIN | SMART PROPERTIES SYSTEM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --primary: #1a5276; --secondary: #154360; --bg: #f4f7f6; --white: #ffffff; }
+    body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+    .admin-container { max-width: 600px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 { color: var(--primary); margin: 0; font-weight: 600; }
+    .card { background: var(--white); border-radius: 25px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--primary); font-size: 0.9rem; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #ddd;
+      font-family: 'Kanit'; font-size: 1rem; box-sizing: border-box; outline: none; transition: 0.3s;
+    }
+    .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.1); }
+    .form-group input[readonly] { background: #f8f9fa; color: #888; cursor: not-allowed; }
 
-        .btn-submit { 
-            width: 100%; padding: 15px; background: var(--primary); color: white; 
-            border: none; border-radius: 15px; font-size: 1.1rem; font-weight: 600; 
-            cursor: pointer; transition: 0.3s; margin-top: 10px;
-        }
-        .btn-submit:hover { background: var(--secondary); transform: translateY(-2px); }
-        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-submit {
+      width: 100%; padding: 15px; background: var(--primary); color: white;
+      border: none; border-radius: 15px; font-size: 1.1rem; font-weight: 600;
+      cursor: pointer; transition: 0.3s; margin-top: 10px;
+    }
+    .btn-submit:hover { background: var(--secondary); transform: translateY(-2px); }
+    .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
 
-        .status-msg { margin-top: 20px; text-align: center; padding: 10px; border-radius: 10px; display: none; }
-        .success { background: #d4edda; color: #155724; display: block; }
-        .error { background: #f8d7da; color: #721c24; display: block; }
-    </style>
+    .status-msg { margin-top: 20px; text-align: center; padding: 10px; border-radius: 10px; display: none; }
+    .success { background: #d4edda; color: #155724; display: block; }
+    .error { background: #f8d7da; color: #721c24; display: block; }
+    .hint { font-size: 0.85rem; color: #666; margin-top: 6px; line-height: 1.4; }
+  </style>
 </head>
 <body>
 
 <div class="admin-container">
-    <div class="header">
-        <h1><i class="fas fa-user-shield"></i> ระบบจัดการหลังบ้าน</h1>
-        <p>แก้ไขข้อมูลโดยใช้ระบบ HOUSE_ID</p>
-    </div>
+  <div class="header">
+    <h1><i class="fas fa-user-shield"></i> ระบบจัดการหลังบ้าน</h1>
+    <p>เพิ่ม/แก้ไขข้อมูล (บันทึกลง Google Sheet)</p>
+  </div>
 
-    <div class="card">
-        <form id="propertyForm">
-            <div class="form-group">
-                <label>รหัสระบบ (HP_ID) *ล็อกอัตโนมัติ</label>
-                <input type="text" id="f_HP_ID" placeholder="จะปรากฏเมื่อเลือกข้อมูลเพื่อแก้ไข" readonly>
-            </div>
+  <div class="card">
+    <form id="propertyForm">
+      <div class="form-group">
+        <label>รหัสระบบ (HP_ID) *ถ้าว่าง ระบบจะสร้างให้เอง</label>
+        <input type="text" id="f_HP_ID" placeholder="ปล่อยว่างเพื่อสร้างอัตโนมัติ">
+        <div class="hint">ถ้าคุณต้องการ “แก้ไขรายการเดิม” ให้ใส่ HP_ID เดิม เช่น HP-0001</div>
+      </div>
 
-            <div class="form-group">
-                <label>รหัสบ้าน / เลขแปลง (HOUSE_ID)</label>
-                <input type="text" id="f_HOUSE_ID" required placeholder="เช่น M40, A12, Villa-01">
-            </div>
+      <div class="form-group">
+        <label>รหัสบ้าน / เลขแปลง (HOUSE_ID) *</label>
+        <input type="text" id="f_HOUSE_ID" required placeholder="เช่น M40, A12, Villa-01">
+      </div>
 
-            <div class="form-group">
-                <label>ชื่อโครงการ</label>
-                <input type="text" id="f_Project_Name" required placeholder="ระบุชื่อโครงการ">
-            </div>
+      <div class="form-group">
+        <label>ชื่อโครงการ *</label>
+        <input type="text" id="f_Project_Name" required placeholder="ระบุชื่อโครงการ">
+      </div>
 
-            <div class="form-group">
-                <label>ราคา (เฉพาะตัวเลข)</label>
-                <input type="number" id="f_Price" required placeholder="ตัวอย่าง 5500000">
-            </div>
+      <div class="form-group">
+        <label>ราคา (เฉพาะตัวเลข) *</label>
+        <input type="number" id="f_Price" required placeholder="ตัวอย่าง 5500000">
+      </div>
 
-            <div class="form-group">
-                <label>อำเภอ</label>
-                <select id="f_District">
-                    <option value="หัวหิน">หัวหิน</option>
-                    <option value="ชะอำ">ชะอำ</option>
-                    <option value="ปราณบุรี">ปราณบุรี</option>
-                </select>
-            </div>
+      <div class="form-group">
+        <label>อำเภอ *</label>
+        <select id="f_District" required>
+          <option value="หัวหิน">หัวหิน</option>
+          <option value="ชะอำ">ชะอำ</option>
+          <option value="ปราณบุรี">ปราณบุรี</option>
+        </select>
+        <div class="hint">ระบบจะส่งไปเป็นภาษาอังกฤษในฐานข้อมูล (Hua Hin / Cha-am / Pranburi)</div>
+      </div>
 
-            <div class="form-group">
-                <label>สถานะทรัพย์</label>
-                <select id="f_Status">
-                    <option value="Available">พร้อมขาย (Available)</option>
-                    <option value="Sold">ขายแล้ว (Sold)</option>
-                    <option value="Pending">จองแล้ว (Pending)</option>
-                </select>
-            </div>
+      <div class="form-group">
+        <label>สถานะทรัพย์ *</label>
+        <select id="f_Status" required>
+          <option value="Available">พร้อมขาย (Available)</option>
+          <option value="Sold">ขายแล้ว (Sold)</option>
+          <option value="Pending">จองแล้ว (Pending)</option>
+        </select>
+      </div>
 
-            <button type="submit" class="btn-submit" id="submitBtn">
-                <i class="fas fa-save"></i> บันทึกข้อมูลไปยัง Google Sheet
-            </button>
-        </form>
+      <div class="form-group">
+        <label>Thumbnail (ลิงก์รูป) — แนะนำใส่ลิงก์จาก Google Drive</label>
+        <input type="text" id="f_Thumbnail" placeholder="วางลิงก์รูป เช่น https://drive.google.com/file/d/xxxx/view">
+        <div class="hint">
+          ใส่ลิงก์แบบไหนก็ได้: drive.google.com/file/d/... หรือ ...?id=... หรือ URL รูปทั่วไป<br>
+          ระบบ backend จะทำให้แสดงผลเป็น Public ผ่าน Image Proxy
+        </div>
+      </div>
 
-        <div id="statusBox" class="status-msg"></div>
-    </div>
-    
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="index.html" style="color: var(--primary); text-decoration: none;"><i class="fas fa-arrow-left"></i> กลับไปหน้าเว็บหลัก</a>
-    </div>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <i class="fas fa-save"></i> บันทึกข้อมูลไปยัง Google Sheet
+      </button>
+    </form>
+
+    <div id="statusBox" class="status-msg"></div>
+  </div>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <a href="index.html" style="color: var(--primary); text-decoration: none;">
+      <i class="fas fa-arrow-left"></i> กลับไปหน้าเว็บหลัก
+    </a>
+  </div>
 </div>
 
 <script>
-    /** ============================================================
-     * 🚩 วาง URL ของ Apps Script ที่คุณ Deploy ไว้ข้างล่างนี้
-     * ============================================================ */
-    const API_URL = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbyS8rGtSnhVS8RdWje7icXZVCw5iBBJoWkEpOYm649OC6FOhnrVi87dD9GsJl_m_FVw/exec";
 
-    const form = document.getElementById('propertyForm');
-    const btn = document.getElementById('submitBtn');
-    const statusBox = document.getElementById('statusBox');
+  const form = document.getElementById('propertyForm');
+  const btn = document.getElementById('submitBtn');
+  const statusBox = document.getElementById('statusBox');
 
-    form.onsubmit = async (e) => {
-        e.preventDefault();
-        
-        // แสดงสถานะกำลังบันทึก
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังบันทึก...';
-        showStatus('กำลังเชื่อมต่อฐานข้อมูล...', '');
+  function normalizeDistrict(selected) {
+    const map = { "หัวหิน": "Hua Hin", "ชะอำ": "Cha-am", "ปราณบุรี": "Pranburi" };
+    return map[selected] || selected || "";
+  }
 
-        const payload = {
-            action: "save", // สั่งให้ Apps Script ทำงานฟังก์ชันบันทึก
-            HP_ID: document.getElementById('f_HP_ID').value,
-            HOUSE_ID: document.getElementById('f_HOUSE_ID').value,
-            Project_Name: document.getElementById('f_Project_Name').value,
-            Price: document.getElementById('f_Price').value,
-            District: document.getElementById('f_District').value,
-            Status: document.getElementById('f_Status').value
-        };
+  form.onsubmit = async (e) => {
+    e.preventDefault();
 
-        try {
-            // ส่งข้อมูลแบบ POST ไปยัง Apps Script
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                mode: 'no-cors', // Apps Script ต้องการ no-cors สำหรับการส่งจากเว็บอื่น
-                cache: 'no-cache',
-                body: JSON.stringify(payload)
-            });
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังบันทึก...';
+    showStatus('กำลังเชื่อมต่อฐานข้อมูล...', '');
 
-            // เนื่องจาก no-cors จะไม่คืนค่า json เราจึงสมมติความสำเร็จถ้าไม่ Error
-            showStatus('✅ บันทึกข้อมูล ' + payload.HOUSE_ID + ' สำเร็จเรียบร้อย!', 'success');
-            form.reset();
-            
-        } catch (error) {
-            showStatus('❌ เกิดข้อผิดพลาด: ' + error.message, 'error');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-save"></i> บันทึกข้อมูลไปยัง Google Sheet';
-        }
+    const payload = {
+      action: "save",
+      HP_ID: document.getElementById('f_HP_ID').value.trim(),
+      HOUSE_ID: document.getElementById('f_HOUSE_ID').value.trim(),
+      Project_Name: document.getElementById('f_Project_Name').value.trim(),
+      Price: document.getElementById('f_Price').value.trim(),
+      District: normalizeDistrict(document.getElementById('f_District').value),
+      Status: document.getElementById('f_Status').value.trim(),
+      Thumbnail: document.getElementById('f_Thumbnail').value.trim()
     };
 
-    function showStatus(msg, type) {
-        statusBox.innerText = msg;
-        statusBox.className = 'status-msg ' + type;
+    try {
+      await fetch(API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        cache: 'no-cache',
+        body: JSON.stringify(payload)
+      });
+
+      showStatus(
+        `✅ ส่งคำสั่งบันทึกแล้ว! (HOUSE_ID: ${payload.HOUSE_ID})\n` +
+        `ถ้าคุณเพิ่มรายการใหม่ ระบบจะสร้าง HP_ID ให้เองในชีต\n` +
+        `แนะนำ: กลับไปหน้า index แล้ว Refresh เพื่อดูผล`,
+        'success'
+      );
+
+      form.reset();
+
+    } catch (error) {
+      showStatus('❌ เกิดข้อผิดพลาด: ' + error.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-save"></i> บันทึกข้อมูลไปยัง Google Sheet';
     }
+  };
+
+  function showStatus(msg, type) {
+    statusBox.innerText = msg;
+    statusBox.className = 'status-msg ' + type;
+  }
 </script>
 
 </body>
